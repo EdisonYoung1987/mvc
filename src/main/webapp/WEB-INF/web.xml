@@ -8,11 +8,12 @@
   <servlet>
       <servlet-name>dispatcher</servlet-name>
       <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-        <init-param>
+      <!-- 如果没有init-param指定servlet路径 ，则默认寻找/WEB-INF/dispatcher-servlet.xml-->
+      <init-param>
             <param-name>contextConfigLocation</param-name>
 			<param-value>classpath:springContext.xml</param-value>
-      	</init-param>
-      	<load-on-startup>1</load-on-startup>
+      </init-param>
+      <load-on-startup>1</load-on-startup>
   </servlet>
   
   <servlet-mapping>
