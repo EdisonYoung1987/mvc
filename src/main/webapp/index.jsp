@@ -13,6 +13,12 @@ pageEncoding="UTF-8"%>
         <h3>
             <a href="hello?name=wuyao">点击跳转</a>
         </h3>
+        <h3>
+            <a href="user/register">新用户注册</a>
+        </h3>
+         <h3>
+            <a href="user/delete">用户注销</a>
+        </h3>
     </center>
 </body>
 </html>
