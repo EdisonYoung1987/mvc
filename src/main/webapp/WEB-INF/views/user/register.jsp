@@ -19,7 +19,7 @@
 	     <td>密码：</td>
 	       <td><input type="password" name="password" value="${user.password}"/></td>
 	    </tr>
-	     <td colspan="2"><input type="submit" name="提交ddd"/></td>
+	     <td colspan="2"><input type="submit" name="提交ddd" value="提交"/></td>
 	    </tr>	    
     </table>
   </form>
