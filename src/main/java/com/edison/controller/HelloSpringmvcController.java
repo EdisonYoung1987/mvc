@@ -1,6 +1,7 @@
 package com.edison.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -10,8 +11,9 @@ public class HelloSpringmvcController {
 	String message = "Welcome to Spring MVC!";
 	 
     @RequestMapping("/hello")
-    public ModelAndView showMessage(@RequestParam(value = "name", required = false, defaultValue = "Spring") String name) {
- 
+    //public ModelAndView showMessage(@RequestParam(value = "name", required = false, defaultValue = "Spring") String name) {
+//        public ModelAndView showMessage(@PathVariable String name) {
+        public ModelAndView showMessage( String name) {
         ModelAndView mv = new ModelAndView("hellospring");//指定视图
         
         //向视图中添加所要展示或使用的内容，将在页面中使用
