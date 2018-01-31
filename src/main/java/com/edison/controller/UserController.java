@@ -49,15 +49,13 @@ public class UserController {
     @RequestMapping(value="/register.do",method=RequestMethod.POST)
     public ModelAndView create(@ModelAttribute("user") User user,@RequestBody String req) {//必须有前面的被注解的getUser方法才行。
     	System.out.println("Func create() do");
-
+    	System.out.println(user.toString());
+    	
     	//返回注册成功界面jsp
-    	  ModelAndView mv = new ModelAndView("user/success");//指定视图
-          System.out.println(user.getUserName());
-          System.out.println(user.getPassword());
-          //向视图中添加所要展示或使用的内容，将在页面中使用
-          mv.addObject("message", "您好,"+user.getUserName()+"! 欢迎加入数据库！");
-          
-          System.out.println("["+req+"]");
-          return mv;
+    	ModelAndView mv = new ModelAndView("user/success");//指定视图
+        //向视图中添加所要展示或使用的内容，将在页面中使用
+        mv.addObject("message", "您好,"+user.getUserName()+"! 欢迎加入数据库！");
+        System.out.println("["+req+"]");
+        return mv;
     }
 }

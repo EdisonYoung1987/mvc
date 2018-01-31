@@ -35,8 +35,20 @@
                     <td>密码</td>   
                     <td><form:password  path="password"/></td>  
                 </tr>   
-                </tr>
-	     			<td colspan="2"><input type="submit" name="提交ddd" value="提交"/></td>
+	    		<tr>
+	     			<td>性别</td>   
+                    <td><form:radiobutton  path="sex" value="0"/>男</td>  
+                    <td><form:radiobutton  path="sex" value="1"/>女</td>  
+	    		</tr>
+	    		<!-- <tr>
+	     			<td>城市</td>   
+                    <td><form:select path="city" items="${citys}">
+   						<form:option value="--请选择--" name="--请选择--" label="--请选择--">--请选择--</form:option>
+   						<form:options items="${cityMap}" itemValue="key" itemLabel="value" />
+					</form:select></td>
+	    		</tr>  这一段没整明白-->
+	    		<tr>
+	     			<td colspan="2"><input type="submit"  value="提交"/></td> <!-- 在提交按钮这不要添加name属性，否则提交的时候会一起提交 -->
 	    		</tr>
         </table>  
     </form:form>  
