@@ -1,5 +1,8 @@
 package com.edison.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -24,14 +27,24 @@ public class UserController {
 	@ModelAttribute("user")
 	public User getUser(){
 		User user=new User();
+		user.setCity("--请选择--");
 		return user;
 	}
 	
     @RequestMapping("/register")
-    public String register() {
+    public ModelAndView register() {
+    	ModelAndView mv =new ModelAndView("user/register");
     	//返回注册界面jsp
     	System.out.println("Func register() do");
-        return "user/register";
+        //提前注入部分注册资料
+    	List<String> citys=new ArrayList<String>();
+    	citys.add("重庆");
+    	citys.add("北京");
+    	citys.add("上海");
+    	citys.add("天津");
+    	mv.addObject("citys", citys);
+    
+    	return mv;
     }
     
     @RequestMapping("/delete")

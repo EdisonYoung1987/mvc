@@ -40,8 +40,6 @@ public class User {
 	@Override
 	public String toString() {
 		return "User [userName=" + userName + ", password=" + password
-				+ ", sex=" + sex + "]";
+				+ ", sex=" + sex + ", city=" + city + "]";
 	}
-
-	
 }
