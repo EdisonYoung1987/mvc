@@ -27,7 +27,6 @@ public class UserController {
 	@ModelAttribute("user")
 	public User getUser(){
 		User user=new User();
-		user.setCity("--请选择--");
 		return user;
 	}
 	
@@ -38,6 +37,7 @@ public class UserController {
     	System.out.println("Func register() do");
         //提前注入部分注册资料
     	List<String> citys=new ArrayList<String>();
+    	citys.add("--请选择--");
     	citys.add("重庆");
     	citys.add("北京");
     	citys.add("上海");

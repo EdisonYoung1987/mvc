@@ -42,9 +42,7 @@
 	    		</tr>
 	    		<tr>
 	     			<td>所在城市：</td>   
-                    <td><form:select path="city" >
-   						<form:option value="--请选择--" />
-   						<form:options items="${citys}"  />
+                    <td><form:select path="city" items="${citys}">
 					</form:select></td>
 	    		</tr>  
 	    		<tr>
