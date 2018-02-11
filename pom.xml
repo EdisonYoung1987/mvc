@@ -56,6 +56,19 @@
         <version>${spring.version}</version>
     </dependency>
     
+    <!-- 测试相关 -->
+    <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>4.0.6.RELEASE</version>
+    </dependency>
+    <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>6.8.7</version>
+            <scope>test</scope>
+    </dependency>
+    
   </dependencies>
   <build>
     <finalName>HelloSpringMVC</finalName>

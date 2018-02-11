@@ -1,0 +1,16 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >  
+    
+<suite name="Suite1" verbose="1">  
+  <test name="Test1">  
+    <parameter name="URL" value="http://testng.org/" />  
+    <classes>  
+       <class name="allTest.testAll">  <!-- 这里，name需要提供src\test\java\之后的目录
+       包括allTest，如果只填写testAll是不行的 -->
+        <methods>  
+            <include name="testUserController" />  
+            <exclude name="Login" />  
+        </methods>  
+       </class>  
+    </classes>  
+  </test>  
+</suite>  
