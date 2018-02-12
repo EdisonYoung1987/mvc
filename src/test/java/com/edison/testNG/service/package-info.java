@@ -5,4 +5,4 @@
  * @author Edison
  *
  */
-package com.edison.test.service;
+package com.edison.testNG.service;

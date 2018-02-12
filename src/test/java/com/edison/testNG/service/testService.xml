@@ -7,6 +7,8 @@
        <class name="com.edison.test.service.UserServiceTest">  <!-- 这里，name需要提供src\test\java\之后的目录
        包括allTest，如果只填写testAll是不行的 -->
        </class>  
+       <class name="com.edison.test.service.SimpleUserServiceTest"> 
+       </class>
     </classes>  
   </test>  
 </suite>  

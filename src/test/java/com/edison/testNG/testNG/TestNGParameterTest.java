@@ -1,4 +1,4 @@
-package com.edison.test.testNG;
+package com.edison.testNG.testNG;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -13,8 +13,8 @@ public class TestNGParameterTest {
     public static Object[][] getParamters() {
          String[][] params = {
                         { "2016-02-01 00:30:59", "yyyyMMdd", "20160201" },
-                        { "2016-02-01 00:30:59", "yyyy年MM月dd日", "2016年02月01日" },
-                        { "2016-02-01 00:30:59", "HH时mm分ss秒", "00时30分59秒" } };
+                        { "2016-02-01 00:30:59", "yyyy年MM月dd�?", "2016�?02�?01�?" },
+                        { "2016-02-01 00:30:59", "HH时mm分ss�?", "00�?30�?59�?" } };
 		 return params;
 	}
 

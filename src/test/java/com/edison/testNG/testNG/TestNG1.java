@@ -1,4 +1,4 @@
-package com.edison.test.testNG;
+package com.edison.testNG.testNG;
 
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;

@@ -5,4 +5,4 @@
  * @author Edison
  *
  */
-package com.edison.test.controller;
+package com.edison.testNG.controller;

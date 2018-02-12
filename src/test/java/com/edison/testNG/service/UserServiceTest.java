@@ -1,5 +1,6 @@
-package com.edison.test.service;
+package com.edison.testNG.service;
 
+import org.springframework.context.ApplicationContext;
 import org.testng.annotations.Test;
 import org.unitils.spring.annotation.SpringApplicationContext;
 import org.unitils.spring.annotation.SpringBean;
@@ -9,8 +10,12 @@ import com.edison.db.entity.User;
 import com.edison.service.UserService;
 
 @Test
-@SpringApplicationContext("testspringContext.xml")
+//@SpringApplicationContext("testspringContext.xml")
+@SpringApplicationContext({"testspringContext.xml"})
 public class UserServiceTest {
+	@SpringApplicationContext
+	public ApplicationContext applicationContext;
+	
 	@SpringBean("userService")
 	private UserService userService;
 	
@@ -19,8 +24,9 @@ public class UserServiceTest {
 	
 	private User user=new User();
 	
-	@Test
+	@Test(enabled=false)
 	public void testService(){
+		System.out.println(applicationContext.containsBean("userService"));
 		user.setUserName("’≈»˝∑·");
 		user.setCity("÷ÿ«Ï");
 		user.setSex("1");
