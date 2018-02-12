@@ -1,8 +1,8 @@
 /**
- * 
+ * 服务类包
  */
 /**
  * @author Edison
  *
  */
-package allTest;
+package com.edison.service;
