@@ -1,0 +1,12 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >  
+    
+<suite name="testService" verbose="1">  
+  <test name="testService">  
+    <!-- <parameter name="URL" value="http://testng.org/" />   -->
+    <classes>  
+       <class name="com.edison.test.service.UserServiceTest">  <!-- 这里，name需要提供src\test\java\之后的目录
+       包括allTest，如果只填写testAll是不行的 -->
+       </class>  
+    </classes>  
+  </test>  
+</suite>  
