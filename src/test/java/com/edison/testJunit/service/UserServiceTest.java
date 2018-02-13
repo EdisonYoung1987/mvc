@@ -3,7 +3,7 @@ package com.edison.testJunit.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 import com.edison.db.entity.User;
 import com.edison.service.UserService;

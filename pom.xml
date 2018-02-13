@@ -65,12 +65,12 @@
 	</dependency>   
 	
     <!-- 测试相关方案2：testNG+Unitils实际上没成功 -->
-    <dependency>
+    <!--  <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <version>6.8.7</version>
             <scope>test</scope>
-    </dependency>
+    </dependency>-->
     <!-- 测试整合框架 -->
     <dependency>
             <groupId>org.unitils</groupId>
