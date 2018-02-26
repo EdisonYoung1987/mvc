@@ -8,6 +8,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.edison.controller.UserController;
 import com.edison.testJunit.BaseJunitTest;
@@ -33,8 +34,11 @@ public class UserControllerTest extends BaseJunitTest{
 	        
 	        resultActions = this.mockMvc.perform(MockMvcRequestBuilders.post("/user/delete").param("id", "1"));
 	        mvcResult = resultActions.andReturn();
-	        result = mvcResult.getResponse().getContentAsString();
-	        System.out.println("result="+result);
+	        ModelAndView mv= mvcResult.getModelAndView();
+	        System.out.println("controller返回视图名为："+mv.getViewName());
+	       
+	        /*result = mvcResult.getResponse().getContentAsString();
+	        System.out.println("result="+result);*/
 		}catch(Exception e){
 			e.printStackTrace();
 		}
