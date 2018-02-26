@@ -1,9 +1,8 @@
 package com.edison.testJunit;
 
-import org.junit.Test;
 import org.junit.FixMethodOrder;
-import org.junit.runners.*;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 

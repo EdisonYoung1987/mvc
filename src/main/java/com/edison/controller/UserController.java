@@ -1,8 +1,10 @@
 package com.edison.controller;
 
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -48,13 +50,15 @@ public class UserController {
     }
     
     @RequestMapping("/delete")
-    public String delete(HttpServletRequest req,HttpServletResponse rsp) {
+    public String delete(HttpServletRequest req,HttpServletResponse rsp) 
+          throws Exception{
     	System.out.println(req.getRequestURI());
     	System.out.println(req.getServerPort());
     	System.out.println(req.getContentLength());
     	
     	System.out.println(rsp.getHeader("Content-Length"));
     	System.out.println(rsp.getCharacterEncoding());
+    	
     	//返回注销界面jsp
         return "user/delete";
     }
