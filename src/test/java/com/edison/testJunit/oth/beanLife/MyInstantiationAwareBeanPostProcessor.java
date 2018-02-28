@@ -55,8 +55,8 @@ public Object postProcessAfterInitialization(Object bean,
 public PropertyValues postProcessPropertyValues(PropertyValues pvs,
         PropertyDescriptor[] pds, Object bean, String beanName)
         throws BeansException {
-    System.out.println("InstantiationAwareBeanPostProcessor" +
-            "调用postProcessPropertyValues方法");
+    System.out.print("InstantiationAwareBeanPostProcessor" +
+            "调用postProcessPropertyValues方法  ");
     System.out.println("beanName="+beanName);
     return pvs;
 }

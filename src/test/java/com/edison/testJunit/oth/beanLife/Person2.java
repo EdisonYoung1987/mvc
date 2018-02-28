@@ -7,7 +7,7 @@ import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 
-public class CopyOfPerson implements BeanFactoryAware, BeanNameAware,
+public class Person2 implements BeanFactoryAware, BeanNameAware,
 	InitializingBean, DisposableBean{
 
 	/**
@@ -35,8 +35,8 @@ public class CopyOfPerson implements BeanFactoryAware, BeanNameAware,
 	private BeanFactory beanFactory;
 	private String beanName;
 	
-	public CopyOfPerson() {
-	System.out.println("【构造器】调用Person的构造器实例化");
+	public Person2() {
+	System.out.println("person2  【构造器】调用Person的构造器实例化");
 	}
 	
 	public String getName() {
@@ -44,7 +44,7 @@ public class CopyOfPerson implements BeanFactoryAware, BeanNameAware,
 	}
 	
 	public void setName(String name) {
-	System.out.println("【注入属性】注入属性name,---name="+name);
+	System.out.println("person2  【注入属性】注入属性name,---name="+name);
 	this.name = name;
 	}
 	
@@ -54,23 +54,23 @@ public class CopyOfPerson implements BeanFactoryAware, BeanNameAware,
 	}
 	
 	public void destroy() throws Exception {
-	System.out.println("【DiposibleBean接口】调用" +
+	System.out.println("person2  【DiposibleBean接口】调用" +
 	        "DiposibleBean.destory()");
 	}
 	
 	public void afterPropertiesSet() throws Exception {
-	System.out.println("【InitializingBean接口】调用" +
+	System.out.println("person2  【InitializingBean接口】调用" +
 	        "InitializingBean.afterPropertiesSet()");
 	}
 	
 	public void setBeanName(String beanName) {
-	System.out.println("【BeanNameAware接口】调用" +
+	System.out.println("person2  【BeanNameAware接口】调用" +
 	        "BeanNameAware.setBeanName()---beanName="+beanName);
 	this.beanName = beanName;
 	}
 	
 	public void setBeanFactory(BeanFactory arg0) throws BeansException {
-	System.out.println("【BeanFactoryAware接口】调用" +
+	System.out.println("person2  【BeanFactoryAware接口】调用" +
 	        "BeanFactoryAware.setBeanFactory()");
 	this.beanFactory = arg0;
 	}
@@ -78,13 +78,14 @@ public class CopyOfPerson implements BeanFactoryAware, BeanNameAware,
 	
 	// 通过<bean>的init-method属性指定的初始化方法
 	public void myInit() {
-	System.out.println("【init-method】调用" +
+	System.out.println("person2  【init-method】调用" +
 	        "<bean>的init-method属性指定的初始化方法");
 	}
 	
 	// 通过<bean>的destroy-method属性指定的初始化方法
 	public void myDestory() {
-	System.out.println("【destroy-method】调用" +
+		System.out.println("person2  beanName="+this.beanName);
+	System.out.println("person2  【destroy-method】调用" +
 	        "<bean>的destroy-method属性指定的初始化方法");
 	}
 	

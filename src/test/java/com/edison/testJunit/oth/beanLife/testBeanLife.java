@@ -8,6 +8,8 @@ import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
+import com.edison.db.entity.User;
+
 public class testBeanLife {
 
 	public static void main(String[] args) {
@@ -17,7 +19,6 @@ public class testBeanLife {
                 new FileSystemXmlApplicationContext("C:/Users/Edison/git/mvc/src/test/java/com/edison/testJunit/oth/beanLife/lifeContext.xml");
         System.out.println("IOC容器初始化成功"); 
         Person person = (Person) context.getBean("person1");
-           
 		
 		/*//2.
 		  Resource res=new PathMatchingResourcePatternResolver().getResource("file:C:/Users/Edison/git/mvc/src/test/java/com/edison/testJunit/oth/beanLife/lifeContext.xml");
@@ -26,7 +27,9 @@ public class testBeanLife {
 		reader.loadBeanDefinitions(res);
         Person person = (Person) beanFactory.getBean("person1");*/
         
-        System.out.println("使用person对象的toString:"+person);
+//        System.out.println("使用person对象的toString:"+person);
+        Person2 person2 = (Person2) context.getBean("person2");
+      
         System.out.println("现在开始关闭容器！");
         ((FileSystemXmlApplicationContext)context).registerShutdownHook();
         

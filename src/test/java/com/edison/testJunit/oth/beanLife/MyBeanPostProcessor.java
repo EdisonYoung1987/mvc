@@ -21,8 +21,8 @@ public class MyBeanPostProcessor implements BeanPostProcessor {
 
     public Object postProcessAfterInitialization(Object obj, String objName)
             throws BeansException {
-        Person person = (Person) obj;
-        person.setName("之后--赵六");
+       /* Person person = (Person) obj;
+        person.setName("之后--赵六");*/
         System.out.println("BeanPostProcessor接口方法" +
                 "postProcessAfterInitialization对属性进行更改！" +
                 "---"+"obj="+obj+"---objName="+objName);
@@ -31,8 +31,8 @@ public class MyBeanPostProcessor implements BeanPostProcessor {
 
     public Object postProcessBeforeInitialization(Object obj, String objName)
             throws BeansException {
-        Person person = (Person) obj;
-        person.setName("之前--李四");
+       /* Person person = (Person) obj;
+        person.setName("之前--李四");*/
         System.out.println("BeanPostProcessor接口方法" +
                 "postProcessBeforeInitialization对属性进行更改！" +
                 "---"+"obj="+obj+"---objName="+objName);

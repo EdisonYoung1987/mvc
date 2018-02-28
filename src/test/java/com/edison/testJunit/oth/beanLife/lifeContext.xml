@@ -7,7 +7,14 @@ http://www.springframework.org/schema/beans
 http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-3.0.xsd">
-    
+    <bean id="person1" class="com.edison.testJunit.oth.beanLife.Person" init-method="myInit"
+        destroy-method="myDestory" scope="singleton">
+        <property name="name" value="aaa"></property>
+    </bean>
+    <bean id="person2" class="com.edison.testJunit.oth.beanLife.Person2" init-method="myInit"
+        destroy-method="myDestory" scope="singleton">
+        <property name="name" value="aaa"></property>
+    </bean>
     <bean id="beanPostProcessor" 
         class="com.edison.testJunit.oth.beanLife.MyBeanPostProcessor">
     </bean>
@@ -19,9 +26,5 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd">
     <bean id="beanFactoryPostProcessor" 
         class="com.edison.testJunit.oth.beanLife.MyBeanFactoryPostProcessor">
     </bean>
-
-    <bean id="person1" class="com.edison.testJunit.oth.beanLife.Person" init-method="myInit"
-        destroy-method="myDestory" scope="singleton">
-        <property name="name" value="aaa"></property>
-    </bean>
+    
 </beans>
