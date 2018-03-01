@@ -47,15 +47,10 @@ public class TestBeanFactory {
 				System.out.println("user is null");
 			}
 			
-			//5.获取bean
-			if(beanFactory.getBean("User")!=null){ //直接就抛异常了，不会返回null，
-				                                   //bean属性可以配置null 
-				//<bean class="Car">
-				//	<property name="color" /><null/></property>
-				//</bean> 配置的无色车，哈哈哈 相当于把 <value>xxx</value> 替换为<null/>
-				System.out.println("存在User的bean在factory中");
-			}else{
-				System.out.println("不存在User的bean在factory中");
+			//查看类的注册情况
+			String[] names= beanFactory.getBeanDefinitionNames();
+			for(String name:names){
+				System.out.println("容器中注册有："+name);
 			}
 		}catch(Exception e){
 			e.printStackTrace();
