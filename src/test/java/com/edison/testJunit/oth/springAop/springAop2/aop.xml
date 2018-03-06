@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	<!-- 扫描Waiter、Seller以及两个Advice -->
+    <context:component-scan base-package="com.edison.testJunit.oth.springAop.springAop2" />
+    
+    <!-- 配置通用代理生成器 -->
+    <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator"
+    	p:beanNames="*er"
+    	p:interceptorNames="aroundAdvice,beforeAdvice"
+    	p:optimize="true"> 
+    	<!-- beanNames可以用*通配符，也可以用逗号隔开  
+    	     p:interceptorNames可以指定多个增强类,他们的顺序决定了执行的顺序
+    	     optimize 表示强制使用CGLib动态代理-->
+    </bean>
+</beans>
