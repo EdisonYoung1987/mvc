@@ -49,6 +49,11 @@
         <artifactId>spring-webmvc</artifactId>
         <version>${spring.version}</version>
     </dependency>
+	<dependency><!--orm值得就是jpa，jdo，hibernate等持久层框架-->
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-orm</artifactId>
+        <version>4.2.2.RELEASE</version>
+    </dependency>
     
     <!-- Spring @AspectJ AOP -->
     <dependency>  
@@ -56,6 +61,11 @@
   		<artifactId>spring-aop</artifactId>  
   		<version>${spring.version}</version>  
  	</dependency>  
+ 	<dependency>
+ 		<groupId>cglib</groupId>  
+  		<artifactId>cglib-nodep</artifactId>  
+  		<version>2.1_3</version>
+ 	</dependency>
  	<!-- AspectJ -->  
 	<dependency>  
     	<groupId>org.aspectj</groupId>  
@@ -82,56 +92,12 @@
             <scope>test</scope>  
 	</dependency>   
 	
-    <!-- 测试相关方案2：testNG+Unitils实际上没成功 -->
-    <!--  <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <version>6.8.7</version>
-            <scope>test</scope>
-    </dependency>-->
-    <!-- 测试整合框架 -->
-    <dependency>
-            <groupId>org.unitils</groupId>
-            <artifactId>unitils-core</artifactId>
-            <version>${unitils.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.unitils</groupId>
-            <artifactId>unitils-testng</artifactId>
-            <version>${unitils.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.unitils</groupId>
-            <artifactId>unitils-spring</artifactId>
-            <version>${unitils.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.unitils</groupId>
-            <artifactId>unitils-orm</artifactId>
-            <version>${unitils.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.unitils</groupId>
-            <artifactId>unitils-database</artifactId>
-            <version>${unitils.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.unitils</groupId>
-            <artifactId>unitils-dbmaintainer</artifactId>
-            <version>${unitils.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.unitils</groupId>
-            <artifactId>unitils-dbunit</artifactId>
-            <version>${unitils.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.dbunit</groupId>
-                    <artifactId>dbunit</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-    
+	<!-- 数据库驱动 ORACLE -->
+	<dependency>
+		<groupId>com.oracle</groupId> 
+		<artifactId>ojdbc6</artifactId>
+		<version>11.2.0.3.0</version> 
+	</dependency>
   </dependencies>
   <build>
     <finalName>HelloSpringMVC</finalName>
