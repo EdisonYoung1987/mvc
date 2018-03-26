@@ -7,9 +7,12 @@
 	<property name="MAX_FILE_SIZE" value="50MB" />
 	<property name="PATTERN" value="[%d{yyyy-MM-dd HH:mm:ss}][%level][%X{BEANID}][%X{STEPID}][%class:%line]%n%msg%n%n"/>
 	<property name="PATTERN_BUSI" value="[%d{yyyy-MM-dd HH:mm:ss}][%level][%X{BEANID}][%X{STEPID}]%n%msg%n%n"/>	
-	<property name="LOG_LV" value="ERROR" />
+	<property name="LOG_LV" value="INFO" />
 	<property name="ENCODING" value="UTF-8" />
-
+	
+	<!-- 说明：appender指定一个输出格式，包括pattern、路径、名称、分卷模式、filter等信息，而
+	logger则指定某些package或者具体类要绑定的appender -->
+	
 	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
 			<pattern>${PATTERN}</pattern>
@@ -30,7 +33,7 @@
 		<encoder>
 			<pattern>${PATTERN}</pattern>
 		</encoder>
-		<filter class="com.cqrcb.ncbs.dispatch.platform.log.ErrFilter" />
+		<filter class="com.edison.util.log.ErrFilter" />
 	</appender>
 	<appender name="FILE-STACK" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<file>${LOG_HOME}/stack.log</file>
@@ -46,7 +49,7 @@
 		<encoder>
 			<pattern>[%d{yyyy-MM-dd HH:mm:ss}][%X{TASKID}][%X{BEANID}][%X{STEPID}][%class:%line] - %msg%n%ex%n</pattern>
 		</encoder>
-		<filter class="com.cqrcb.ncbs.dispatch.platform.log.StackFilter" />
+		<filter class="com.edison.util.log.StackFilter" />
 	</appender>
 	<appender name="FILE-WARN" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<file>${LOG_HOME}/warn.log</file>
@@ -75,7 +78,7 @@
 		</encoder>
 	</appender>
 	
-	<!-- add for DB begin -->
+	<!-- add for DB begin,这里就是logger+appender -->
 	<appender name="FILE-DB" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<file>${LOG_HOME}/db.log</file>
 		<encoder>
@@ -91,19 +94,9 @@
 	</logger>
 	<!-- add for DB end -->
 
+    <!-- 这里具体指定某些类的输出路径，也是logger+appender的形式 -->
 	<include file="${XML_HOME}/amortized.xml" />
-	<include file="${XML_HOME}/audit.xml" />
-	<include file="${XML_HOME}/base.xml" />
-	<include file="${XML_HOME}/check.xml" />
-	<include file="${XML_HOME}/clear.xml" />
-	<include file="${XML_HOME}/collection.xml" />	
-	<include file="${XML_HOME}/common.xml" />
-	<include file="${XML_HOME}/generate.xml" />
-	<include file="${XML_HOME}/loan.xml" />
-	<include file="${XML_HOME}/online.xml" />
-	<include file="${XML_HOME}/report.xml" />
-	<include file="${XML_HOME}/total.xml" />
-	<include file="${XML_HOME}/dispatch.xml" />
+	
 
 	<logger name="com.cqrcb.clean" level="${LOG_LV}" additivity="false">
 		<appender-ref ref="FILE-ERROR" />

@@ -1,0 +1,25 @@
+<included>
+
+	<!--注意所有的name不要重名-->
+	<property name="AMORTIZED_DIR" value="com.cqrcb.clean.amortized" />
+	<logger name="${AMORTIZED_DIR}" level="${LOG_LV}" />
+	<appender name="FILE-AmoE001001R01Impl" class="ch.qos.logback.classic.sift.SiftingAppender">
+		<discriminator>
+			<Key>THREAD</Key>
+			<DefaultValue>unknown</DefaultValue>
+		</discriminator>
+		<sift>
+			<appender name="FILE-AmoE001001R01Impl_IN" class="ch.qos.logback.core.FileAppender">
+				<file>${LOG_HOME}/amortized/AmoE001001R01Impl/${THREAD}.log</file>
+				<encoder>
+					<pattern>${PATTERN_BUSI}</pattern>
+				</encoder>
+			</appender>
+		</sift>
+	</appender>
+
+	<logger name="${AMORTIZED_DIR}.AmoE001001R01Impl">
+		<appender-ref ref="FILE-AmoE001001R01Impl" />
+	</logger>
+	
+</included>	
