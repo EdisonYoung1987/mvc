@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+	<contextName>NcbsCleanContext</contextName>
+	<property name="LOG_HOME" value="${NCBS}/log" />
+	<property name="XML_HOME" value="${NCBS}/conf/logback" />
+	<property name="MAX_DAY" value="7" />
+	<property name="MAX_FILE_SIZE" value="50MB" />
+	<property name="PATTERN" value="[%d{yyyy-MM-dd HH:mm:ss}][%level][%X{BEANID}][%X{STEPID}][%class:%line]%n%msg%n%n"/>
+	<property name="PATTERN_BUSI" value="[%d{yyyy-MM-dd HH:mm:ss}][%level][%X{BEANID}][%X{STEPID}]%n%msg%n%n"/>	
+	<property name="LOG_LV" value="ERROR" />
+	<property name="ENCODING" value="UTF-8" />
+
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>${PATTERN}</pattern>
+		</encoder>
+		<target>System.out</target>
+	</appender>
+	<appender name="FILE-ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_HOME}/error.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_HOME}/hislog/error.%d{yyyy-MM-dd}.%i.log
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>${MAX_DAY}</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${PATTERN}</pattern>
+		</encoder>
+		<filter class="com.cqrcb.ncbs.dispatch.platform.log.ErrFilter" />
+	</appender>
+	<appender name="FILE-STACK" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_HOME}/stack.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_HOME}/hislog/stack.%d{yyyy-MM-dd}.%i.log
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>${MAX_DAY}</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>[%d{yyyy-MM-dd HH:mm:ss}][%X{TASKID}][%X{BEANID}][%X{STEPID}][%class:%line] - %msg%n%ex%n</pattern>
+		</encoder>
+		<filter class="com.cqrcb.ncbs.dispatch.platform.log.StackFilter" />
+	</appender>
+	<appender name="FILE-WARN" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_HOME}/warn.log</file>
+		<encoder>
+			<pattern>${PATTERN}</pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+		  <fileNamePattern>${LOG_HOME}/warn.log.%d{yyyy-MM-dd}</fileNamePattern>
+		  <maxHistory>${MAX_DAY}</maxHistory>
+		</rollingPolicy>
+		<filter class="com.cqrcb.ncbs.dispatch.platform.log.WarnFilter" />
+	</appender>
+	<appender name="FILE-EXTRTIOR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_HOME}/exterior.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_HOME}/hislog/exterior.%d{yyyy-MM-dd}.%i.log
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>${MAX_DAY}</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${PATTERN}</pattern>
+		</encoder>
+	</appender>
+	
+	<!-- add for DB begin -->
+	<appender name="FILE-DB" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_HOME}/db.log</file>
+		<encoder>
+			<pattern>${PATTERN}</pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+		  <fileNamePattern>${LOG_HOME}/hislog/db.log.%d{yyyy-MM-dd}</fileNamePattern>
+		  <maxHistory>${MAX_DAY}</maxHistory>
+		</rollingPolicy>
+	</appender>
+	<logger name="druid.sql" level="ERROR" additivity="false">
+		<appender-ref ref="FILE-DB" />
+	</logger>
+	<!-- add for DB end -->
+
+	<include file="${XML_HOME}/amortized.xml" />
+	<include file="${XML_HOME}/audit.xml" />
+	<include file="${XML_HOME}/base.xml" />
+	<include file="${XML_HOME}/check.xml" />
+	<include file="${XML_HOME}/clear.xml" />
+	<include file="${XML_HOME}/collection.xml" />	
+	<include file="${XML_HOME}/common.xml" />
+	<include file="${XML_HOME}/generate.xml" />
+	<include file="${XML_HOME}/loan.xml" />
+	<include file="${XML_HOME}/online.xml" />
+	<include file="${XML_HOME}/report.xml" />
+	<include file="${XML_HOME}/total.xml" />
+	<include file="${XML_HOME}/dispatch.xml" />
+
+	<logger name="com.cqrcb.clean" level="${LOG_LV}" additivity="false">
+		<appender-ref ref="FILE-ERROR" />
+		<appender-ref ref="FILE-STACK" />
+		<appender-ref ref="FILE-WARN" />
+		<appender-ref ref="CONSOLE" />	
+	</logger>
+
+	<logger name="com.cqrcb.ncbs.dispatch" level="${LOG_LV}" additivity="false">
+		<appender-ref ref="FILE-ERROR" />
+		<appender-ref ref="FILE-STACK" />
+		<appender-ref ref="FILE-WARN" />
+		<appender-ref ref="CONSOLE" />	
+	</logger>
+
+	<root level="${LOG_LV}">
+		<appender-ref ref="FILE-EXTRTIOR" />
+		<appender-ref ref="CONSOLE" />	
+	</root>
+
+</configuration>
+
