@@ -2,6 +2,7 @@ package com.edison.testJunit.oth.apache_commons_io;
 
 import java.io.File;  
 import java.io.IOException;  
+import java.nio.file.FileStore;
 import java.util.Collection;
 
 import org.apache.commons.io.FileSystemUtils;  //已经被弃用了，使用java.nio.file.FileStore
@@ -92,6 +93,7 @@ public final class UtilityExample {
         logger.info("Ends with string (case insensitive): " +  
                 IOCase.INSENSITIVE.checkEndsWith(str1, "string."));  //true-大小写不敏感
         logger.info("String equality: " +   IOCase.SENSITIVE.checkEquals(str1, str2)); //false 
-          
+        
+        //FileStore -这个是nio提供的，不是apache commons io里面的,先不管
     }  
 }  

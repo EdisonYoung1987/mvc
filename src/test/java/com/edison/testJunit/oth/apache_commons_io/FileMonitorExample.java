@@ -29,13 +29,10 @@ public final class FileMonitorExample {
       
     private static final String EXAMPLE_PATH =  
             "C:\\Users\\Lilykos\\workspace\\ApacheCommonsExample\\ExampleFolder\\exampleFileEntry.txt";  
-      
     private static final String PARENT_DIR =  
             "C:\\Users\\Lilykos\\workspace\\ApacheCommonsExample\\ExampleFolder";  
-      
     private static final String NEW_DIR =  
             "C:\\Users\\Lilykos\\workspace\\ApacheCommonsExample\\ExampleFolder\\newDir";  
-      
     private static final String NEW_FILE =  
             "C:\\Users\\Lilykos\\workspace\\ApacheCommonsExample\\ExampleFolder\\newFile.txt";  
 
@@ -43,9 +40,7 @@ public final class FileMonitorExample {
     public static void runExample() {  
         logger.info("File Monitor example...");  
           
-          
         // FileEntry  
-          
         // We can monitor changes and get information about files  
         // using the methods of this class.  
         FileEntry entry = new FileEntry(FileUtils.getFile(EXAMPLE_PATH));  
