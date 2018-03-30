@@ -1,6 +1,7 @@
 <included>
 
 	<!--注意所有的name不要重名-->
+	<!--  
 	<property name="AMORTIZED_DIR" value="com.cqrcb.clean.amortized" />
 	<logger name="${AMORTIZED_DIR}" level="${LOG_LV}" />
 	<appender name="FILE-AmoE001001R01Impl" class="ch.qos.logback.classic.sift.SiftingAppender">
@@ -21,5 +22,28 @@
 	<logger name="${AMORTIZED_DIR}.AmoE001001R01Impl">
 		<appender-ref ref="FILE-AmoE001001R01Impl" />
 	</logger>
+	-->
 	
+	<property name="TEST_DIR" value="com.edison.testJunit.oth.apache_commons_io" />
+	<logger name="${TEST_DIR}" level="${LOG_LV}" />
+	<!-- PS：利用logback的MDC特性，实际项目中，可以实现按请求url、用户、host等粒度进行日志文件的独立分隔。，如web项目中，
+	可通过拦截器将session id注入到MDC，实现按session分隔日志，或者简单的将session呈现到log信息中。 -->
+	<appender name="FILE-ApacheCommonsExampleMain" class="ch.qos.logback.classic.sift.SiftingAppender">
+		<discriminator>
+			<Key>THREAD</Key> <!-- MDC+SiftingAppender 实现线程分日志，只需要在代码总实现MDC.put("THREAD", 线程号)即可-->
+			<DefaultValue>unknown</DefaultValue>
+		</discriminator>
+		<sift>
+			<appender name="FILE-ApacheCommonsExampleMain_IN" class="ch.qos.logback.core.FileAppender">
+				<file>${LOG_HOME}/amortized/ApacheCommonsExampleMain/${THREAD}.log</file>
+				<encoder>
+					<pattern>${PATTERN_BUSI}</pattern>
+				</encoder>
+			</appender>
+		</sift>
+	</appender>
+
+	<logger name="${TEST_DIR}.ApacheCommonsExampleMain">
+		<appender-ref ref="FILE-ApacheCommonsExampleMain" />
+	</logger>
 </included>	

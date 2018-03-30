@@ -2,7 +2,7 @@
 <configuration>
 	<contextName>NcbsCleanContext</contextName>
 	<property name="LOG_HOME" value="${NCBS}/log" />
-	<property name="XML_HOME" value="${NCBS}/conf/logback" />
+	<property name="XML_HOME" value="${NCBS}/src/main/resources/logback" />
 	<property name="MAX_DAY" value="7" />
 	<property name="MAX_FILE_SIZE" value="50MB" />
 	<property name="PATTERN" value="[%d{yyyy-MM-dd HH:mm:ss}][%level][%X{BEANID}][%X{STEPID}][%class:%line]%n%msg%n%n"/>
@@ -98,19 +98,13 @@
 	<include file="${XML_HOME}/amortized.xml" />
 	
 
-	<logger name="com.cqrcb.clean" level="${LOG_LV}" additivity="false">
+	<logger name="com.edison" level="${LOG_LV}" additivity="false"> <!-- Logger才是决定哪些代码在哪里输出的关键 -->
 		<appender-ref ref="FILE-ERROR" />
 		<appender-ref ref="FILE-STACK" />
 		<appender-ref ref="FILE-WARN" />
 		<appender-ref ref="CONSOLE" />	
-	</logger>
-
-	<logger name="com.cqrcb.ncbs.dispatch" level="${LOG_LV}" additivity="false">
-		<appender-ref ref="FILE-ERROR" />
-		<appender-ref ref="FILE-STACK" />
-		<appender-ref ref="FILE-WARN" />
-		<appender-ref ref="CONSOLE" />	
-	</logger>
+	</logger><!-- 这里相当于要把com.edison下面的日志同时输出到这四个appender去 ，所以加了几个filter进行过滤，达到
+	              日志分流且不会重复写日志的效果-->
 
 	<root level="${LOG_LV}">
 		<appender-ref ref="FILE-EXTRTIOR" />
