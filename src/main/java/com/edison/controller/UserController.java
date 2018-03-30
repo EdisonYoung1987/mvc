@@ -35,15 +35,15 @@ public class UserController {
     @RequestMapping("/register")
     public ModelAndView register() {
     	ModelAndView mv =new ModelAndView("user/register");
-    	//·µ»Ø×¢²á½çÃæjsp
+    	//è¿”å›æ³¨å†Œç•Œé¢jsp
     	System.out.println("Func register() do");
-        //ÌáÇ°×¢Èë²¿·Ö×¢²á×ÊÁÏ
+        //æå‰æ³¨å…¥éƒ¨åˆ†æ³¨å†Œèµ„æ–™
     	List<String> citys=new ArrayList<String>();
-    	citys.add("--ÇëÑ¡Ôñ--");
-    	citys.add("ÖØÇì");
-    	citys.add("±±¾©");
-    	citys.add("ÉÏº£");
-    	citys.add("Ìì½ò");
+    	citys.add("--è¯·é€‰æ‹©--");
+    	citys.add("é‡åº†");
+    	citys.add("åŒ—äº¬");
+    	citys.add("ä¸Šæµ·");
+    	citys.add("å¤©æ´¥");
     	mv.addObject("citys", citys);
     
     	return mv;
@@ -59,19 +59,19 @@ public class UserController {
     	System.out.println(rsp.getHeader("Content-Length"));
     	System.out.println(rsp.getCharacterEncoding());
     	
-    	//·µ»Ø×¢Ïú½çÃæjsp
+    	//è¿”å›æ³¨é”€ç•Œé¢jsp
         return "user/delete";
     }
     
     @RequestMapping(value="/register.do",method=RequestMethod.POST)
-    public ModelAndView create(@ModelAttribute("user") User user,@RequestBody String req) {//±ØĞëÓĞÇ°ÃæµÄ±»×¢½âµÄgetUser·½·¨²ÅĞĞ¡£
+    public ModelAndView create(@ModelAttribute("user") User user,@RequestBody String req) {//å¿…é¡»æœ‰å‰é¢çš„è¢«æ³¨è§£çš„getUseræ–¹æ³•æ‰è¡Œã€‚
     	System.out.println("Func create() do");
     	System.out.println(user.toString());
     	
-    	//·µ»Ø×¢²á³É¹¦½çÃæjsp
-    	ModelAndView mv = new ModelAndView("user/success");//Ö¸¶¨ÊÓÍ¼
-        //ÏòÊÓÍ¼ÖĞÌí¼ÓËùÒªÕ¹Ê¾»òÊ¹ÓÃµÄÄÚÈİ£¬½«ÔÚÒ³ÃæÖĞÊ¹ÓÃ
-        mv.addObject("message", "ÄúºÃ,"+user.getUserName()+"! »¶Ó­¼ÓÈëÊı¾İ¿â£¡");
+    	//è¿”å›æ³¨å†ŒæˆåŠŸç•Œé¢jsp
+    	ModelAndView mv = new ModelAndView("user/success");//æŒ‡å®šè§†å›¾
+        //å‘è§†å›¾ä¸­æ·»åŠ æ‰€è¦å±•ç¤ºæˆ–ä½¿ç”¨çš„å†…å®¹ï¼Œå°†åœ¨é¡µé¢ä¸­ä½¿ç”¨
+        mv.addObject("message", "æ‚¨å¥½,"+user.getUserName()+"! æ¬¢è¿åŠ å…¥æ•°æ®åº“ï¼");
         System.out.println("["+req+"]");
         return mv;
     }

@@ -4,13 +4,13 @@ import java.lang.reflect.Method;
 
 import org.springframework.aop.MethodBeforeAdvice;
 import org.springframework.stereotype.Component;
-//»·ÈÆÔöÇ¿µÃÓÃÕâ¸ö
+//ç¯ç»•å¢å¼ºå¾—ç”¨è¿™ä¸ª
 
 @Component
 public class BeforeAdvice implements MethodBeforeAdvice{
-	//method ±»ÔöÇ¿µÄ·½·¨ args- ·½·¨´«ÈëµÄ²ÎÊı arg2 -±»´úÀí¶ÔÏó
+	//method è¢«å¢å¼ºçš„æ–¹æ³• args- æ–¹æ³•ä¼ å…¥çš„å‚æ•° arg2 -è¢«ä»£ç†å¯¹è±¡
 	public void before(Method method, Object[] args, Object target)
 			throws Throwable {
-			System.out.println("before ÔöÇ¿·½·¨£º"+method.getName());
+			System.out.println("before å¢å¼ºæ–¹æ³•ï¼š"+method.getName());
 	}
 }

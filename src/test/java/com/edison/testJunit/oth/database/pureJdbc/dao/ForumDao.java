@@ -13,34 +13,34 @@ import com.edison.testJunit.oth.database.entity.Forum;
 import com.edison.testJunit.oth.database.pureJdbc.util.ConnectionUtil;
 
 /**
- * ¸Ğ¾õÒ»¸ösql¾ÍÊÇÒ»¶Î´úÂë£¬·Ç³£Âé·³£¬sqlÓï¾ä»¹´úÂë½»Ö¯ÔÚÒ»Æğ<br>
- * Èç¹ûÒ»¸ö±í£¬ÓĞ¼¸Ê®ÌõÓï¾äÈ¥¼ìË÷²»Í¬½á¹û¼¯£¬´¦ÀíÆğÀ´¾Í·Ç³£Âé·³<br>
- * Èç¹û±í½á¹¹·¢Éú¸Ä±ä£¬ÄÇÃ´Óï¾äÒ²Òª¸Ä£¬ºÜÂé·³*/
+ * æ„Ÿè§‰ä¸€ä¸ªsqlå°±æ˜¯ä¸€æ®µä»£ç ï¼Œéå¸¸éº»çƒ¦ï¼Œsqlè¯­å¥è¿˜ä»£ç äº¤ç»‡åœ¨ä¸€èµ·<br>
+ * å¦‚æœä¸€ä¸ªè¡¨ï¼Œæœ‰å‡ åæ¡è¯­å¥å»æ£€ç´¢ä¸åŒç»“æœé›†ï¼Œå¤„ç†èµ·æ¥å°±éå¸¸éº»çƒ¦<br>
+ * å¦‚æœè¡¨ç»“æ„å‘ç”Ÿæ”¹å˜ï¼Œé‚£ä¹ˆè¯­å¥ä¹Ÿè¦æ”¹ï¼Œå¾ˆéº»çƒ¦*/
 @Component
 public class ForumDao {
-	public List<Forum> selectList(String forumName){ //ÓÃForumÃû³ÆÄ£ºı²éÑ¯
+	public List<Forum> selectList(String forumName){ //ç”¨Forumåç§°æ¨¡ç³ŠæŸ¥è¯¢
 //		String sql="SELECT * FROM FORUM WHERE FORUMNAME LIKE '%"+forumName+"%'";
-		String sql="SELECT * FROM FORUM WHERE FORUMNAME LIKE ?"; //Ê¹ÓÃÕ¼Î»·û¿ÉÒÔ·ÀÖ¹sql×¢Èë
+		String sql="SELECT * FROM FORUM WHERE FORUMNAME LIKE ?"; //ä½¿ç”¨å ä½ç¬¦å¯ä»¥é˜²æ­¢sqlæ³¨å…¥
 		ResultSet rs=null;
 		List<Forum> forumList=null;
 		PreparedStatement statement=null;
 		
 		Connection con=ConnectionUtil.getConnection();
 		if(con==null){
-			System.out.println("»ñÈ¡Êı¾İ¿âÁ¬½ÓÎªnull");
+			System.out.println("è·å–æ•°æ®åº“è¿æ¥ä¸ºnull");
 			return null;
 		}
 		
 		try{
 			statement=con.prepareStatement(sql);
-			statement.setString(1, "%"+forumName+"%"); //likeÓï¾äÖ»ÄÜ°Ñ%·ÅÕâ£¬²»È»»á±¨´í£ºÎŞĞ§µÄÁĞË÷Òı
+			statement.setString(1, "%"+forumName+"%"); //likeè¯­å¥åªèƒ½æŠŠ%æ”¾è¿™ï¼Œä¸ç„¶ä¼šæŠ¥é”™ï¼šæ— æ•ˆçš„åˆ—ç´¢å¼•
 			rs=statement.executeQuery();
 			forumList=new ArrayList<Forum>();
 			
 			while(rs.next()){
 				Forum forum=new Forum();
 				forum.setForumId(rs.getInt(1));
-				forum.setForumName(rs.getString("FORuMNAME")); //²»ÖªµÀ¸Ã´óĞ´»¹ÊÇĞ¡Ğ´ ºÃÏñ²»Ó°Ïì
+				forum.setForumName(rs.getString("FORuMNAME")); //ä¸çŸ¥é“è¯¥å¤§å†™è¿˜æ˜¯å°å†™ å¥½åƒä¸å½±å“
 				forum.setForumDesc(rs.getString(3));
 				forumList.add(forum);
 			}

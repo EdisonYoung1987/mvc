@@ -1,5 +1,5 @@
 /**
- * 主要针对数据库操作方面的测试，包括纯java jdbc、Spring jdbc、Spring+Mybatis
+ * 涓昏閽堝鏁版嵁搴撴搷浣滄柟闈㈢殑娴嬭瘯锛屽寘鎷函java jdbc銆丼pring jdbc銆丼pring+Mybatis
  */
 /**
  * @author Edison

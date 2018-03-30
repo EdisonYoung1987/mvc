@@ -19,25 +19,25 @@ public class HelloSpringmvcController {
     //public ModelAndView showMessage(@RequestParam(value = "name", required = false, defaultValue = "Spring") String name) {
 //        public ModelAndView showMessage(@PathVariable String name) {
         public ModelAndView showMessage( String name) {
-        ModelAndView mv = new ModelAndView("hellospring");//Ö¸¶¨ÊÓÍ¼
+        ModelAndView mv = new ModelAndView("hellospring");//æŒ‡å®šè§†å›¾
         
-        //ÏòÊÓÍ¼ÖĞÌí¼ÓËùÒªÕ¹Ê¾»òÊ¹ÓÃµÄÄÚÈİ£¬½«ÔÚÒ³ÃæÖĞÊ¹ÓÃ,Ìí¼Ómap¶ÔÏó
+        //å‘è§†å›¾ä¸­æ·»åŠ æ‰€è¦å±•ç¤ºæˆ–ä½¿ç”¨çš„å†…å®¹ï¼Œå°†åœ¨é¡µé¢ä¸­ä½¿ç”¨,æ·»åŠ mapå¯¹è±¡
         mv.addObject("message", message);
         mv.addObject("name", name);
         
-        //Ìí¼Ólist
+        //æ·»åŠ list
         List<String> list=new ArrayList<String>();
         SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
-        list.add("¿ª·¢Õß£º"+"Edison");
-        list.add("ÈÕÆÚ£º"+ df.format(new Date()));
-        list.add("ÁªÏµ·½Ê½£º"+"272882055");
+        list.add("å¼€å‘è€…ï¼š"+"Edison");
+        list.add("æ—¥æœŸï¼š"+ df.format(new Date()));
+        list.add("è”ç³»æ–¹å¼ï¼š"+"272882055");
         mv.addObject("INFOLIST",list);
         
-        //Ìí¼ÓMap
+        //æ·»åŠ Map
         Map<String,String> map=new HashMap<String,String>();
         map.put("Title:","Spring MVC LEARNING");
         map.put("CHAPTER", "17TH");
-        map.put("Msg", "¼ÓÓÍ");
+        map.put("Msg", "åŠ æ²¹");
         mv.addObject("STUDYMAP",map);
         
         return mv;

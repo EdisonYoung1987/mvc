@@ -14,7 +14,7 @@ public class ForumService {
 			forumList=forumDao.selectList(name);
 		}catch(Exception e){
 			e.printStackTrace();
-			System.out.println("²éÑ¯ÂÛÌ³Ê§°Ü");
+			System.out.println("æŸ¥è¯¢è®ºå›å¤±è´¥");
 		}
 		
 		if(forumList!=null){

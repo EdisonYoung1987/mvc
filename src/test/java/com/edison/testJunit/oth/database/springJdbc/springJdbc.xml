@@ -9,10 +9,10 @@
 		http://www.springframework.org/schema/context
 		http://www.springframework.org/schema/context/spring-context-3.0.xsd">
     
-    <!-- 搜索spring控件 -->
+    <!-- 鎼滅储spring鎺т欢 -->
     <context:component-scan base-package="com.edison.testJunit.oth.database.springJdbc"/>
     
-    <!-- 读取资源文件 -->
+    <!-- 璇诲彇璧勬簮鏂囦欢 -->
     <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
                 <property name="locations">
                         <list>
@@ -24,7 +24,7 @@
                 </property>
      </bean>
      
-     <!-- 定义spring数据源 -->
+     <!-- 瀹氫箟spring鏁版嵁婧� -->
      <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
           destroy-method="close"
           p:driverClassName="${driver}"
@@ -32,7 +32,7 @@
           p:username="${user}"
           p:password="${password}" />
      
-     <!-- 配置Jdbc模板  -->
+     <!-- 閰嶇疆Jdbc妯℃澘  -->
      <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate"
           p:dataSource-ref="dataSource" />
      

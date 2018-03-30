@@ -15,24 +15,24 @@ public class Person implements BeanFactoryAware, BeanNameAware,
 	InitializingBean, DisposableBean,ApplicationContextAware{
 
 	/**
-	* BeanFactoryAware½Ó¿Ú,Ö»ÉùÃ÷ÁËÒ»¸ö·½·¨:ÓÃÀ´»ñÈ¡BeanFactory
-	* BeanNameAware½Ó¿Ú,Ö»ÉùÃ÷ÁËÒ»¸ö·½·¨:ÓÃÀ´»ñÈ¡BeanName
+	* BeanFactoryAwareæ¥å£,åªå£°æ˜äº†ä¸€ä¸ªæ–¹æ³•:ç”¨æ¥è·å–BeanFactory
+	* BeanNameAwareæ¥å£,åªå£°æ˜äº†ä¸€ä¸ªæ–¹æ³•:ç”¨æ¥è·å–BeanName
 	*/
 	
 	/**
 	* InitializingBean:
-	* ÔÚspring³õÊ¼»¯beanµÄÊ±ºò£¬Èç¹û¸ÃbeanÊÇÊµÏÖÁËInitializingBean½Ó¿Ú£¬
-	* ²¢ÇÒÍ¬Ê±ÔÚÅäÖÃÎÄ¼şÖĞÖ¸¶¨ÁËinit-method£¬
-	* ÏµÍ³ÔòÊÇÏÈµ÷ÓÃInitializingBeanµÄafterPropertiesSet·½·¨£¬
-	* È»ºóÔÚµ÷ÓÃinit-methodÖĞÖ¸¶¨µÄ·½·¨¡£
+	* åœ¨springåˆå§‹åŒ–beançš„æ—¶å€™ï¼Œå¦‚æœè¯¥beanæ˜¯å®ç°äº†InitializingBeanæ¥å£ï¼Œ
+	* å¹¶ä¸”åŒæ—¶åœ¨é…ç½®æ–‡ä»¶ä¸­æŒ‡å®šäº†init-methodï¼Œ
+	* ç³»ç»Ÿåˆ™æ˜¯å…ˆè°ƒç”¨InitializingBeançš„afterPropertiesSetæ–¹æ³•ï¼Œ
+	* ç„¶ååœ¨è°ƒç”¨init-methodä¸­æŒ‡å®šçš„æ–¹æ³•ã€‚
 	* */
 	
 	/**
 	* DisposableBean:
-	* ÔÚspring³õÊ¼»¯beanµÄÊ±ºò£¬Èç¹û¸ÃbeanÊÇÊµÏÖÁËDisposableBean½Ó¿Ú£¬
-	* ²¢ÇÒÍ¬Ê±ÔÚÅäÖÃÎÄ¼şÖĞÖ¸¶¨ÁËdestroy-method£¬
-	* ÏµÍ³ÔòÊÇÏÈµ÷ÓÃDisposableBeanµÄdestroy·½·¨£¬
-	* È»ºóÔÚµ÷ÓÃdestroy-methodÖĞÖ¸¶¨µÄ·½·¨¡£
+	* åœ¨springåˆå§‹åŒ–beançš„æ—¶å€™ï¼Œå¦‚æœè¯¥beanæ˜¯å®ç°äº†DisposableBeanæ¥å£ï¼Œ
+	* å¹¶ä¸”åŒæ—¶åœ¨é…ç½®æ–‡ä»¶ä¸­æŒ‡å®šäº†destroy-methodï¼Œ
+	* ç³»ç»Ÿåˆ™æ˜¯å…ˆè°ƒç”¨DisposableBeançš„destroyæ–¹æ³•ï¼Œ
+	* ç„¶ååœ¨è°ƒç”¨destroy-methodä¸­æŒ‡å®šçš„æ–¹æ³•ã€‚
 	*/
 	
 	private String name;
@@ -40,7 +40,7 @@ public class Person implements BeanFactoryAware, BeanNameAware,
 	private String beanName;
 	
 	public Person() {
-	System.out.println("person1  ¡¾¹¹ÔìÆ÷¡¿µ÷ÓÃPersonµÄ¹¹ÔìÆ÷ÊµÀı»¯ Person().involke()");
+	System.out.println("person1  ã€æ„é€ å™¨ã€‘è°ƒç”¨Personçš„æ„é€ å™¨å®ä¾‹åŒ– Person().involke()");
 	}
 	
 	public String getName() {
@@ -48,7 +48,7 @@ public class Person implements BeanFactoryAware, BeanNameAware,
 	}
 	
 	public void setName(String name) {
-	System.out.println("person1  ¡¾×¢ÈëÊôĞÔ¡¿×¢ÈëÊôĞÔname,---name="+name);
+	System.out.println("person1  ã€æ³¨å…¥å±æ€§ã€‘æ³¨å…¥å±æ€§name,---name="+name);
 	this.name = name;
 	}
 	
@@ -58,44 +58,44 @@ public class Person implements BeanFactoryAware, BeanNameAware,
 	}
 	
 	public void destroy() throws Exception {
-	System.out.println("person1  ¡¾DiposibleBean½Ó¿Ú¡¿µ÷ÓÃ" +
+	System.out.println("person1  ã€DiposibleBeanæ¥å£ã€‘è°ƒç”¨" +
 	        "DiposibleBean.destory()");
 	}
 	
 	public void afterPropertiesSet() throws Exception {
-	System.out.println("person1  ¡¾InitializingBean½Ó¿Ú¡¿µ÷ÓÃ" +
+	System.out.println("person1  ã€InitializingBeanæ¥å£ã€‘è°ƒç”¨" +
 	        "InitializingBean.afterPropertiesSet()");
 	}
 	
 	public void setBeanName(String beanName) {
-	System.out.println("person1  ¡¾BeanNameAware½Ó¿Ú¡¿µ÷ÓÃ" +
+	System.out.println("person1  ã€BeanNameAwareæ¥å£ã€‘è°ƒç”¨" +
 	        "BeanNameAware.setBeanName()---beanName="+beanName);
 	this.beanName = beanName;
 	}
 	
 	public void setBeanFactory(BeanFactory arg0) throws BeansException {
-	System.out.println("person1  ¡¾BeanFactoryAware½Ó¿Ú¡¿µ÷ÓÃ" +
+	System.out.println("person1  ã€BeanFactoryAwareæ¥å£ã€‘è°ƒç”¨" +
 	        "BeanFactoryAware.setBeanFactory()");
 	this.beanFactory = arg0;
 	}
 	
 	
-	// Í¨¹ı<bean>µÄinit-methodÊôĞÔÖ¸¶¨µÄ³õÊ¼»¯·½·¨
+	// é€šè¿‡<bean>çš„init-methodå±æ€§æŒ‡å®šçš„åˆå§‹åŒ–æ–¹æ³•
 	public void myInit() {
-	System.out.println("person1  ¡¾init-method¡¿µ÷ÓÃ" +
-	        "<bean>µÄinit-methodÊôĞÔÖ¸¶¨µÄ³õÊ¼»¯·½·¨");
+	System.out.println("person1  ã€init-methodã€‘è°ƒç”¨" +
+	        "<bean>çš„init-methodå±æ€§æŒ‡å®šçš„åˆå§‹åŒ–æ–¹æ³•");
 	}
 	
-	// Í¨¹ı<bean>µÄdestroy-methodÊôĞÔÖ¸¶¨µÄ³õÊ¼»¯·½·¨
+	// é€šè¿‡<bean>çš„destroy-methodå±æ€§æŒ‡å®šçš„åˆå§‹åŒ–æ–¹æ³•
 	public void myDestory() {
 		System.out.println("person1  beanName="+this.beanName);
-	System.out.println("person1  ¡¾destroy-method¡¿µ÷ÓÃ" +
-	        "<bean>µÄdestroy-methodÊôĞÔÖ¸¶¨µÄ³õÊ¼»¯·½·¨");
+	System.out.println("person1  ã€destroy-methodã€‘è°ƒç”¨" +
+	        "<bean>çš„destroy-methodå±æ€§æŒ‡å®šçš„åˆå§‹åŒ–æ–¹æ³•");
 	}
 
 	public void setApplicationContext(ApplicationContext applicationContext)
 			throws BeansException {
-		System.out.println("person1  setApplicationContext()±»µ÷ÓÃ");
+		System.out.println("person1  setApplicationContext()è¢«è°ƒç”¨");
 		
 	}
 	

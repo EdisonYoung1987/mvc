@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * ¸øÄãÒ»¸ö×Ö·û´®£¬ÕÒ³ö×î³¤µÄÃ»ÓĞÖØ¸´×Ö·ûµÄ×Ó×Ö·û´®µÄ³¤¶È*/
+ * ç»™ä½ ä¸€ä¸ªå­—ç¬¦ä¸²ï¼Œæ‰¾å‡ºæœ€é•¿çš„æ²¡æœ‰é‡å¤å­—ç¬¦çš„å­å­—ç¬¦ä¸²çš„é•¿åº¦*/
 public class SubStringNoRepeat {
 	private static int max=0;
 	private static String result=null;
@@ -26,18 +26,18 @@ public class SubStringNoRepeat {
 		}
 		
 		if(max>inStr.length()){
-			System.out.println(" ±ÈmaxĞ¡£¬Ö±½ÓÍË³ö");
+			System.out.println(" æ¯”maxå°ï¼Œç›´æ¥é€€å‡º");
 			return;
 		}
 		System.out.println();
 		
-		//ÕÒµ½ÖØ¸´´ÎÊı×î¶àµÄ×Ö·û
+		//æ‰¾åˆ°é‡å¤æ¬¡æ•°æœ€å¤šçš„å­—ç¬¦
 		Character cha=getMostChar(inStr, start, end);
-		if(cha==null){//ËµÃ÷ÊÇ²»ÖØ¸´×Ö·û´®£¬Ö±½Ó·µ»Ø
+		if(cha==null){//è¯´æ˜æ˜¯ä¸é‡å¤å­—ç¬¦ä¸²ï¼Œç›´æ¥è¿”å›
 			return;
 		}
 		
-		int pos1=-1,pos2=-1,pos3=-1;//¸ù¾İ³öÏÖ´ÎÊı×î¶àµÄ×Ö·û²ğ·Ö×Ó×Ö·û´®½øĞĞ´¦Àí
+		int pos1=-1,pos2=-1,pos3=-1;//æ ¹æ®å‡ºç°æ¬¡æ•°æœ€å¤šçš„å­—ç¬¦æ‹†åˆ†å­å­—ç¬¦ä¸²è¿›è¡Œå¤„ç†
 		for(int i=0;i<inStr.length();i++){
 			if(inStr.charAt(i)==cha){
 				if(i==inStr.length()-1){
@@ -45,16 +45,16 @@ public class SubStringNoRepeat {
 						getSubString(inStr.substring(pos2+1, inStr.length()), pos2+1, pos1,lev+1); 
 					}
 				}
-				if(pos1==-1){//µÚÒ»´ÎÕÒµ½
+				if(pos1==-1){//ç¬¬ä¸€æ¬¡æ‰¾åˆ°
 					pos1=i;
 					
-					int j=i+1;//ÕÒµ½Á¬Ğø³öÏÖµÄÍ¬Ò»¸ö×Ö·û
+					int j=i+1;//æ‰¾åˆ°è¿ç»­å‡ºç°çš„åŒä¸€ä¸ªå­—ç¬¦
 					for(;j<inStr.length();j++){
 						if(inStr.charAt(j)!=cha){
 							break;
 						}
 					}
-					if(j-1>i){//ÓĞÁ¬Ğø³öÏÖ
+					if(j-1>i){//æœ‰è¿ç»­å‡ºç°
 						getSubString(inStr.substring(0, pos1+1), 0, pos1,lev+1); 
 						pos1=0;
 						inStr=inStr.substring(j-1);
@@ -62,25 +62,25 @@ public class SubStringNoRepeat {
 					
 					continue;
 				}
-				if(pos2==-1){//ÕâÀï¾ÍÒª²ğ·Ö×Ó×Ö·û´®ÁË
-					if(i-pos1==1){//½ô°¤×ÅµÄÁ½¸ö
+				if(pos2==-1){//è¿™é‡Œå°±è¦æ‹†åˆ†å­å­—ç¬¦ä¸²äº†
+					if(i-pos1==1){//ç´§æŒ¨ç€çš„ä¸¤ä¸ª
 						getSubString(inStr.substring(0, pos1+1), 0, i-1,lev+1); 
 						pos1=i;
 						continue;
 					}
 					pos2=i;
-					getSubString(inStr.substring(pos1, pos2), pos1, pos2,lev+1);        //abca£¬Ôò´¦Àíabc
-					getSubString(inStr.substring(pos1+1, pos2+1), pos1+1, pos2+1,lev+1);//abca£¬Ôò´¦Àíbca
-					pos1=i; //ÆğÊ¼Î»ÖÃÖ¸Ïòµ±Ç°½áÊøÎ»ÖÃ
+					getSubString(inStr.substring(pos1, pos2), pos1, pos2,lev+1);        //abcaï¼Œåˆ™å¤„ç†abc
+					getSubString(inStr.substring(pos1+1, pos2+1), pos1+1, pos2+1,lev+1);//abcaï¼Œåˆ™å¤„ç†bca
+					pos1=i; //èµ·å§‹ä½ç½®æŒ‡å‘å½“å‰ç»“æŸä½ç½®
 					pos2=-1;
 				}
 			}
-			if(pos1==inStr.length()-1){//¸Ã×ÖÄ¸×îºóÒ»´Î³öÏÖÔÚÄ©Î²
+			if(pos1==inStr.length()-1){//è¯¥å­—æ¯æœ€åä¸€æ¬¡å‡ºç°åœ¨æœ«å°¾
 				getSubString(inStr.substring(pos1), pos1, inStr.length()-1,lev+1); 
 				return;
 			}
 			
-			if(i==inStr.length()-1){//¸Ã×ÖÄ¸×îºóÒ»´Î³öÏÖ²»ÔÚÄ©Î²
+			if(i==inStr.length()-1){//è¯¥å­—æ¯æœ€åä¸€æ¬¡å‡ºç°ä¸åœ¨æœ«å°¾
 				getSubString(inStr.substring(pos1), pos1, inStr.length()-1,lev+1); 
 			}
 		}
@@ -99,10 +99,10 @@ public class SubStringNoRepeat {
 			}
 		}
 		
-		//ÕÒ³ö³öÏÖ´ÎÊı×î¶àµÄ×Ö·û
+		//æ‰¾å‡ºå‡ºç°æ¬¡æ•°æœ€å¤šçš„å­—ç¬¦
 		Set<Character> keyset=map.keySet();
-		int most=0;   //³öÏÖ×î¶àµÄ×Ö·ûµÄ´ÎÊı
-		Character cha = null;//³öÏÖ´ÎÊı×î¶àµÄ×Ö·û
+		int most=0;   //å‡ºç°æœ€å¤šçš„å­—ç¬¦çš„æ¬¡æ•°
+		Character cha = null;//å‡ºç°æ¬¡æ•°æœ€å¤šçš„å­—ç¬¦
 		for(Character ch:keyset){
 			if(map.get(ch)>most){
 				most=map.get(ch);
@@ -111,13 +111,13 @@ public class SubStringNoRepeat {
 		}
 		System.out.println("most="+most+",cha="+cha);
 
-		if(most==1) {//Õâ¸ö×Ö·û´®Ã»ÓĞÖØ¸´µÄ
+		if(most==1) {//è¿™ä¸ªå­—ç¬¦ä¸²æ²¡æœ‰é‡å¤çš„
 			if(length>=max){
 				max=length;
 				result=inStr.substring(start, end);
 			}
 			System.out.println("max="+max);
-			return null; //¼ÈÈ»Ã»ÓĞÖØ¸´µÄ£¬¾Í²»ÓÃÔÙ´¦Àí
+			return null; //æ—¢ç„¶æ²¡æœ‰é‡å¤çš„ï¼Œå°±ä¸ç”¨å†å¤„ç†
 		}
 		return cha;
 	}

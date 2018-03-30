@@ -2,7 +2,7 @@ package com.edison.testJunit.oth.springAop.noAop;
 
 
 /**
- * ÔöÇ¿Àà£¬¹¦ÄÜÊÇ¼à¿Ø·½·¨Ö´ÐÐÊ±¼ä*/
+ * å¢žå¼ºç±»ï¼ŒåŠŸèƒ½æ˜¯ç›‘æŽ§æ–¹æ³•æ‰§è¡Œæ—¶é—´*/
 public class MethodPerformance {
 	private long begin,end;
 	private String serviceMethod;
@@ -14,7 +14,7 @@ public class MethodPerformance {
 	
 	public void printPerformance(){
 		end=System.currentTimeMillis();
-		System.out.println(serviceMethod+"Ö´ÐÐÊ±³¤£º"+(end-begin));
+		System.out.println(serviceMethod+"æ‰§è¡Œæ—¶é•¿ï¼š"+(end-begin));
 	}
 
 }

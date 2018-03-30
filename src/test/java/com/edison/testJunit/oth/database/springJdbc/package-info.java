@@ -1,7 +1,7 @@
 /**
- * Ê¹ÓÃspring JDBC²Ù×÷Êı¾İ¿â
- * Í³Ò»ÁËÒì³£ÌåÏµ
- * Ìá¹©ÁËsqlSessionTemplateÄ£°å
+ * ä½¿ç”¨spring JDBCæ“ä½œæ•°æ®åº“
+ * ç»Ÿä¸€äº†å¼‚å¸¸ä½“ç³»
+ * æä¾›äº†sqlSessionTemplateæ¨¡æ¿
  */
 /**
  * @author Edison

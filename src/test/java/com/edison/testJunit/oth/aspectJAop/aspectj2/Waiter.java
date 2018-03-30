@@ -4,11 +4,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Waiter {
-	public void greeTo(String custmor){//希望增加 前置增强 
+	public void greeTo(String custmor){//甯屾湜澧炲姞 鍓嶇疆澧炲己 
 		System.out.println("	Waiter.greeTo("+custmor+")..");
 	}
 	
-	public void serveTo(String custmor){ //希望增加环绕增强 
+	public void serveTo(String custmor){ //甯屾湜澧炲姞鐜粫澧炲己 
 		System.out.println("	Waiter.serveTo("+custmor+")..");
 	}
 }

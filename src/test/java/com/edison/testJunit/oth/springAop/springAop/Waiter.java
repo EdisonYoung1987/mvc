@@ -2,10 +2,10 @@ package com.edison.testJunit.oth.springAop.springAop;
 
 public class Waiter {
 	public void greeTo(String custmor){
-		System.out.println("ÄúºÃ£¬"+custmor+",Ïë³ÔÉ¶×Ó£¿¿¾Óã»¹ÊÇµã²Ë£¿");
+		System.out.println("æ‚¨å¥½ï¼Œ"+custmor+",æƒ³åƒå•¥å­ï¼Ÿçƒ¤é±¼è¿˜æ˜¯ç‚¹èœï¼Ÿ");
 	}
 	
 	public void serveTo(String custmor){
-		System.out.println("ÄãµÄ²ËÆëÁË");
+		System.out.println("ä½ çš„èœé½äº†");
 	}
 }

@@ -3,7 +3,7 @@ package com.edison.testJunit.oth.springAop.springAop2;
 import org.springframework.stereotype.Component;
 
 @Component
-public class NoAop {//不希望被加强，名字不是er结尾
+public class NoAop {//涓嶅笇鏈涜鍔犲己锛屽悕瀛椾笉鏄痚r缁撳熬
 	public void greeTo(String custmor){
 		System.out.println("	NoAop.greeTo("+custmor+")..");
 	}

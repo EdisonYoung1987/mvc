@@ -2,7 +2,7 @@ package com.edison.testJunit.oth.springAop.springAop;
 
 import java.lang.reflect.Method;
 
-import org.aopalliance.intercept.MethodInterceptor; //»·ÈÆÔöÇ¿µÃÓÃÕâ¸ö
+import org.aopalliance.intercept.MethodInterceptor; //ç¯ç»•å¢å¼ºå¾—ç”¨è¿™ä¸ª
 import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.aop.AfterReturningAdvice;
 import org.springframework.aop.MethodBeforeAdvice;
@@ -10,58 +10,58 @@ import org.springframework.aop.ThrowsAdvice;
 
 public class WaiterAdvice implements MethodBeforeAdvice,AfterReturningAdvice,
 	MethodInterceptor,ThrowsAdvice{
-	//method ±»ÔöÇ¿µÄ·½·¨ args- ·½·¨´«ÈëµÄ²ÎÊı arg2 -±»´úÀí¶ÔÏó
+	//method è¢«å¢å¼ºçš„æ–¹æ³• args- æ–¹æ³•ä¼ å…¥çš„å‚æ•° arg2 -è¢«ä»£ç†å¯¹è±¡
 	public void before(Method method, Object[] args, Object target)
 			throws Throwable {
 		if(method.getName().matches("greeTo")){
-			System.out.println("before¡¾ÔöÇ¿¡¿  »¶Ó­¹âÁÙ");
+			System.out.println("beforeã€å¢å¼ºã€‘  æ¬¢è¿å…‰ä¸´");
 		}else{
-			System.out.println("before ²»ÔöÇ¿·½·¨"+method.getName());
+			System.out.println("before ä¸å¢å¼ºæ–¹æ³•"+method.getName());
 		}
 	}
 
 	public void afterReturning(Object returnValue, Method method,
 			Object[] args, Object target) throws Throwable {
 		if(method.getName().matches("serveTo")){
-			System.out.println("afterReturning¡¾ÔöÇ¿¡¿  ÇëÂıÓÃ");
+			System.out.println("afterReturningã€å¢å¼ºã€‘  è¯·æ…¢ç”¨");
 		}else{
-			System.out.println("afterReturning ²»ÔöÇ¿·½·¨"+method.getName());
+			System.out.println("afterReturning ä¸å¢å¼ºæ–¹æ³•"+method.getName());
 		}
 		
 	}
 
 	/*public Object intercept(Object target, Method method, Object[] args,
-			MethodProxy proxy) throws Throwable {//Õâ¸öºÃÏñ²»ĞĞ°¡£¬ÕâÊÇÊµÏÖCGlib¶¯Ì¬´úÀíµÄ¶«Î÷£¬²»ÊÇ»·ÈÆÔöÇ¿
+			MethodProxy proxy) throws Throwable {//è¿™ä¸ªå¥½åƒä¸è¡Œå•Šï¼Œè¿™æ˜¯å®ç°CGlibåŠ¨æ€ä»£ç†çš„ä¸œè¥¿ï¼Œä¸æ˜¯ç¯ç»•å¢å¼º
 		// TODO Auto-generated method stub
-		System.out.println("·½·¨"+method.getName()+"±»µ÷ÓÃ"+System.currentTimeMillis());
+		System.out.println("æ–¹æ³•"+method.getName()+"è¢«è°ƒç”¨"+System.currentTimeMillis());
 		return null;
 	}*/
 
-	public Object invoke(MethodInvocation invocation) throws Throwable {//»·ÈÆÔöÇ¿
+	public Object invoke(MethodInvocation invocation) throws Throwable {//ç¯ç»•å¢å¼º
 		String methodName=invocation.getMethod().getName();
 		Method methods=invocation.getMethod();
-		Object[] args=invocation.getArguments(); //»ñÈ¡Èë²ÎÁĞ±í
+		Object[] args=invocation.getArguments(); //è·å–å…¥å‚åˆ—è¡¨
 		String custmor=(String)args[0];
 		
 		if(methodName.equals("greeTo")){
-			System.out.println("around Ó­½Ó¿ÍÈË£º"+custmor);
-			invocation.proceed(); //Ö´ĞĞÔ­Ó³Éä·½·¨
-			System.out.println("around Ó­½Ó¿ÍÈË£º"+custmor);
+			System.out.println("around è¿æ¥å®¢äººï¼š"+custmor);
+			invocation.proceed(); //æ‰§è¡ŒåŸæ˜ å°„æ–¹æ³•
+			System.out.println("around è¿æ¥å®¢äººï¼š"+custmor);
 
 		}else{
-			System.out.println("around ·şÎñ¿ÍÈË£º"+custmor);
-			invocation.proceed(); //Ö´ĞĞÔ­Ó³Éä·½·¨
-			System.out.println("around ·şÎñ¿ÍÈË£º"+custmor);
+			System.out.println("around æœåŠ¡å®¢äººï¼š"+custmor);
+			invocation.proceed(); //æ‰§è¡ŒåŸæ˜ å°„æ–¹æ³•
+			System.out.println("around æœåŠ¡å®¢äººï¼š"+custmor);
 
 		}
 		
 		return null;
 	}
 	
-	//ThrowsAdviceÊÇÒ»¸ö±êÇ©½Ó¿Ú£¬Ã»ÓĞ·½·¨ºÍÊôĞÔµÄ½Ó¿Ú£¬²»¶ÔÊµÏÖÀàÓĞÈÎºÎÓïÒåÉÏµÄÒªÇó£¬Ö»ÊÇ±êÊ¶Ä³Ò»ÌØ¶¨Àà
-	//ÆäÖĞÃû×ÖÖ»ÄÜÊÇafterThrowing£¬Ç°Èı¸ö²ÎÊı¿ÉÑ¡£¬²»¹ıÖ»ÄÜÍ¬Ê±´æÔÚ»òÍ¬Ê±²»´æÔÚ£¬µÚÈı¸öÖ»ÒªÊÇThrowable»òÆä
-	//×ÓÀà¼´¿É
+	//ThrowsAdviceæ˜¯ä¸€ä¸ªæ ‡ç­¾æ¥å£ï¼Œæ²¡æœ‰æ–¹æ³•å’Œå±æ€§çš„æ¥å£ï¼Œä¸å¯¹å®ç°ç±»æœ‰ä»»ä½•è¯­ä¹‰ä¸Šçš„è¦æ±‚ï¼Œåªæ˜¯æ ‡è¯†æŸä¸€ç‰¹å®šç±»
+	//å…¶ä¸­åå­—åªèƒ½æ˜¯afterThrowingï¼Œå‰ä¸‰ä¸ªå‚æ•°å¯é€‰ï¼Œä¸è¿‡åªèƒ½åŒæ—¶å­˜åœ¨æˆ–åŒæ—¶ä¸å­˜åœ¨ï¼Œç¬¬ä¸‰ä¸ªåªè¦æ˜¯Throwableæˆ–å…¶
+	//å­ç±»å³å¯
 	public void afterThrowing(Method method,Object[] args,Object target,Throwable throwable){
-		System.out.println("Å×Òì³£ÁË");
+		System.out.println("æŠ›å¼‚å¸¸äº†");
 	}
 }

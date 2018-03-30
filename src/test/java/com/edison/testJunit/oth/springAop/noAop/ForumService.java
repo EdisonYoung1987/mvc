@@ -5,7 +5,7 @@ package com.edison.testJunit.oth.springAop.noAop;
 
 /**
  * @author Edison
- * ÂÛÌ³½Ó¿Ú
+ * è®ºå›æ¥å£
  */
 public interface ForumService {
 	public void removeTopic(int topicId);

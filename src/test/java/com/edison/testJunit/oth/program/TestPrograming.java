@@ -5,7 +5,7 @@ import org.junit.Test;
 
 public class TestPrograming {
 		@Test
-//		@Ignore //这个表示不执行该测试方法
+//		@Ignore //杩欎釜琛ㄧず涓嶆墽琛岃娴嬭瘯鏂规硶
 		public void testSubStringNoRepeat(){
 			String ins="abcdefdfabcdabbbb";
 			SubStringNoRepeat.getSubString(ins, 0, ins.length()-1,0);

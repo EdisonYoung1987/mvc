@@ -7,12 +7,12 @@ import com.edison.testJunit.oth.springAop.noAop.ForumService;
 public class testJdkAop {
 
 	public static void main(String[] args) {
-		ForumService forum=new  ForumServiceImpl();  //Ä¿±êÀà
+		ForumService forum=new  ForumServiceImpl();  //ç›®æ ‡ç±»
 
 		PerformanceHandler handler=new PerformanceHandler(forum); //handler
 		ForumService proxy=(ForumService)Proxy.newProxyInstance(forum.getClass().getClassLoader()
-				, forum.getClass().getInterfaces(), handler); //Êµ¼ÊÉÏ forumµÄ´úÀíÀà»¹ÊÇForumServiceÀàĞÍµÄ
-		//´úÀíÀàÉú³ÉÒÔºó£¬Í¨¹ı´úÀíÀàÈ¥Ö´ĞĞ·½·¨
+				, forum.getClass().getInterfaces(), handler); //å®é™…ä¸Š forumçš„ä»£ç†ç±»è¿˜æ˜¯ForumServiceç±»å‹çš„
+		//ä»£ç†ç±»ç”Ÿæˆä»¥åï¼Œé€šè¿‡ä»£ç†ç±»å»æ‰§è¡Œæ–¹æ³•
 		proxy.removeForum(10);
 		proxy.removeTopic(11);
 	}

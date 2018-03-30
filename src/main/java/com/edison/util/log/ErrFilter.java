@@ -12,11 +12,11 @@ public class ErrFilter extends Filter<ILoggingEvent>
 	@Override
 	public FilterReply decide(ILoggingEvent event)
 	{
-		//²»ÊÇERROR¼¶±ğ£¬Ö±½ÓÅ×Æú
+		//ä¸æ˜¯ERRORçº§åˆ«ï¼Œç›´æ¥æŠ›å¼ƒ
 		if( !event.getLevel().equals(Level.ERROR) )
 			return FilterReply.DENY;
 		
-		//²¶»ñÒì³£ºóÊä³öµ½¶ÑÕ»ÈÕÖ¾£¬·ñÔòÊä³öµ½´íÎóÈÕÖ¾
+		//æ•è·å¼‚å¸¸åè¾“å‡ºåˆ°å †æ ˆæ—¥å¿—ï¼Œå¦åˆ™è¾“å‡ºåˆ°é”™è¯¯æ—¥å¿—
 		IThrowableProxy itp = event.getThrowableProxy();
 		if(itp==null)
 			return FilterReply.ACCEPT;

@@ -1,5 +1,5 @@
 /**
- * ÊÔÊÔJunit+Spring-test¿ò¼ÜµÄ×éºÏ
+ * è¯•è¯•Junit+Spring-testæ¡†æ¶çš„ç»„åˆ
  */
 /**
  * @author Edison

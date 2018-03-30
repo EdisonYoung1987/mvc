@@ -9,54 +9,54 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Aspect
-public class AspectJAdvisor implements Ordered{//@Component×¢½â±ğÍüÁË
-	//Õâ¸öÊÇ¶¨ÒåÇĞÃæÀàµÄË³ĞòµÄ£¬¼ÙÉèÓĞ¶à¸öÇĞÃæÀà£¬Èç¹ûÇĞµãÓĞ½»²æ²¿·Ö£¬ÄÇÃ´orderË³ĞòĞ¡µÄÏÈÖ¯Èë¡£
+public class AspectJAdvisor implements Ordered{//@Componentæ³¨è§£åˆ«å¿˜äº†
+	//è¿™ä¸ªæ˜¯å®šä¹‰åˆ‡é¢ç±»çš„é¡ºåºçš„ï¼Œå‡è®¾æœ‰å¤šä¸ªåˆ‡é¢ç±»ï¼Œå¦‚æœåˆ‡ç‚¹æœ‰äº¤å‰éƒ¨åˆ†ï¼Œé‚£ä¹ˆorderé¡ºåºå°çš„å…ˆç»‡å…¥ã€‚
 	public int getOrder() {
 		return 0;
 	}
 	
-	//Before±íÊ¾·½Î»£¬executionÊÇAspectJµÄÇĞµã±í´ïÊ½µÄº¯Êı£¬
-	//±íÊ¾Ä¿±êÀàÖ´ĞĞÄ³·½·¨,Ö»Æ¥Åä·½·¨Ãû
+	//Beforeè¡¨ç¤ºæ–¹ä½ï¼Œexecutionæ˜¯AspectJçš„åˆ‡ç‚¹è¡¨è¾¾å¼çš„å‡½æ•°ï¼Œ
+	//è¡¨ç¤ºç›®æ ‡ç±»æ‰§è¡ŒæŸæ–¹æ³•,åªåŒ¹é…æ–¹æ³•å
 	@Before(value="execution(* com.edison.testJunit.oth.aspectJAop.aspectj2.Waiter.greeTo(..))") 
 	public void beforeGreeting(){
-		System.out.println("Ç°ÖÃÔöÇ¿ WaiterÀàµÄgreeTo·½·¨");
+		System.out.println("å‰ç½®å¢å¼º Waiterç±»çš„greeToæ–¹æ³•");
 	}
 	
-	//ÕâÀïÇĞµã±í´ïÊ½ÓÃµÄ@annotation£¬±íÊ¾Ö»ÓĞ·½·¨Ê¹ÓÃÁË¸Ã×¢½âµÄ¾Í½øĞĞ»·ÈÆÔöÇ¿
+	//è¿™é‡Œåˆ‡ç‚¹è¡¨è¾¾å¼ç”¨çš„@annotationï¼Œè¡¨ç¤ºåªæœ‰æ–¹æ³•ä½¿ç”¨äº†è¯¥æ³¨è§£çš„å°±è¿›è¡Œç¯ç»•å¢å¼º
 	@Around(value="@annotation(com.edison.testJunit.oth.aspectJAop.aspectj2.MyAnnotation)")
-	public void aroundServing(ProceedingJoinPoint pjp) throws Throwable{ //Õâ¸ö·½·¨±ØĞëÒªÓĞpjp´«Èë²¢Ö´ĞĞ£¬
-																		//·ñÔòÔ­·½·¨Ã»ÓĞÖ´ĞĞ¡£
-		System.out.println("»·ÈÆÔöÇ¿Ç°´¦Àí SellerÀàµÄserveTo·½·¨");
+	public void aroundServing(ProceedingJoinPoint pjp) throws Throwable{ //è¿™ä¸ªæ–¹æ³•å¿…é¡»è¦æœ‰pjpä¼ å…¥å¹¶æ‰§è¡Œï¼Œ
+																		//å¦åˆ™åŸæ–¹æ³•æ²¡æœ‰æ‰§è¡Œã€‚
+		System.out.println("ç¯ç»•å¢å¼ºå‰å¤„ç† Sellerç±»çš„serveToæ–¹æ³•");
 		pjp.proceed();
-		System.out.println("»·ÈÆÔöÇ¿ºó´¦Àí SellerÀàµÄserveTo·½·¨");
+		System.out.println("ç¯ç»•å¢å¼ºåå¤„ç† Sellerç±»çš„serveToæ–¹æ³•");
 	}
 	
-	//args()ÊÇAspectJµÄÇĞµã±í´ïÊ½µÄº¯Êı£¬Ä¿±ê·½·¨Ö»ÓĞÒ»¸öWaiterÈë²Î
+	//args()æ˜¯AspectJçš„åˆ‡ç‚¹è¡¨è¾¾å¼çš„å‡½æ•°ï¼Œç›®æ ‡æ–¹æ³•åªæœ‰ä¸€ä¸ªWaiterå…¥å‚
 	@Before(value="args(com.edison.testJunit.oth.aspectJAop.aspectj2.Waiter)") 
 	public void beforeGuideTo(){
-		System.out.println("Ç°ÖÃÔöÇ¿ ËùÓĞÀàµÄxxxx(Waiter)·½·¨");
+		System.out.println("å‰ç½®å¢å¼º æ‰€æœ‰ç±»çš„xxxx(Waiter)æ–¹æ³•");
 	}
 	
 	//@Around(value="@args(com.edison.testJunit.oth.aspectJAop.aspectj2.MyAnnotation)")
-	//Õâ¸ö¾Í±íÊ¾Èç¹ûÄ³·½·¨µÄÈë²ÎÖ»ÓĞÒ»¸öÇÒ±ê×¢ÁË@MyAnnotation×¢½â£¬¾Í»á±»ÔöÇ¿£¬´úÂë¾Í²»ÉÏÁË
+	//è¿™ä¸ªå°±è¡¨ç¤ºå¦‚æœæŸæ–¹æ³•çš„å…¥å‚åªæœ‰ä¸€ä¸ªä¸”æ ‡æ³¨äº†@MyAnnotationæ³¨è§£ï¼Œå°±ä¼šè¢«å¢å¼ºï¼Œä»£ç å°±ä¸ä¸Šäº†
 	
 	
 	
-	//¸´ºÏÇĞµã¶¨Òå-ÓëÔËËã && 
-	//withinÖ¸¶¨¸ÃÂ·¾¶ÏÂÒÔWaiter½áÎ²µÄÀà£¬
-	//executionÖ¸¶¨¸ÃÀàÖĞÃû×ÖÎªserveToµÄ·½·¨
+	//å¤åˆåˆ‡ç‚¹å®šä¹‰-ä¸è¿ç®— && 
+	//withinæŒ‡å®šè¯¥è·¯å¾„ä¸‹ä»¥Waiterç»“å°¾çš„ç±»ï¼Œ
+	//executionæŒ‡å®šè¯¥ç±»ä¸­åå­—ä¸ºserveToçš„æ–¹æ³•
 	@Before(value="within(com.edison.testJunit.oth.aspectJAop.aspectj2.*Waiter) "
 			+ "&& execution(* serveTo(..))") 
 	public void beforeServing(){
-		System.out.println("Ç°ÖÃÔöÇ¿ WaiterÀàµÄserveTo·½·¨");
+		System.out.println("å‰ç½®å¢å¼º Waiterç±»çš„serveToæ–¹æ³•");
 	}
 
-	//target(com.edison.testJunit.oth.aspectJAop.aspectj2.Waiter)ÔòÊÇÆ¥ÅäWaiterÀà¼°Æä×ÓËïÀà
+	//target(com.edison.testJunit.oth.aspectJAop.aspectj2.Waiter)åˆ™æ˜¯åŒ¹é…Waiterç±»åŠå…¶å­å­™ç±»
 	
-	//°ó¶¨Á¬½Óµã²ÎÊı
+	//ç»‘å®šè¿æ¥ç‚¹å‚æ•°
 	@Before(value="execution(* com.edison.testJunit.oth.aspectJAop.aspectj2.Waiter.greeTo(..))"
 			+ " && args(name)") 
-	public void beforeGreeting2(String name){//Ç°Ãæargs(name)µÄÀàĞÍ¾ÍÊÇjava.lang.StringÁË
-		System.out.println("Ç°ÖÃÔöÇ¿ WaiterÀàµÄgreeTo·½·¨£¬Í¬Ê±»ñÈ¡µ½ÇĞµãµÄÈë²Î£º"+name);
+	public void beforeGreeting2(String name){//å‰é¢args(name)çš„ç±»å‹å°±æ˜¯java.lang.Stringäº†
+		System.out.println("å‰ç½®å¢å¼º Waiterç±»çš„greeToæ–¹æ³•ï¼ŒåŒæ—¶è·å–åˆ°åˆ‡ç‚¹çš„å…¥å‚ï¼š"+name);
 	}
 }

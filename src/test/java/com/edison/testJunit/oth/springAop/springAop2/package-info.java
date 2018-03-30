@@ -1,10 +1,10 @@
 /**
- * com.edison.testJunit.oth.springAop.springAopÕâ¸ö°üÖ÷ÒªÊÇÍ¨¹ýProxyFactory·½Ê½Íê³ÉÇÐÃæ¶¨Òå£¬
- * Ê¹ÓÃProxyFactoryµÄ»°£¬Ã¿¸öÐèÒª±»´úÀíµÄÀà¶¼Òª¶¨ÒåÒ»¸ö´úÀíÀà£¬
+ * com.edison.testJunit.oth.springAop.springAopè¿™ä¸ªåŒ…ä¸»è¦æ˜¯é€šè¿‡ProxyFactoryæ–¹å¼å®Œæˆåˆ‡é¢å®šä¹‰ï¼Œ
+ * ä½¿ç”¨ProxyFactoryçš„è¯ï¼Œæ¯ä¸ªéœ€è¦è¢«ä»£ç†çš„ç±»éƒ½è¦å®šä¹‰ä¸€ä¸ªä»£ç†ç±»ï¼Œ
  * <!CDATA[<bean id="waiter" class="org.springframework.aop.framework.ProxyFactoryBean">
     	<property name="interceptorNames" value="waiterAdvice"/>
     	<property name="target"  ref="target"/>
-    </bean>]>,Õâ¸öwaiter¾ÍÊÇtargetµÄ´úÀíÀà£¬ÕâÖÖÅäÖÃºÜ²»·½±ã£¬Õâ¸öspringAop2ÏÂÃæ¾ÍÊÇÊ¹ÓÃspringµÄÁ½¸öÀàÍ¨Åäaop
+    </bean>]>,è¿™ä¸ªwaiterå°±æ˜¯targetçš„ä»£ç†ç±»ï¼Œè¿™ç§é…ç½®å¾ˆä¸æ–¹ä¾¿ï¼Œè¿™ä¸ªspringAop2ä¸‹é¢å°±æ˜¯ä½¿ç”¨springçš„ä¸¤ä¸ªç±»é€šé…aop
  */
 /**
  * @author Edison

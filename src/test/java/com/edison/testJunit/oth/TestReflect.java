@@ -9,25 +9,25 @@ import org.junit.Test;
 import com.edison.db.entity.User;
 
 /**
- * ÓÃÓÚ²âÊÔ·´Éä*/
+ * ç”¨äºæµ‹è¯•åå°„*/
 public class TestReflect {
 
 	@Test
 	public void testReflect() {
 		try{
-			ClassLoader cloader=Thread.currentThread().getContextClassLoader(); //1.»ñÈ¡µ±Ç°Ïß³ÌµÄÀà¼ÓÔØÆ÷
-			Class clazz=cloader.loadClass("com.edison.db.entity.User");         //2.¼ÓÔØÖ¸¶¨Â·¾¶µÄÀà
+			ClassLoader cloader=Thread.currentThread().getContextClassLoader(); //1.è·å–å½“å‰çº¿ç¨‹çš„ç±»åŠ è½½å™¨
+			Class clazz=cloader.loadClass("com.edison.db.entity.User");         //2.åŠ è½½æŒ‡å®šè·¯å¾„çš„ç±»
 			
 			Constructor cons=clazz.getDeclaredConstructor((Class[])null);
-			Object object=cons.newInstance();                                 //newInstanceÉú³ÉÊµÀı
+			Object object=cons.newInstance();                                 //newInstanceç”Ÿæˆå®ä¾‹
 
-			Field field=clazz.getDeclaredField("userName") ;                    //3.»ñÈ¡¶ÔÏóÊôĞÔ
-			field.setAccessible(true);                                          //4.privateÊôĞÔĞèÒª¸³ÓèsetÈ¨ÏŞ
-			field.set(object, "ÕÅÈı");                                           	//5.ÉèÖÃÖµ£¬µÚÒ»¸ö²ÎÊıÎªÊôĞÔËùÊô¶ÔÏó
+			Field field=clazz.getDeclaredField("userName") ;                    //3.è·å–å¯¹è±¡å±æ€§
+			field.setAccessible(true);                                          //4.privateå±æ€§éœ€è¦èµ‹äºˆsetæƒé™
+			field.set(object, "å¼ ä¸‰");                                           	//5.è®¾ç½®å€¼ï¼Œç¬¬ä¸€ä¸ªå‚æ•°ä¸ºå±æ€§æ‰€å±å¯¹è±¡
 
 			Method method=clazz.getDeclaredMethod("toString", (Class[])null);
 
-			String res=(String) method.invoke(object,(Object[])null);             //µÚÒ»¸ö²ÎÊıÎªÊôĞÔËùÊô¶ÔÏó
+			String res=(String) method.invoke(object,(Object[])null);             //ç¬¬ä¸€ä¸ªå‚æ•°ä¸ºå±æ€§æ‰€å±å¯¹è±¡
 			System.out.println(res);
 
 		}catch(Exception e){

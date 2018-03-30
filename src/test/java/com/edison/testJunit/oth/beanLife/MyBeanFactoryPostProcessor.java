@@ -8,22 +8,22 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 public class MyBeanFactoryPostProcessor implements BeanFactoryPostProcessor{
 
     /**
-     * BeanFactoryPostProcessor¿ÉÒÔ¶ÔbeanµÄ¶¨Òå£¨ÅäÖÃÔªÊı¾İ£©½øĞĞ´¦Àí¡£
-     * Ò²¾ÍÊÇËµ£¬Spring IoCÈİÆ÷ÔÊĞíBeanFactoryPostProcessor
-     * ÔÚÈİÆ÷Êµ¼ÊÊµÀı»¯ÈÎºÎÆäËüµÄbeanÖ®Ç°¶ÁÈ¡ÅäÖÃÔªÊı¾İ£¬²¢ÓĞ¿ÉÄÜĞŞ¸ÄËü¡£
-     * Èç¹ûÄãÔ¸Òâ£¬Äã¿ÉÒÔÅäÖÃ¶à¸öBeanFactoryPostProcessor¡£
-     * Äã»¹ÄÜÍ¨¹ıÉèÖÃ'order'ÊôĞÔÀ´¿ØÖÆBeanFactoryPostProcessorµÄÖ´ĞĞ´ÎĞò¡£
+     * BeanFactoryPostProcessorå¯ä»¥å¯¹beançš„å®šä¹‰ï¼ˆé…ç½®å…ƒæ•°æ®ï¼‰è¿›è¡Œå¤„ç†ã€‚
+     * ä¹Ÿå°±æ˜¯è¯´ï¼ŒSpring IoCå®¹å™¨å…è®¸BeanFactoryPostProcessor
+     * åœ¨å®¹å™¨å®é™…å®ä¾‹åŒ–ä»»ä½•å…¶å®ƒçš„beanä¹‹å‰è¯»å–é…ç½®å…ƒæ•°æ®ï¼Œå¹¶æœ‰å¯èƒ½ä¿®æ”¹å®ƒã€‚
+     * å¦‚æœä½ æ„¿æ„ï¼Œä½ å¯ä»¥é…ç½®å¤šä¸ªBeanFactoryPostProcessorã€‚
+     * ä½ è¿˜èƒ½é€šè¿‡è®¾ç½®'order'å±æ€§æ¥æ§åˆ¶BeanFactoryPostProcessorçš„æ‰§è¡Œæ¬¡åºã€‚
      * */
 
     public MyBeanFactoryPostProcessor() {
         super();
-        System.out.println("ÕâÊÇBeanFactoryPostProcessorÊµÏÖÀà¹¹ÔìÆ÷£¡£¡");
+        System.out.println("è¿™æ˜¯BeanFactoryPostProcessorå®ç°ç±»æ„é€ å™¨ï¼ï¼");
     }
 
     public void postProcessBeanFactory(ConfigurableListableBeanFactory arg0)
             throws BeansException {
-        System.out.println("BeanFactoryPostProcessorµ÷ÓÃpostProcessBeanFactory·½·¨");
+        System.out.println("BeanFactoryPostProcessorè°ƒç”¨postProcessBeanFactoryæ–¹æ³•");
         BeanDefinition bd = arg0.getBeanDefinition("person2");
-        bd.getPropertyValues().addPropertyValue("name", "ÕÅÈıÈı");
+        bd.getPropertyValues().addPropertyValue("name", "å¼ ä¸‰ä¸‰");
     }
 }

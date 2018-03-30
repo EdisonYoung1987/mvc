@@ -8,14 +8,14 @@ public class testBeanLife {
 
 	public static void main(String[] args) {
         //1.
-		System.out.println("ÏÖÔÚ¿ªÊ¼³õÊ¼»¯IOCÈİÆ÷");
+		System.out.println("ç°åœ¨å¼€å§‹åˆå§‹åŒ–IOCå®¹å™¨");
         ApplicationContext context = 
                 new FileSystemXmlApplicationContext("C:/Users/Edison/git/mvc/src/test/java/com/edison/testJunit/oth/beanLife/lifeContext.xml");
         ApplicationContext context2 = 
-                new ClassPathXmlApplicationContext("springContext.xml"); //¿ÉÒÔ
+                new ClassPathXmlApplicationContext("springContext.xml"); //å¯ä»¥
         context2=new ClassPathXmlApplicationContext("com/edison/testJunit/oth/beanLife/lifeContext.xml");
-        System.out.println("IOCÈİÆ÷³õÊ¼»¯³É¹¦"); 
-        Person person = (Person) context2.getBean("com.edison.testJunit.oth.beanLife.Person"); //xmlÃ»ÓĞÖ¸¶¨id£¬ËùÒÔÊ¹ÓÃÈ«ÏŞ¶¨ÃûÈ¡bean
+        System.out.println("IOCå®¹å™¨åˆå§‹åŒ–æˆåŠŸ"); 
+        Person person = (Person) context2.getBean("com.edison.testJunit.oth.beanLife.Person"); //xmlæ²¡æœ‰æŒ‡å®šidï¼Œæ‰€ä»¥ä½¿ç”¨å…¨é™å®šåå–bean
 		
 		/*//2.
 		  Resource res=new PathMatchingResourcePatternResolver().getResource("file:C:/Users/Edison/git/mvc/src/test/java/com/edison/testJunit/oth/beanLife/lifeContext.xml");
@@ -24,10 +24,10 @@ public class testBeanLife {
 		reader.loadBeanDefinitions(res);
         Person person = (Person) beanFactory.getBean("person1");*/
         
-//        System.out.println("Ê¹ÓÃperson¶ÔÏóµÄtoString:"+person);
+//        System.out.println("ä½¿ç”¨personå¯¹è±¡çš„toString:"+person);
         Person2 person2 = (Person2) context.getBean("person2");
       
-        System.out.println("ÏÖÔÚ¿ªÊ¼¹Ø±ÕÈİÆ÷£¡");
+        System.out.println("ç°åœ¨å¼€å§‹å…³é—­å®¹å™¨ï¼");
         ((FileSystemXmlApplicationContext)context).registerShutdownHook();
         
     }

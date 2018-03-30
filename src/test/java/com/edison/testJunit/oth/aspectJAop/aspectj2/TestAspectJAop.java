@@ -9,7 +9,7 @@ public class TestAspectJAop {
 
 	@Test
 	public void testSpringAop(){
-		//使用AnnotationAwareAspectJAutoProxyCreator自动生成代理
+		//浣跨敤AnnotationAwareAspectJAutoProxyCreator鑷姩鐢熸垚浠ｇ悊
 		try{
 			ctx = new ClassPathXmlApplicationContext("classpath:com/edison/testJunit/oth/aspectJAop/aspectj2/AspectJAop.xml");
 			Waiter waiter=(Waiter) ctx.getBean("waiter");

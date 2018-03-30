@@ -9,8 +9,8 @@ import java.util.Properties;
 import org.springframework.stereotype.Component;
 
 /**
- * 1.´ò¿ª¹Ø±Õ¶¼ĞèÒªÓÃ»§×Ô¼ºÈ¥µ÷ÓÃ<br>
- * 2.Òì³£¿ØÖÆÒ²±È½Ï¶à£¬Âé·³*/
+ * 1.æ‰“å¼€å…³é—­éƒ½éœ€è¦ç”¨æˆ·è‡ªå·±å»è°ƒç”¨<br>
+ * 2.å¼‚å¸¸æ§åˆ¶ä¹Ÿæ¯”è¾ƒå¤šï¼Œéº»çƒ¦*/
 @Component
 public class ConnectionUtil {
 	private static ThreadLocal<Connection> threadLocal=new ThreadLocal<Connection>();
@@ -19,7 +19,7 @@ public class ConnectionUtil {
 	private static String user;
 	private static String password;
 	
-	//¾²Ì¬´úÂë£¬iocÈİÆ÷¼ÓÔØbeanÊ±¾Í»áÖ´ĞĞ
+	//é™æ€ä»£ç ï¼Œiocå®¹å™¨åŠ è½½beanæ—¶å°±ä¼šæ‰§è¡Œ
 	public static void init() throws Throwable{
 		
 		Properties property=new Properties();
@@ -29,7 +29,7 @@ public class ConnectionUtil {
 		user=property.getProperty("user");	
 		password=property.getProperty("password");	
 		Class.forName(driver);
-		System.out.println("³õÊ¼»¯init()Íê³É");
+		System.out.println("åˆå§‹åŒ–init()å®Œæˆ");
 		System.out.println("driver="+driver);
 		System.out.println("url="+url);
 		System.out.println("userName="+user);
@@ -37,7 +37,7 @@ public class ConnectionUtil {
 	}
 	
 	public static Connection getConnection(){
-		if(driver==null){//½øĞĞ³õÊ¼»¯
+		if(driver==null){//è¿›è¡Œåˆå§‹åŒ–
 			try{
 				init();
 			}catch(Throwable e){
@@ -47,12 +47,12 @@ public class ConnectionUtil {
 			
 		}
 		Connection con=threadLocal.get();
-		System.out.println("»ñÈ¡Á¬½Ó¿ªÊ¼");
+		System.out.println("è·å–è¿æ¥å¼€å§‹");
 		if(con==null){
 			try{
-				System.out.println("Á¬½ÓÊı¾İ¿â¿ªÊ¼...");
+				System.out.println("è¿æ¥æ•°æ®åº“å¼€å§‹...");
 				con=DriverManager.getConnection(url, user, password);
-				System.out.println("Á¬½ÓÊı¾İ¿â³É¹¦");
+				System.out.println("è¿æ¥æ•°æ®åº“æˆåŠŸ");
 			}catch(Exception e){
 				System.out.println("getConnection fail");
 				e.printStackTrace();
@@ -68,8 +68,8 @@ public class ConnectionUtil {
 	        if(con!=null){
 	            try {
 	                con.close();
-	                System.out.println("¹Ø±ÕÊı¾İ¿âÁ¬½Ó");
-	                threadLocal.set(null); //Õâ¸ö±ğÍüÁË
+	                System.out.println("å…³é—­æ•°æ®åº“è¿æ¥");
+	                threadLocal.set(null); //è¿™ä¸ªåˆ«å¿˜äº†
 	            }catch (Exception e){
 	                e.printStackTrace();
 	            }
@@ -80,7 +80,7 @@ public class ConnectionUtil {
 		if(statement!=null){
 			try{
                 statement.close();
-                System.out.println("¹Ø±Õstatement");
+                System.out.println("å…³é—­statement");
             }catch(Exception e){
                 e.printStackTrace();
             }
@@ -91,7 +91,7 @@ public class ConnectionUtil {
 		if(rs!=null){
 			try{
                 rs.close();
-                System.out.println("¹Ø±ÕresultSet");
+                System.out.println("å…³é—­resultSet");
             }catch(Exception e){
                 e.printStackTrace();
             }

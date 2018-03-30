@@ -8,16 +8,16 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Aspect
-public class AspectJAdvisor {//@Component×¢½â±ğÍüÁË
-	@Before(value="execution(* greeTo(..))") //Before±íÊ¾·½Î»£¬executionÊÇAspectJµÄÇĞµã±í´ïÊ½£¬ÔÚÏÂÒ»¸ö²âÊÔ°üÀïÃæÏê½â
+public class AspectJAdvisor {//@Componentæ³¨è§£åˆ«å¿˜äº†
+	@Before(value="execution(* greeTo(..))") //Beforeè¡¨ç¤ºæ–¹ä½ï¼Œexecutionæ˜¯AspectJçš„åˆ‡ç‚¹è¡¨è¾¾å¼ï¼Œåœ¨ä¸‹ä¸€ä¸ªæµ‹è¯•åŒ…é‡Œé¢è¯¦è§£
 	public void beforeGreeting(){
-		System.out.println("Ç°ÖÃÔöÇ¿ ËùÓĞÀàµÄgreeTo·½·¨");
+		System.out.println("å‰ç½®å¢å¼º æ‰€æœ‰ç±»çš„greeToæ–¹æ³•");
 	}
 	
 	@Around(value="execution(* serveTo(..))")
-	public void aroundServing(ProceedingJoinPoint pjp) throws Throwable{ //Õâ¸ö·½·¨±ØĞëÒªÓĞpjp´«Èë²¢Ö´ĞĞ£¬·ñÔòÔ­·½·¨Ã»ÓĞÖ´ĞĞ¡£
-		System.out.println("»·ÈÆÔöÇ¿Ç°´¦Àí ËùÓĞÀàµÄserveTo·½·¨");
+	public void aroundServing(ProceedingJoinPoint pjp) throws Throwable{ //è¿™ä¸ªæ–¹æ³•å¿…é¡»è¦æœ‰pjpä¼ å…¥å¹¶æ‰§è¡Œï¼Œå¦åˆ™åŸæ–¹æ³•æ²¡æœ‰æ‰§è¡Œã€‚
+		System.out.println("ç¯ç»•å¢å¼ºå‰å¤„ç† æ‰€æœ‰ç±»çš„serveToæ–¹æ³•");
 		pjp.proceed();
-		System.out.println("»·ÈÆÔöÇ¿ºó´¦Àí ËùÓĞÀàµÄserveTo·½·¨");
+		System.out.println("ç¯ç»•å¢å¼ºåå¤„ç† æ‰€æœ‰ç±»çš„serveToæ–¹æ³•");
 	}
 }

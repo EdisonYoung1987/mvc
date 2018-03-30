@@ -19,25 +19,25 @@ public class UserServiceTest extends BaseJunitTest{
 	private User user=new User();
 	
 	@Test
-	@Transactional   //±êÃ÷´Ë·½·¨ĞèÊ¹ÓÃÊÂÎñ    
-    @Rollback(false)  //±êÃ÷Ê¹ÓÃÍê´Ë·½·¨ºóÊÂÎñ²»»Ø¹ö,trueÊ±Îª»Ø¹ö   
+	@Transactional   //æ ‡æ˜æ­¤æ–¹æ³•éœ€ä½¿ç”¨äº‹åŠ¡    
+    @Rollback(false)  //æ ‡æ˜ä½¿ç”¨å®Œæ­¤æ–¹æ³•åäº‹åŠ¡ä¸å›æ»š,trueæ—¶ä¸ºå›æ»š   
 	public void testService(){
-		user.setUserName("ÕÅÈı·á");
-		user.setCity("ÖØÇì");
+		user.setUserName("å¼ ä¸‰ä¸°");
+		user.setCity("é‡åº†");
 		user.setSex("1");
 		user.setPassword("123456");
 		
 		try{
 			System.out.println("userService="+userService);
 			boolean flag=userService.userRegister(user);
-			System.out.println("×¢²á½á¹û£º"+flag);
+			System.out.println("æ³¨å†Œç»“æœï¼š"+flag);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
 		try{
 			System.out.println("userService2="+userService2);
 			boolean flag=userService2.userRegister(user);
-			System.out.println("×¢²á½á¹û£º"+flag);
+			System.out.println("æ³¨å†Œç»“æœï¼š"+flag);
 		}catch(Exception e){
 			e.printStackTrace();
 		}

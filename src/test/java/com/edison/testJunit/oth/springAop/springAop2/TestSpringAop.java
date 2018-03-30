@@ -12,8 +12,8 @@ public class TestSpringAop {
 
 	@Test
 	public void testSpringAop(){
-		//Ê¹ÓÃBeanNameAutoProxyCreator×Ô¶¯Éú³É´úÀí
-		//È±µãÊÇÃ»·¨Æ¥Åä²ÎÊıÃû
+		//ä½¿ç”¨BeanNameAutoProxyCreatorè‡ªåŠ¨ç”Ÿæˆä»£ç†
+		//ç¼ºç‚¹æ˜¯æ²¡æ³•åŒ¹é…å‚æ•°å
 		ctx = new ClassPathXmlApplicationContext("classpath:com/edison/testJunit/oth/springAop/springAop2/aop.xml");
 		Waiter waiter=(Waiter) ctx.getBean("waiter");
 		Seller seller=(Seller) ctx.getBean("seller");
@@ -31,8 +31,8 @@ public class TestSpringAop {
 	
 	@Test
 	public void testSpringAop2(){
-		//Ê¹ÓÃRegexpMethodPointcutAdvisorÆ¥ÅäÆ÷+DefaultAdvisorAutoProxyCreator×Ô¶¯´úÀíÉú³ÉÆ÷;
-		//Í¨¹ı¶¨ÒåÁ½¸öÆ¥ÅäÆ÷RegexpMethodPointcutAdvisor£¬´ïµ½ÁËÀà+·½·¨µÄÉ¸Ñ¡£¬Õâ¸ö¾ÍÖ»¶ÔgreeToÇ°ÖÃÔöÇ¿£¬¶ÔserveTo½øĞĞºóÖÃÔöÇ¿
+		//ä½¿ç”¨RegexpMethodPointcutAdvisoråŒ¹é…å™¨+DefaultAdvisorAutoProxyCreatorè‡ªåŠ¨ä»£ç†ç”Ÿæˆå™¨;
+		//é€šè¿‡å®šä¹‰ä¸¤ä¸ªåŒ¹é…å™¨RegexpMethodPointcutAdvisorï¼Œè¾¾åˆ°äº†ç±»+æ–¹æ³•çš„ç­›é€‰ï¼Œè¿™ä¸ªå°±åªå¯¹greeToå‰ç½®å¢å¼ºï¼Œå¯¹serveToè¿›è¡Œåç½®å¢å¼º
 		ctx = new ClassPathXmlApplicationContext("classpath:com/edison/testJunit/oth/springAop/springAop2/aop2.xml");
 		Waiter waiter=(Waiter) ctx.getBean("waiter");
 		Seller seller=(Seller) ctx.getBean("seller");

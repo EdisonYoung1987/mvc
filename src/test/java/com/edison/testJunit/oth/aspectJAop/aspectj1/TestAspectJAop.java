@@ -9,7 +9,7 @@ public class TestAspectJAop {
 
 	@Test
 	public void testSpringAop(){
-		//Ê¹ÓÃAnnotationAwareAspectJAutoProxyCreator×Ô¶¯Éú³É´úÀí
+		//ä½¿ç”¨AnnotationAwareAspectJAutoProxyCreatorè‡ªåŠ¨ç”Ÿæˆä»£ç†
 		try{
 			ctx = new ClassPathXmlApplicationContext("classpath:com/edison/testJunit/oth/aspectJAop/aspectj1/AspectJAop.xml");
 			Waiter waiter=(Waiter) ctx.getBean("waiter");
@@ -28,7 +28,7 @@ public class TestAspectJAop {
 	@Test
 	public void testSpringAop2(){
 		try{
-			//Ê¹ÓÃxmlns:aop + aop:aspectj-autoproxy ÅäÖÃ×Ô¶¯´úÀíÉú³ÉÆ÷;
+			//ä½¿ç”¨xmlns:aop + aop:aspectj-autoproxy é…ç½®è‡ªåŠ¨ä»£ç†ç”Ÿæˆå™¨;
 			ctx = new ClassPathXmlApplicationContext("classpath:com/edison/testJunit/oth/aspectJAop/aspectj1/AspectJAop2.xml");
 			Waiter waiter=(Waiter) ctx.getBean("waiter");
 			Seller seller=(Seller) ctx.getBean("seller");

@@ -1,6 +1,6 @@
 package com.edison.testJunit.oth.springAop.noAop;
 /**
- * ¼à¿Øµ÷¶ÈÀà*/
+ * ç›‘æŽ§è°ƒåº¦ç±»*/
 public class PerformanceMonitor {
 	private static ThreadLocal<MethodPerformance> threadLocal=new ThreadLocal<MethodPerformance>();
 	

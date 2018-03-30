@@ -15,14 +15,14 @@ public class TestAnnotation {
 			
 			for(Method method:methods){
 				Annotation[] annotations=method.getAnnotations();
-				System.out.println("·½·¨Ãû£º"+method.getName());
+				System.out.println("æ–¹æ³•åï¼š"+method.getName());
 				
 				for(Annotation annotation:annotations){
-					System.out.println("ÓµÓĞ×¢½â£ºannotation.getClass()="+annotation.getClass());
-					System.out.println("ÓµÓĞ×¢½â£º"+annotation.annotationType().getSimpleName());
+					System.out.println("æ‹¥æœ‰æ³¨è§£ï¼šannotation.getClass()="+annotation.getClass());
+					System.out.println("æ‹¥æœ‰æ³¨è§£ï¼š"+annotation.annotationType().getSimpleName());
 //					if("MyAnnotation".equals(annotation.getClass().getSimpleName())){
 					if(annotation.annotationType().equals(MyAnnotation.class)){
-						MyAnnotation myAnnotation=(MyAnnotation)annotation; //Ö±½ÓÇ¿ÖÆ×ª»»¾Í¿ÉÒÔÁË
+						MyAnnotation myAnnotation=(MyAnnotation)annotation; //ç›´æ¥å¼ºåˆ¶è½¬æ¢å°±å¯ä»¥äº†
 						System.out.println("value="+myAnnotation.value());
 						System.out.println("editable="+myAnnotation.editable());
 						System.out.println("id="+myAnnotation.id());

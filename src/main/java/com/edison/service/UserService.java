@@ -7,24 +7,24 @@ import com.edison.db.entity.User;
 
 /**
  * @author Edison
- * ÓÃ»§·şÎñÀà*/
+ * ç”¨æˆ·æœåŠ¡ç±»*/
 @Service
 public class UserService {
 	/**
-	 * ÓÃ»§×¢²á*/
-	public boolean userRegister(User user){ //ÆäÊµÕâÀï×îºÃÊ¹ÓÃContext´«µİÉÏÏÂÎÄ£¬ÕâÑù¿ÉÒÔ°ÑĞÅÏ¢¶¼´«µİ³öÈ¥
-		//ÓÃ»§ºÏ·¨ĞÔ¼ì²é
+	 * ç”¨æˆ·æ³¨å†Œ*/
+	public boolean userRegister(User user){ //å…¶å®è¿™é‡Œæœ€å¥½ä½¿ç”¨Contextä¼ é€’ä¸Šä¸‹æ–‡ï¼Œè¿™æ ·å¯ä»¥æŠŠä¿¡æ¯éƒ½ä¼ é€’å‡ºå»
+		//ç”¨æˆ·åˆæ³•æ€§æ£€æŸ¥
 		String name=user.getUserName();
-		System.out.println("ÓÃ»§¡¾"+name+"¡¿½øĞĞ×¢²á");
+		System.out.println("ç”¨æˆ·ã€"+name+"ã€‘è¿›è¡Œæ³¨å†Œ");
 		
-		//²éÑ¯Êı¾İ¿â¿´ÊÇ·ñÒÑ´æÔÚ
+		//æŸ¥è¯¢æ•°æ®åº“çœ‹æ˜¯å¦å·²å­˜åœ¨
 		boolean exist=false;
 		if(exist==true){
-			System.out.println("ÓÃ»§ÒÑ´æÔÚ");
+			System.out.println("ç”¨æˆ·å·²å­˜åœ¨");
 			return false;
 		}else{
-			//TODO ½«ÓÃ»§²åÈëÊı¾İ¿â
-			System.out.println("ÓÃ»§ÒÑ×¢²á³É¹¦");
+			//TODO å°†ç”¨æˆ·æ’å…¥æ•°æ®åº“
+			System.out.println("ç”¨æˆ·å·²æ³¨å†ŒæˆåŠŸ");
 		}
 		
 		return true;

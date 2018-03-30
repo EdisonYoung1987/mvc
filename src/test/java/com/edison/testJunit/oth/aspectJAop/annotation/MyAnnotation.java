@@ -5,10 +5,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Retention(RetentionPolicy.RUNTIME) //±íÊ¾×¢½âµÄÉúÃüÖÜÆÚ:RUNTIMEÔËĞĞÆÚ-jvm||CLASS-.classÓĞ,jvmÃ»ÓĞ||SOURCE-Ô´ÂëÓĞ,.classÎÄ¼şÃ»ÓĞ
-@Target(ElementType.METHOD)  //±íÊ¾·½·¨×¢½â£¬»¹ÓĞFIELD-Óò×¢½â PARAMETER-²ÎÊı×¢½â TYPE-Àà ½Ó¿ÚµÈ×¢½â µÈµÈ
-public @interface MyAnnotation { //±ØĞëÓÃ@interfaceĞŞÊÎ£¬¶ø²»ÊÇinterface
-	//¶¨ÒåÈı¸ö³ÉÔ±±äÁ¿
+@Retention(RetentionPolicy.RUNTIME) //è¡¨ç¤ºæ³¨è§£çš„ç”Ÿå‘½å‘¨æœŸ:RUNTIMEè¿è¡ŒæœŸ-jvm||CLASS-.classæœ‰,jvmæ²¡æœ‰||SOURCE-æºç æœ‰,.classæ–‡ä»¶æ²¡æœ‰
+@Target(ElementType.METHOD)  //è¡¨ç¤ºæ–¹æ³•æ³¨è§£ï¼Œè¿˜æœ‰FIELD-åŸŸæ³¨è§£ PARAMETER-å‚æ•°æ³¨è§£ TYPE-ç±» æ¥å£ç­‰æ³¨è§£ ç­‰ç­‰
+public @interface MyAnnotation { //å¿…é¡»ç”¨@interfaceä¿®é¥°ï¼Œè€Œä¸æ˜¯interface
+	//å®šä¹‰ä¸‰ä¸ªæˆå‘˜å˜é‡
 	String value() default "";
 	
 	boolean editable() default false;

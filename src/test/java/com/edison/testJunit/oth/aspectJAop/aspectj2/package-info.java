@@ -1,5 +1,5 @@
 /**
- * 在测试包aspectj1的基础上，对切点表达式等aspectj的内容进行了扩展功能测试
+ * 鍦ㄦ祴璇曞寘aspectj1鐨勫熀纭�涓婏紝瀵瑰垏鐐硅〃杈惧紡绛塧spectj鐨勫唴瀹硅繘琛屼簡鎵╁睍鍔熻兘娴嬭瘯
  */
 /**
  * @author Edison

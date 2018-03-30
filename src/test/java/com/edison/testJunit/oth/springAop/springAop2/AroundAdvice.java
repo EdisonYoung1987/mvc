@@ -1,17 +1,17 @@
 package com.edison.testJunit.oth.springAop.springAop2;
 
-import org.aopalliance.intercept.MethodInterceptor; //»·ÈÆÔöÇ¿µÃÓÃÕâ¸ö
+import org.aopalliance.intercept.MethodInterceptor; //ç¯ç»•å¢å¼ºå¾—ç”¨è¿™ä¸ª
 import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.stereotype.Component;
 
 @Component
 public class AroundAdvice implements MethodInterceptor{
-	public Object invoke(MethodInvocation invocation) throws Throwable {//»·ÈÆÔöÇ¿
+	public Object invoke(MethodInvocation invocation) throws Throwable {//ç¯ç»•å¢å¼º
 		String methodName=invocation.getMethod().getName();
 		
-		System.out.println("around ÔöÇ¿·½·¨¿ªÊ¼£º"+methodName);
+		System.out.println("around å¢å¼ºæ–¹æ³•å¼€å§‹ï¼š"+methodName);
 		invocation.proceed();
-		System.out.println("around ÔöÇ¿·½·¨½áÊø£º"+methodName);
+		System.out.println("around å¢å¼ºæ–¹æ³•ç»“æŸï¼š"+methodName);
 
 		return null;
 	}

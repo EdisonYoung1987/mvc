@@ -6,25 +6,25 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 public class MyBeanPostProcessor implements BeanPostProcessor {
 
     /**
-     * BeanPostProcessor½Ó¿Ú°üÀ¨2¸ö·½·¨
-     * postProcessAfterInitializationºÍpostProcessBeforeInitialization£¬
-     * ÕâÁ½¸ö·½·¨µÄµÚÒ»¸ö²ÎÊı¶¼ÊÇÒª´¦ÀíµÄBean¶ÔÏó£¬µÚ¶ş¸ö²ÎÊı¶¼ÊÇBeanµÄname¡£
-     * ·µ»ØÖµÒ²¶¼ÊÇÒª´¦ÀíµÄBean¶ÔÏó¡£
+     * BeanPostProcessoræ¥å£åŒ…æ‹¬2ä¸ªæ–¹æ³•
+     * postProcessAfterInitializationå’ŒpostProcessBeforeInitializationï¼Œ
+     * è¿™ä¸¤ä¸ªæ–¹æ³•çš„ç¬¬ä¸€ä¸ªå‚æ•°éƒ½æ˜¯è¦å¤„ç†çš„Beanå¯¹è±¡ï¼Œç¬¬äºŒä¸ªå‚æ•°éƒ½æ˜¯Beançš„nameã€‚
+     * è¿”å›å€¼ä¹Ÿéƒ½æ˜¯è¦å¤„ç†çš„Beanå¯¹è±¡ã€‚
      * 
-     * ´Ë½Ó¿ÚµÄ·½·¨¿ÉÒÔ¶ÔBeanµÄÊôĞÔ½øĞĞ¸ü¸Ä
+     * æ­¤æ¥å£çš„æ–¹æ³•å¯ä»¥å¯¹Beançš„å±æ€§è¿›è¡Œæ›´æ”¹
      */
 
     public MyBeanPostProcessor() {
         super();
-        System.out.println("ÕâÊÇBeanPostProcessorÊµÏÖÀà¹¹ÔìÆ÷£¡£¡");
+        System.out.println("è¿™æ˜¯BeanPostProcessorå®ç°ç±»æ„é€ å™¨ï¼ï¼");
     }
 
     public Object postProcessAfterInitialization(Object obj, String objName)
             throws BeansException {
        /* Person person = (Person) obj;
-        person.setName("Ö®ºó--ÕÔÁù");*/
-        System.out.println("BeanPostProcessor½Ó¿Ú·½·¨" +
-                "postProcessAfterInitialization¶ÔÊôĞÔ½øĞĞ¸ü¸Ä£¡" +
+        person.setName("ä¹‹å--èµµå…­");*/
+        System.out.println("BeanPostProcessoræ¥å£æ–¹æ³•" +
+                "postProcessAfterInitializationå¯¹å±æ€§è¿›è¡Œæ›´æ”¹ï¼" +
                 "---"+"obj="+obj+"---objName="+objName);
         return obj;
     }
@@ -32,9 +32,9 @@ public class MyBeanPostProcessor implements BeanPostProcessor {
     public Object postProcessBeforeInitialization(Object obj, String objName)
             throws BeansException {
        /* Person person = (Person) obj;
-        person.setName("Ö®Ç°--ÀîËÄ");*/
-        System.out.println("BeanPostProcessor½Ó¿Ú·½·¨" +
-                "postProcessBeforeInitialization¶ÔÊôĞÔ½øĞĞ¸ü¸Ä£¡" +
+        person.setName("ä¹‹å‰--æå››");*/
+        System.out.println("BeanPostProcessoræ¥å£æ–¹æ³•" +
+                "postProcessBeforeInitializationå¯¹å±æ€§è¿›è¡Œæ›´æ”¹ï¼" +
                 "---"+"obj="+obj+"---objName="+objName);
         return obj;
     }

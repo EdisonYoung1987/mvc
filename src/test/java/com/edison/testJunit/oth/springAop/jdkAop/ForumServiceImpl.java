@@ -7,7 +7,7 @@ import com.edison.testJunit.oth.springAop.noAop.ForumService;
 
 /**
  * @author Edison
- * ÂÛÌ³½Ó¿ÚÊµÏÖÀà
+ * è®ºå›æ¥å£å®ç°ç±»
  */
 public class ForumServiceImpl implements ForumService {
 

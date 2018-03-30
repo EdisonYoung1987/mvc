@@ -35,7 +35,7 @@ public class UserControllerTest extends BaseJunitTest{
 	        resultActions = this.mockMvc.perform(MockMvcRequestBuilders.post("/user/delete").param("id", "1"));
 	        mvcResult = resultActions.andReturn();
 	        ModelAndView mv= mvcResult.getModelAndView();
-	        System.out.println("controller·µ»ØÊÓÍ¼ÃûÎª£º"+mv.getViewName());
+	        System.out.println("controllerè¿”å›è§†å›¾åä¸ºï¼š"+mv.getViewName());
 	       
 	        /*result = mvcResult.getResponse().getContentAsString();
 	        System.out.println("result="+result);*/

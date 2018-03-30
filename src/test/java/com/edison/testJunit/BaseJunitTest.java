@@ -6,16 +6,16 @@ import org.junit.runners.MethodSorters;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@RunWith(SpringJUnit4ClassRunner.class)//使用junit4进行测试  
-@ContextConfiguration(locations={"classpath:springContext.xml"}) //加载配置文件  
-//这个非常关键，如果不加入这个注解配置，事务控制就会完全失效！    
+@RunWith(SpringJUnit4ClassRunner.class)//浣跨敤junit4杩涜娴嬭瘯  
+@ContextConfiguration(locations={"classpath:springContext.xml"}) //鍔犺浇閰嶇疆鏂囦欢  
+//杩欎釜闈炲父鍏抽敭锛屽鏋滀笉鍔犲叆杩欎釜娉ㄨВ閰嶇疆锛屼簨鍔℃帶鍒跺氨浼氬畬鍏ㄥけ鏁堬紒    
 //@Transactional    
-//这里的事务关联到配置文件中的事务控制器（transactionManager = "transactionManager"），
-//同时指定自动回滚（defaultRollback = true）。这样做操作的数据才不会污染数据库！    
+//杩欓噷鐨勪簨鍔″叧鑱斿埌閰嶇疆鏂囦欢涓殑浜嬪姟鎺у埗鍣紙transactionManager = "transactionManager"锛夛紝
+//鍚屾椂鎸囧畾鑷姩鍥炴粴锛坉efaultRollback = true锛夈�傝繖鏍峰仛鎿嶄綔鐨勬暟鎹墠涓嶄細姹℃煋鏁版嵁搴擄紒    
 //@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)  
-@FixMethodOrder(MethodSorters.JVM) //这是4.11后才添加的功能，JVM-定义顺序执行
-								   //MethodSorters.DEFAULT -随机执行
-								   //MethodSorters.NAME_ASCENDING 字母升序执行
+@FixMethodOrder(MethodSorters.JVM) //杩欐槸4.11鍚庢墠娣诲姞鐨勫姛鑳斤紝JVM-瀹氫箟椤哄簭鎵ц
+								   //MethodSorters.DEFAULT -闅忔満鎵ц
+								   //MethodSorters.NAME_ASCENDING 瀛楁瘝鍗囧簭鎵ц
 public class BaseJunitTest {
 	
 }

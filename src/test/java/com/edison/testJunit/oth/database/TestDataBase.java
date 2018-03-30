@@ -7,9 +7,9 @@ import com.edison.testJunit.oth.database.pureJdbc.service.ForumService;
 
 public class TestDataBase {
 	@Test
-//	@Ignore //Õâ¸ö±íÊ¾²»Ö´ĞĞ¸Ã²âÊÔ·½·¨
-	public void testPureJdbc(){//²âÊÔ´¿jdk apiÊµÏÖµÄÊı¾İ¿â²Ù×÷
+//	@Ignore //è¿™ä¸ªè¡¨ç¤ºä¸æ‰§è¡Œè¯¥æµ‹è¯•æ–¹æ³•
+	public void testPureJdbc(){//æµ‹è¯•çº¯jdk apiå®ç°çš„æ•°æ®åº“æ“ä½œ
 		ForumService forumServive=new ForumService();
-		forumServive.queryForumByName("ĞÂ");
+		forumServive.queryForumByName("æ–°");
 	}
 }

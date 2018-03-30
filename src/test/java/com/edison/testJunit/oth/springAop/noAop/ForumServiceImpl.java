@@ -5,7 +5,7 @@ package com.edison.testJunit.oth.springAop.noAop;
 
 /**
  * @author Edison
- * ÂÛÌ³½Ó¿ÚÊµÏÖÀà
+ * è®ºå›æ¥å£å®ç°ç±»
  */
 public class ForumServiceImpl implements ForumService {
 

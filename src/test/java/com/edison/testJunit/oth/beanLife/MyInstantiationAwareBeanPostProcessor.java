@@ -10,53 +10,53 @@ public class MyInstantiationAwareBeanPostProcessor
 extends InstantiationAwareBeanPostProcessorAdapter {
 
 /**
- * InstantiationAwareBeanPostProcessor ½Ó¿Ú±¾ÖÊÊÇ
- * BeanPostProcessorµÄ×Ó½Ó¿Ú£¬
- * Ò»°ãÎÒÃÇ¼Ì³ĞSpringÎªÆäÌá¹©µÄÊÊÅäÆ÷Àà
- * InstantiationAwareBeanPostProcessorAdapterÀ´Ê¹ÓÃËü£¬
+ * InstantiationAwareBeanPostProcessor æ¥å£æœ¬è´¨æ˜¯
+ * BeanPostProcessorçš„å­æ¥å£ï¼Œ
+ * ä¸€èˆ¬æˆ‘ä»¬ç»§æ‰¿Springä¸ºå…¶æä¾›çš„é€‚é…å™¨ç±»
+ * InstantiationAwareBeanPostProcessorAdapteræ¥ä½¿ç”¨å®ƒï¼Œ
  * 
- * ´Ë½Ó¿Ú¿ÉÒÔÔÚBeanÊµÀı»¯Ç°¡¢BeanÊµÀı»¯ºó·Ö±ğ½øĞĞ²Ù×÷
- * Ò²¿ÉÒÔ¶ÔBeanÊµÀı»¯Ö®ºó½øĞĞÊôĞÔ²Ù×÷
+ * æ­¤æ¥å£å¯ä»¥åœ¨Beanå®ä¾‹åŒ–å‰ã€Beanå®ä¾‹åŒ–ååˆ†åˆ«è¿›è¡Œæ“ä½œ
+ * ä¹Ÿå¯ä»¥å¯¹Beanå®ä¾‹åŒ–ä¹‹åè¿›è¡Œå±æ€§æ“ä½œ
  */
 
 public MyInstantiationAwareBeanPostProcessor (){
     super();
     System.out.println(
-            "ÕâÊÇInstantiationAwareBeanPostProcessorAdapter" +
-            "ÊµÏÖÀà¹¹ÔìÆ÷£¡£¡");
+            "è¿™æ˜¯InstantiationAwareBeanPostProcessorAdapter" +
+            "å®ç°ç±»æ„é€ å™¨ï¼ï¼");
 }
 
-// ½Ó¿Ú·½·¨¡¢ÊµÀı»¯BeanÖ®Ç°µ÷ÓÃ
+// æ¥å£æ–¹æ³•ã€å®ä¾‹åŒ–Beanä¹‹å‰è°ƒç”¨
 @Override
 public Object postProcessBeforeInstantiation(Class<?> beanClass,
         String beanName) throws BeansException {
     System.out.println("InstantiationAwareBeanPostProcessor" +
-            "µ÷ÓÃpostProcessBeforeInstantiation·½·¨");
+            "è°ƒç”¨postProcessBeforeInstantiationæ–¹æ³•");
     return null;
 }
 
 /**
- * postProcessAfterInitializationÖØĞ´ÁËBeanPostProcessorµÄ·½·¨¡£
+ * postProcessAfterInitializationé‡å†™äº†BeanPostProcessorçš„æ–¹æ³•ã€‚
  */
-// ½Ó¿Ú·½·¨¡¢ÊµÀı»¯BeanÖ®ºóµ÷ÓÃ
+// æ¥å£æ–¹æ³•ã€å®ä¾‹åŒ–Beanä¹‹åè°ƒç”¨
 @Override
 public Object postProcessAfterInitialization(Object bean, 
         String beanName) throws BeansException {
     System.out.println("InstantiationAwareBeanPostProcessor" +
-            "µ÷ÓÃpostProcessAfterInitialization·½·¨");
+            "è°ƒç”¨postProcessAfterInitializationæ–¹æ³•");
     return bean;
 }
 
 /**
- * µÚÈı¸ö·½·¨postProcessPropertyValuesÓÃÀ´²Ù×÷ÊôĞÔ£¬·µ»ØÖµÒ²Ó¦¸ÃÊÇPropertyValues¶ÔÏó
+ * ç¬¬ä¸‰ä¸ªæ–¹æ³•postProcessPropertyValuesç”¨æ¥æ“ä½œå±æ€§ï¼Œè¿”å›å€¼ä¹Ÿåº”è¯¥æ˜¯PropertyValueså¯¹è±¡
  */
-// ½Ó¿Ú·½·¨¡¢ÉèÖÃÄ³¸öÊôĞÔÊ±µ÷ÓÃ
+// æ¥å£æ–¹æ³•ã€è®¾ç½®æŸä¸ªå±æ€§æ—¶è°ƒç”¨
 @Override
 public PropertyValues postProcessPropertyValues(PropertyValues pvs,
         PropertyDescriptor[] pds, Object bean, String beanName)
         throws BeansException {
     System.out.print("InstantiationAwareBeanPostProcessor" +
-            "µ÷ÓÃpostProcessPropertyValues·½·¨  ");
+            "è°ƒç”¨postProcessPropertyValuesæ–¹æ³•  ");
     System.out.println("beanName="+beanName);
     return pvs;
 }

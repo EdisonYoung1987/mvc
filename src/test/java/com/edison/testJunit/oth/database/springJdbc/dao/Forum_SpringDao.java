@@ -29,23 +29,23 @@ public class Forum_SpringDao {
 	    private JdbcTemplate jdbcTemplate;
 
 	    public int insertOne(Forum forum){
-	        String insSql="INSERT INTO FORUM(FORUMID,FORUMNAME,FORUMDESC) VALUES(?,?,?)";//FORUMµÄ×Ö¶Îforum_idÊÇ×ÔÔöµÄ£¬ËùÒÔÕâÀï²»ĞèÒª
+	        String insSql="INSERT INTO FORUM(FORUMID,FORUMNAME,FORUMDESC) VALUES(?,?,?)";//FORUMçš„å­—æ®µforum_idæ˜¯è‡ªå¢çš„ï¼Œæ‰€ä»¥è¿™é‡Œä¸éœ€è¦
 	        return jdbcTemplate.update(insSql,forum.getForumName(),forum.getForumDesc());
 	    }
-	    public int insertOne2(Forum forum){//ÉÏÃæµÄ·½·¨£¬updateµÄ²ÎÊıÒòÎªÀàĞÍÎ´Ö¸¶¨£¬¿ÉÄÜ³öÀàĞÍ×ª»»ÎÊÌâ£¬×îºÃÊ¹ÓÃÁíÒ»¸ö·½·¨
-	        String insSql="INSERT INTO FORUM(FORUMID,FORUMNAME,FORUMDESC) VALUES(?,?,?)";//FORUMµÄ×Ö¶Îforum_idÊÇ×ÔÔöµÄ£¬ËùÒÔÕâÀï²»ĞèÒª
+	    public int insertOne2(Forum forum){//ä¸Šé¢çš„æ–¹æ³•ï¼Œupdateçš„å‚æ•°å› ä¸ºç±»å‹æœªæŒ‡å®šï¼Œå¯èƒ½å‡ºç±»å‹è½¬æ¢é—®é¢˜ï¼Œæœ€å¥½ä½¿ç”¨å¦ä¸€ä¸ªæ–¹æ³•
+	        String insSql="INSERT INTO FORUM(FORUMID,FORUMNAME,FORUMDESC) VALUES(?,?,?)";//FORUMçš„å­—æ®µforum_idæ˜¯è‡ªå¢çš„ï¼Œæ‰€ä»¥è¿™é‡Œä¸éœ€è¦
 	        Object[] params=new Object[]{forum.getForumName(),forum.getForumDesc()};
-	        int[]   types=new int[]{Types.VARCHAR,Types.VARCHAR}; //¶¼´æÔÚÈç¹û±í½á¹¹·¢Éú±ä»¯¾ÍÈ«²¿ĞèÒª¸ü¸ÄµÄÂé·³
+	        int[]   types=new int[]{Types.VARCHAR,Types.VARCHAR}; //éƒ½å­˜åœ¨å¦‚æœè¡¨ç»“æ„å‘ç”Ÿå˜åŒ–å°±å…¨éƒ¨éœ€è¦æ›´æ”¹çš„éº»çƒ¦
 	        return jdbcTemplate.update(insSql,params,types);
 	    }
 
-	    public int insertOne3(final Forum forum){//»ñÈ¡×ÔÔöÖ÷¼ü
-	        final String insSql="INSERT INTO FORUM(FORUMID,FORUMNAME,FORUMDESC) VALUES(?,?,?)";//inssqlÒª¶¨Òå³Éfinal£¬ÒòÎªºóÃæÄÚ²¿ÀàÒªÊ¹ÓÃ
-	        KeyHolder keyHolder=new GeneratedKeyHolder();//Ò»¸öÍ¨ÓÃµÄ»ñÈ¡keyµÄÀà£¬·ñÔòÒª×Ô¶¨Òå
+	    public int insertOne3(final Forum forum){//è·å–è‡ªå¢ä¸»é”®
+	        final String insSql="INSERT INTO FORUM(FORUMID,FORUMNAME,FORUMDESC) VALUES(?,?,?)";//inssqlè¦å®šä¹‰æˆfinalï¼Œå› ä¸ºåé¢å†…éƒ¨ç±»è¦ä½¿ç”¨
+	        KeyHolder keyHolder=new GeneratedKeyHolder();//ä¸€ä¸ªé€šç”¨çš„è·å–keyçš„ç±»ï¼Œå¦åˆ™è¦è‡ªå®šä¹‰
 	        jdbcTemplate.update(new PreparedStatementCreator() {
 	            public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
 	                PreparedStatement ps=connection.prepareStatement(insSql);
-	                ps.setString(1,forum.getForumName()); //´Ó1¿ªÊ¼
+	                ps.setString(1,forum.getForumName()); //ä»1å¼€å§‹
 	                ps.setString(2,forum.getForumDesc());
 	                return ps;
 	            }
@@ -54,15 +54,15 @@ public class Forum_SpringDao {
 	        return 1;
 	    }
 
-	    public int insertBatch(final List<Forum>  forumlist){ //ÅúÁ¿²åÈëÕâ¸ö×î¼òµ¥ºÏÊÊ,Ö»ĞèÒª¶¨Òå²ÎÊıÉèÖÃ·½·¨£¬·µ»ØµÄÊÇ²åÈëÌõÊı
+	    public int insertBatch(final List<Forum>  forumlist){ //æ‰¹é‡æ’å…¥è¿™ä¸ªæœ€ç®€å•åˆé€‚,åªéœ€è¦å®šä¹‰å‚æ•°è®¾ç½®æ–¹æ³•ï¼Œè¿”å›çš„æ˜¯æ’å…¥æ¡æ•°
 	        final String insSql="INSERT INTO FORUM(FORUMID,FORUMNAME,FORUMDESC) VALUES(?,?,?)";
 	        int totnum=0;
 	        int[] nums=jdbcTemplate.batchUpdate(insSql, new BatchPreparedStatementSetter() {
-	            public void setValues(PreparedStatement preparedStatement, int idx) throws SQLException { //²ÎÊıµÄÉèÖÃ
+	            public void setValues(PreparedStatement preparedStatement, int idx) throws SQLException { //å‚æ•°çš„è®¾ç½®
 	                preparedStatement.setString(1,forumlist.get(idx).getForumName());
 	                preparedStatement.setString(2,forumlist.get(idx).getForumDesc());
 	            }
-	            public int getBatchSize() {//¶ÔÏólistµÄ´óĞ¡
+	            public int getBatchSize() {//å¯¹è±¡listçš„å¤§å°
 	                return forumlist.size();
 	            }
 	        });
@@ -72,11 +72,11 @@ public class Forum_SpringDao {
 	        return totnum;
 	    }
 
-	    public Forum selectOne(final String  forumName){//Ã»·¨Í¨ÓÃ£¬°´Ãû×Ö²éÑ¯ÂÛÌ³µÄËùÓĞĞÅÏ¢£¬ĞèÒª¶¨Òå·µ»Ø½á¹û¼¯µÄÓ³Éä´¦Àí
+	    public Forum selectOne(final String  forumName){//æ²¡æ³•é€šç”¨ï¼ŒæŒ‰åå­—æŸ¥è¯¢è®ºå›çš„æ‰€æœ‰ä¿¡æ¯ï¼Œéœ€è¦å®šä¹‰è¿”å›ç»“æœé›†çš„æ˜ å°„å¤„ç†
 	        final String sql="SELECT * FROM FORUM WHERE FORUMNAME=?";
 	        final Forum forum=new Forum(-1,"","");
 
-	        jdbcTemplate.query(sql, new Object[]{forumName}, new RowCallbackHandler() {//»¹ÊÇÒª×Ô¼º´¦Àí·µ»ØĞÅÏ¢£¬×Ö¶Î¶àµÄ»°¾ÍÉµ±ÆÁË¡£¡£
+	        jdbcTemplate.query(sql, new Object[]{forumName}, new RowCallbackHandler() {//è¿˜æ˜¯è¦è‡ªå·±å¤„ç†è¿”å›ä¿¡æ¯ï¼Œå­—æ®µå¤šçš„è¯å°±å‚»é€¼äº†ã€‚ã€‚
 	            public void processRow(ResultSet resultSet) throws SQLException {
 	                forum.setForumId(resultSet.getInt("FORUMID"));
 	                forum.setForumName(forumName);
@@ -92,12 +92,12 @@ public class Forum_SpringDao {
 	        return selectOne(forum.getForumName());
 	    }
 
-	    public List<Forum> selectList(final String  forumName){//°´Ãû×ÖÄ£ºı²éÑ¯ÁĞ±í,Èç¹û·µ»ØµÄlist³¤¶ÈÎª0±íÊ¾ÎŞ¼ÇÂ¼
+	    public List<Forum> selectList(final String  forumName){//æŒ‰åå­—æ¨¡ç³ŠæŸ¥è¯¢åˆ—è¡¨,å¦‚æœè¿”å›çš„listé•¿åº¦ä¸º0è¡¨ç¤ºæ— è®°å½•
 	        final String sql="SELECT * FROM FORUM WHERE FORUMNAME like '%'||?||'%'";
-	        //final Forum forum=new Forum();//Õâ¸ö±ØĞë·Åµ½¶¨ÒåµÄÄÚ²¿ÀàÀïÃæ£¬²»È»listÀïÃæµÄ¶àÌõ¼ÇÂ¼ÎªÍ¬Ò»¸öforum
+	        //final Forum forum=new Forum();//è¿™ä¸ªå¿…é¡»æ”¾åˆ°å®šä¹‰çš„å†…éƒ¨ç±»é‡Œé¢ï¼Œä¸ç„¶listé‡Œé¢çš„å¤šæ¡è®°å½•ä¸ºåŒä¸€ä¸ªforum
 	        final List<Forum> list=new ArrayList<Forum>();
 
-	        jdbcTemplate.query(sql, new Object[]{forumName}, new RowCallbackHandler() {//»¹ÊÇÒª×Ô¼º´¦Àí·µ»ØĞÅÏ¢£¬×Ö¶Î¶àµÄ»°¾ÍÉµ±ÆÁË¡£¡£
+	        jdbcTemplate.query(sql, new Object[]{forumName}, new RowCallbackHandler() {//è¿˜æ˜¯è¦è‡ªå·±å¤„ç†è¿”å›ä¿¡æ¯ï¼Œå­—æ®µå¤šçš„è¯å°±å‚»é€¼äº†ã€‚ã€‚
 	            public void processRow(ResultSet resultSet) throws SQLException {
 	                Forum forum=new Forum();
 	                forum.setForumId(resultSet.getInt("FORUMID"));
@@ -109,21 +109,21 @@ public class Forum_SpringDao {
 	        return list;
 	    }
 
-	    public  List<Forum> selectList( Forum forum) {//°´Ãû×ÖÄ£ºı²éÑ¯ÁĞ±í,Èç¹û·µ»ØµÄlist³¤¶ÈÎª0±íÊ¾ÎŞ¼ÇÂ¼
+	    public  List<Forum> selectList( Forum forum) {//æŒ‰åå­—æ¨¡ç³ŠæŸ¥è¯¢åˆ—è¡¨,å¦‚æœè¿”å›çš„listé•¿åº¦ä¸º0è¡¨ç¤ºæ— è®°å½•
 	        return selectList(forum.getForumName());
 	    }
 
-	    public List<Forum> selectList2(final String  forumName){//°´Ãû×ÖÄ£ºı²éÑ¯ÁĞ±í,Èç¹û·µ»ØµÄlist³¤¶ÈÎª0±íÊ¾ÎŞ¼ÇÂ¼
+	    public List<Forum> selectList2(final String  forumName){//æŒ‰åå­—æ¨¡ç³ŠæŸ¥è¯¢åˆ—è¡¨,å¦‚æœè¿”å›çš„listé•¿åº¦ä¸º0è¡¨ç¤ºæ— è®°å½•
 	        final String sql="SELECT * FROM FORUM WHERE FORUMNAME like '%'||?||'%'";
-	       // final Forum forum=new Forum();Õâ¸ö±ØĞë·Åµ½¶¨ÒåµÄÄÚ²¿ÀàÀïÃæ£¬²»È»listÀïÃæµÄ¶àÌõ¼ÇÂ¼ÎªÍ¬Ò»¸öforum
-	        //final List<Forum> list=new ArrayList<Forum>();//listµÄ¶¨ÒåÒ²ÓÉRowMapperÍê³É¶¨Òå
+	       // final Forum forum=new Forum();è¿™ä¸ªå¿…é¡»æ”¾åˆ°å®šä¹‰çš„å†…éƒ¨ç±»é‡Œé¢ï¼Œä¸ç„¶listé‡Œé¢çš„å¤šæ¡è®°å½•ä¸ºåŒä¸€ä¸ªforum
+	        //final List<Forum> list=new ArrayList<Forum>();//listçš„å®šä¹‰ä¹Ÿç”±RowMapperå®Œæˆå®šä¹‰
 
-	        return jdbcTemplate.query(sql, new Object[]{forumName}, new RowMapper<Forum>() { //·µ»ØµÄ¾ÍÊÇLIST<T>
+	        return jdbcTemplate.query(sql, new Object[]{forumName}, new RowMapper<Forum>() { //è¿”å›çš„å°±æ˜¯LIST<T>
 	            public Forum mapRow(ResultSet rs,int idx) throws SQLException{
 	                Forum forum=new Forum();
 	                forum.setForumId(rs.getInt("FORUMID"));
 	                forum.setForumName(rs.getString("FORUMNAME"));
-	                forum.setForumDesc(rs.getString("FORUMDESC")); //½«Ã¿¸ö·µ»Ø¶ÔÏóaddµ½listÒ²ÊÇÓĞRowMapperÍê³É£¬ËùÒÔ¶àÌõ¼ÇÂ¼ÓÃÕâ¸öºÜ·½±ã
+	                forum.setForumDesc(rs.getString("FORUMDESC")); //å°†æ¯ä¸ªè¿”å›å¯¹è±¡addåˆ°listä¹Ÿæ˜¯æœ‰RowMapperå®Œæˆï¼Œæ‰€ä»¥å¤šæ¡è®°å½•ç”¨è¿™ä¸ªå¾ˆæ–¹ä¾¿
 	                return forum;
 	            }
 	        });
@@ -131,11 +131,11 @@ public class Forum_SpringDao {
 	    }
 
 	    /**
-	     * Ö´ĞĞ´æ´¢¹ı³Ì
+	     * æ‰§è¡Œå­˜å‚¨è¿‡ç¨‹
 	     * @param
-	     * @return 0-³É¹¦   1-Ê§°Ü
+	     * @return 0-æˆåŠŸ   1-å¤±è´¥
 	     */
-	    public int executeProcedure(final int userId){ //Õâ¸öÒ²Ã»°ì·¨Í¨ÓÃ£¬ÕæÊÇÂé·³
+	    public int executeProcedure(final int userId){ //è¿™ä¸ªä¹Ÿæ²¡åŠæ³•é€šç”¨ï¼ŒçœŸæ˜¯éº»çƒ¦
 	        String sql="{CALL P_GET_TOPIC_NUM(?,?)}";
 	        return jdbcTemplate.execute(sql, new CallableStatementCallback<Integer>() {
 	            public Integer doInCallableStatement(CallableStatement callableStatement) throws SQLException, DataAccessException {

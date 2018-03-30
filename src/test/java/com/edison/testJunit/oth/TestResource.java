@@ -17,13 +17,13 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import com.edison.db.entity.User;
 
 /**
- * ÓÃÓÚ²âÊÔ×ÊÔ´ÎÄ¼ş¶ÁÈ¡*/
+ * ç”¨äºæµ‹è¯•èµ„æºæ–‡ä»¶è¯»å–*/
 public class TestResource {
 
 	@Test
 	public void testResource() {
 		try{
-			//ÆÕÍ¨»ñÈ¡×ÊÔ´·½Ê½
+			//æ™®é€šè·å–èµ„æºæ–¹å¼
 			Resource res=new ClassPathResource("springContext.xml");
 			InputStream in=res.getInputStream();
 			StringBuilder sb=new StringBuilder();
@@ -40,9 +40,9 @@ public class TestResource {
 			System.out.println(sb.toString());
 			System.out.println("-----------------------------------------");
 			
-			//Í¨ÓÃ»ñÈ¡×ÊÔ´·½Ê½
+			//é€šç”¨è·å–èµ„æºæ–¹å¼
 			res=new PathMatchingResourcePatternResolver().getResource("classpath:springContext.xml");
-			in=res.getInputStream(); //ÁíÍâResourceµÄgetFile()·½·¨ÔÚJAR°ü»áÊ§Ğ§£¬Ö»ÄÜgetInputStream()
+			in=res.getInputStream(); //å¦å¤–Resourceçš„getFile()æ–¹æ³•åœ¨JARåŒ…ä¼šå¤±æ•ˆï¼Œåªèƒ½getInputStream()
 			BufferedReader br=new BufferedReader(new ReaderUTF8(in));
 			
 			while((line=br.readLine())!=null){

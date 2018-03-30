@@ -9,25 +9,25 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import com.edison.db.entity.User;
 
 /**
- * ÓÃÓÚ²âÊÔbeanFactoryµÄÉú³É*/
+ * ç”¨äºæµ‹è¯•beanFactoryçš„ç”Ÿæˆ*/
 public class TestBeanFactory {
 
 	@Test
 	public void testResource() {
 		try{
-			//1.Í¨ÓÃ»ñÈ¡×ÊÔ´·½Ê½
+			//1.é€šç”¨è·å–èµ„æºæ–¹å¼
 			Resource res=new PathMatchingResourcePatternResolver().getResource("classpath:springContext.xml");
 			
-			//2.Éú³É¹¤³§
+			//2.ç”Ÿæˆå·¥å‚
 			DefaultListableBeanFactory beanFactory=new DefaultListableBeanFactory();
 			
-			//3.Éú³É¹¤³§³µ¼ä-Reader
+			//3.ç”Ÿæˆå·¥å‚è½¦é—´-Reader
 			XmlBeanDefinitionReader reader=new XmlBeanDefinitionReader(beanFactory);
 			
-			//4.³µ¼ä´¦Àí¼Ó¹¤²ÄÁÏ-Resource
+			//4.è½¦é—´å¤„ç†åŠ å·¥ææ–™-Resource
 			reader.loadBeanDefinitions(res);
 			
-			//5.»ñÈ¡bean
+			//5.è·å–bean
 			User user=(User) beanFactory.getBean("user");
 
 			if(user!=null){
@@ -36,10 +36,10 @@ public class TestBeanFactory {
 				System.out.println("user is null");
 			}
 			
-			//²é¿´ÀàµÄ×¢²áÇé¿ö
+			//æŸ¥çœ‹ç±»çš„æ³¨å†Œæƒ…å†µ
 			String[] names= beanFactory.getBeanDefinitionNames();
 			for(String name:names){
-				System.out.println("ÈİÆ÷ÖĞ×¢²áÓĞ£º"+name);
+				System.out.println("å®¹å™¨ä¸­æ³¨å†Œæœ‰ï¼š"+name);
 			}
 		}catch(Exception e){
 			e.printStackTrace();

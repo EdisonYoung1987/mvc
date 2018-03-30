@@ -8,29 +8,29 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class TestSpringAop {
 	@Test
 	public void testSpringAop(){
-		System.out.println("Í¨¹ıProxyFactoryÓ²±àÂë·½Ê½");
+		System.out.println("é€šè¿‡ProxyFactoryç¡¬ç¼–ç æ–¹å¼");
 		Waiter target=new Waiter();
 		ProxyFactory pf=new ProxyFactory();
 		pf.setTarget(target);
 		pf.addAdvice(new WaiterAdvice());
 		Waiter proxy=(Waiter) pf.getProxy();
 
-		proxy.greeTo("ÕÅÈı");
-		proxy.serveTo("ÕÅÈı");
-		System.out.println("Íê³ÉÓ²±àÂë·½Ê½");
+		proxy.greeTo("å¼ ä¸‰");
+		proxy.serveTo("å¼ ä¸‰");
+		System.out.println("å®Œæˆç¡¬ç¼–ç æ–¹å¼");
 		System.out.println();
 	}
 	
 	@Test
-	public void testSpringAopXml(){//Í¨¹ıxmlÅäÖÃµÄ·½Ê½
+	public void testSpringAopXml(){//é€šè¿‡xmlé…ç½®çš„æ–¹å¼
 		try{
-			System.out.println("Í¨¹ıxmlÅäÖÃµÄ·½Ê½ÊµÏÖaop");
+			System.out.println("é€šè¿‡xmlé…ç½®çš„æ–¹å¼å®ç°aop");
 			ApplicationContext applicationContext=new ClassPathXmlApplicationContext("com/edison/testJunit/oth/springAop/springAop/aop.xml");
 			Waiter proxy=(Waiter) applicationContext.getBean("waiter");
 	
-			proxy.greeTo("ÕÅÈı");
-			proxy.serveTo("ÕÅÈı");
-			System.out.println("Íê³Éxml·½Ê½");
+			proxy.greeTo("å¼ ä¸‰");
+			proxy.serveTo("å¼ ä¸‰");
+			System.out.println("å®Œæˆxmlæ–¹å¼");
 			System.out.println();
 
 		}catch(Exception e){
