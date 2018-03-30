@@ -3,12 +3,19 @@ package com.edison.testJunit.oth.apache_commons_io;
 import java.io.File;  
 import java.io.IOException;  
   
+
+
+
+
 import org.apache.commons.io.FileSystemUtils;  //已经被弃用了，使用java.nio.file.FileStore
 import org.apache.commons.io.FileUtils;  
 import org.apache.commons.io.FilenameUtils;  
 import org.apache.commons.io.LineIterator;  
 import org.apache.commons.io.IOCase;  
-  
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
+
 public final class UtilityExample {  
       
     // We are using the file exampleTxt.txt in the folder ExampleFolder,  
@@ -21,7 +28,9 @@ public final class UtilityExample {
   
     public static void runExample() throws IOException {  
         System.out.println("Utility Classes example...");  
-          
+        Logger logger=LoggerFactory.getLogger(MDC.get("LOGGER"));
+        System.out.println("MDC.get(\"LOGGER\")="+MDC.get("LOGGER"));
+        logger.info("Utility Classes example..."); 
           
         // FilenameUtils  
           

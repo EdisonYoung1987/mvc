@@ -6,7 +6,7 @@
 	<property name="MAX_DAY" value="7" />
 	<property name="MAX_FILE_SIZE" value="50MB" />
 	<property name="PATTERN" value="[%d{yyyy-MM-dd HH:mm:ss}][%level][%X{BEANID}][%X{STEPID}][%class:%line]%n%msg%n%n"/>
-	<property name="PATTERN_BUSI" value="[%d{yyyy-MM-dd HH:mm:ss}][%level][%X{BEANID}][%X{STEPID}]%n%msg%n%n"/>	
+	<property name="PATTERN_BUSI" value="[%d{yyyy-MM-dd HH:mm:ss:SSS}][%level][%X{BEANID}][%X{STEPID}]%n%msg%n%n"/>	
 	<property name="LOG_LV" value="INFO" />
 	<property name="ENCODING" value="UTF-8" />
 	
@@ -97,7 +97,9 @@
     <!-- 这里具体指定某些类的输出路径，也是logger+appender的形式 -->
 	<include file="${XML_HOME}/amortized.xml" />
 	
-
+	<!-- 这里的logger的name就是LoggerFactory.getLogger("xxxx")中的xxxx，可以认为是一个字符串 -->
+	<!-- name中是com.edison，则com.edison包及其子包下的所有类使用的log配置都是info,且输出到各个Appender.
+其他类使用的log配置都是根root的logger -->
 	<logger name="com.edison" level="${LOG_LV}" additivity="false"> <!-- Logger才是决定哪些代码在哪里输出的关键 -->
 		<appender-ref ref="FILE-ERROR" />
 		<appender-ref ref="FILE-STACK" />
@@ -106,6 +108,8 @@
 	</logger><!-- 这里相当于要把com.edison下面的日志同时输出到这四个appender去 ，所以加了几个filter进行过滤，达到
 	              日志分流且不会重复写日志的效果-->
 
+	<!-- 上面配置的logger具有继承性，com.edison的logger继承root，而com.edison.com.edison.testJunit.oth.apache_commons_io
+	又继承com.edison，也会输出到com.edsion配置的几个appender中 -->
 	<root level="${LOG_LV}">
 		<appender-ref ref="FILE-EXTRTIOR" />
 		<appender-ref ref="CONSOLE" />	

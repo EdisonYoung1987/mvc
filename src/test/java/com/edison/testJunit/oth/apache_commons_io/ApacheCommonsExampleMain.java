@@ -13,10 +13,11 @@ import org.slf4j.MDC;
   5） Comparators 
   6） 文件监控 */
 public class ApacheCommonsExampleMain {
-	 private static Logger logger=LoggerFactory.getLogger(ApacheCommonsExampleMain.class);
+	 private static Logger logger=LoggerFactory.getLogger(ApacheCommonsExampleMain.class.getName());
 	 
 	 public static void main(String[] args) { 
-		 MDC.put("THREAD", ""+Thread.currentThread().getId());
+		 MDC.put("THREAD", ""+Thread.currentThread().getId()); //设置线程号
+		 MDC.put("LOGGER", ApacheCommonsExampleMain.class.getName());
 		 logger.info("开始测试");
 		 try{
 	        UtilityExample.runExample();  
