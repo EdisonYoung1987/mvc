@@ -11,6 +11,9 @@ import org.apache.commons.io.filefilter.OrFileFilter;
 import org.apache.commons.io.filefilter.PrefixFileFilter;  
 import org.apache.commons.io.filefilter.SuffixFileFilter;  
 import org.apache.commons.io.filefilter.WildcardFileFilter;  
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 /**
  * 过滤器<br>
@@ -22,7 +25,9 @@ public final class FiltersExample {
             "C:\\Users\\Lilykos\\workspace\\ApacheCommonsExample\\ExampleFolder";  
   
     public static void runExample() {  
-        System.out.println("File Filter example...");  
+        Logger logger=LoggerFactory.getLogger(MDC.get("LOGGER"));
+
+        logger.info("File Filter example...");  
           
           
         // NameFileFilter  
@@ -36,7 +41,7 @@ public final class FiltersExample {
         File dir = FileUtils.getFile(PARENT_DIR);  
         String[] acceptedNames = {"example", "exampleTxt.txt"};  
         for (String file: dir.list(new NameFileFilter(acceptedNames, IOCase.INSENSITIVE))) {  
-            System.out.println("File found, named: " + file);  
+            logger.info("File found, named: " + file);  
         }  
           
           
@@ -45,7 +50,7 @@ public final class FiltersExample {
         //      ? used for 1 missing char  
         //      * used for multiple missing chars  
         for (String file: dir.list(new WildcardFileFilter("*ample*"))) {  
-            System.out.println("Wildcard file found, named: " + file);  
+            logger.info("Wildcard file found, named: " + file);  
         }  
           
           
@@ -53,7 +58,7 @@ public final class FiltersExample {
         // We can also use the equivalent of startsWith  
         // for filtering files.  
         for (String file: dir.list(new PrefixFileFilter("example"))) {  
-            System.out.println("Prefix file found, named: " + file);  
+            logger.info("Prefix file found, named: " + file);  
         }  
           
           
@@ -61,7 +66,7 @@ public final class FiltersExample {
         // We can also use the equivalent of endsWith  
         // for filtering files.  
         for (String file: dir.list(new SuffixFileFilter(".txt"))) {  
-            System.out.println("Suffix file found, named: " + file);  
+            logger.info("Suffix file found, named: " + file);  
         }  
           
           
@@ -71,7 +76,7 @@ public final class FiltersExample {
         // or between our filters.  
         for (String file: dir.list(new OrFileFilter(  
                 new WildcardFileFilter("*ample*"), new SuffixFileFilter(".txt")))) {  
-            System.out.println("Or file found, named: " + file);  
+            logger.info("Or file found, named: " + file);  
         }  
           
         // And this can become very detailed.  
@@ -80,7 +85,7 @@ public final class FiltersExample {
         for (String file: dir.list(new AndFileFilter( // we will match 2 filters...  
                 new WildcardFileFilter("*ample*"), // ...the 1st is a wildcard...  
                 new NotFileFilter(new SuffixFileFilter(".txt"))))) { // ...and the 2nd is NOT .txt.  
-            System.out.println("And/Not file found, named: " + file);  
+            logger.info("And/Not file found, named: " + file);  
         }  
     }  
 }  

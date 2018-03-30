@@ -5,21 +5,26 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;  
 import java.io.IOException;  
   
+
 import org.apache.commons.io.FileUtils;  
 import org.apache.commons.io.input.TeeInputStream;  
 import org.apache.commons.io.input.XmlStreamReader;  
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
   
 /**在 common io的org.apache.commons.io.input 包中，有各种对InputStream的实现类： 
 我们看下其中的TeeInputStream, ，它接受InputStream和Outputstream参数*/  
 public final class InputExample {  
-      
+    private static Logger logger=LoggerFactory.getLogger(MDC.get("LOGGER"));
+   
     private static final String XML_PATH =  
             "C:\\Users\\Lilykos\\workspace\\ApacheCommonsExample\\InputOutputExampleFolder\\web.xml";  
       
     private static final String INPUT = "This should go to the output.";  
   
     public static void runExample() {  
-        System.out.println("Input example...");  
+        logger.info("Input example...");  
         XmlStreamReader xmlReader = null;  
         TeeInputStream tee = null;  
           
@@ -31,7 +36,7 @@ public final class InputExample {
             File xml = FileUtils.getFile(XML_PATH);  
               
             xmlReader = new XmlStreamReader(xml);  
-            System.out.println("XML encoding: " + xmlReader.getEncoding());  
+            logger.info("XML encoding: " + xmlReader.getEncoding());  
               
               
             // TeeInputStream  
@@ -45,7 +50,7 @@ public final class InputExample {
             tee = new TeeInputStream(in, out, true);  
             tee.read(new byte[INPUT.length()]);  
   
-            System.out.println("Output stream: " + out.toString());           
+            logger.info("Output stream: " + out.toString());           
         } catch (IOException e) {  
             e.printStackTrace();  
         } finally {  

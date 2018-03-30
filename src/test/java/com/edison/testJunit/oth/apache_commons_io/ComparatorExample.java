@@ -3,11 +3,15 @@ package com.edison.testJunit.oth.apache_commons_io;
 import java.io.File;  
 import java.util.Date;  
   
+
 import org.apache.commons.io.FileUtils;  
 import org.apache.commons.io.IOCase;  
 import org.apache.commons.io.comparator.LastModifiedFileComparator;  
 import org.apache.commons.io.comparator.NameFileComparator;  
 import org.apache.commons.io.comparator.SizeFileComparator;  
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 /**
  * 文件比较器.<br>
@@ -26,7 +30,9 @@ public final class ComparatorExample {
             "C:\\Users\\Lilykos\\workspace\\ApacheCommonsExample\\ExampleFolder\\exampleTxt.txt";  
       
     public static void runExample() {  
-        System.out.println("Comparator example...");  
+        Logger logger=LoggerFactory.getLogger(MDC.get("LOGGER"));
+
+        logger.info("Comparator example...");  
           
         //NameFileComparator  
           
@@ -36,9 +42,9 @@ public final class ComparatorExample {
         NameFileComparator comparator = new NameFileComparator(IOCase.SENSITIVE);  
         File[] sortedFiles = comparator.sort(parentDir.listFiles());  
           
-        System.out.println("Sorted by name files in parent directory: ");  
+        logger.info("Sorted by name files in parent directory: ");  
         for (File file: sortedFiles) {  
-            System.out.println("\t"+ file.getAbsolutePath());  
+            logger.info("\t"+ file.getAbsolutePath());  
         }  
           
           
@@ -51,9 +57,9 @@ public final class ComparatorExample {
         SizeFileComparator sizeComparator = new SizeFileComparator(true);  
         File[] sizeFiles = sizeComparator.sort(parentDir.listFiles());  
           
-        System.out.println("Sorted by size files in parent directory: ");  
+        logger.info("Sorted by size files in parent directory: ");  
         for (File file: sizeFiles) {  
-            System.out.println("\t"+ file.getName() + " with size (kb): " + file.length());  
+            logger.info("\t"+ file.getName() + " with size (kb): " + file.length());  
         }  
           
           
@@ -63,23 +69,23 @@ public final class ComparatorExample {
         LastModifiedFileComparator lastModified = new LastModifiedFileComparator();  
         File[] lastModifiedFiles = lastModified.sort(parentDir.listFiles());  
           
-        System.out.println("Sorted by last modified files in parent directory: ");  
+        logger.info("Sorted by last modified files in parent directory: ");  
         for (File file: lastModifiedFiles) {  
             Date modified = new Date(file.lastModified());  
-            System.out.println("\t"+ file.getName() + " last modified on: " + modified);  
+            logger.info("\t"+ file.getName() + " last modified on: " + modified);  
         }  
           
         //TODO 这一段需要重新整理
         // Or, we can also compare 2 specific files and find which one was last modified.  
         //      returns > 0 if the first file was last modified.  
         //      returns  0)  
-        /*    System.out.println("File " + file1.getName() + " was modified last because...");  
+        /*    logger.info("File " + file1.getName() + " was modified last because...");  
         else  
-            System.out.println("File " + file2.getName() + "was modified last because...");  
+            logger.info("File " + file2.getName() + "was modified last because...");  
           
-        System.out.println("\t"+ file1.getName() + " last modified on: " +  
+        logger.info("\t"+ file1.getName() + " last modified on: " +  
                 new Date(file1.lastModified()));  
-        System.out.println("\t"+ file2.getName() + " last modified on: " +  
+        logger.info("\t"+ file2.getName() + " last modified on: " +  
                 new Date(file2.lastModified()));  */
     }  
 }  

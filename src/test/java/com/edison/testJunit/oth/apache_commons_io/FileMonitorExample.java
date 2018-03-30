@@ -3,12 +3,16 @@ package com.edison.testJunit.oth.apache_commons_io;
 import java.io.File;  
 import java.io.IOException;  
   
+
 import org.apache.commons.io.FileDeleteStrategy;  
 import org.apache.commons.io.FileUtils;  
 import org.apache.commons.io.monitor.FileAlterationListenerAdaptor;  
 import org.apache.commons.io.monitor.FileAlterationMonitor;  
 import org.apache.commons.io.monitor.FileAlterationObserver;  
 import org.apache.commons.io.monitor.FileEntry;  
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
   
 /**这个org.apache.commons.io.monitor 包中的工具类可以监视文件或者目录的变化，获得指定文件或者目录的相关信息<br>
  * 上面的特性的确很赞！分析下，这个工具类包下的工具类，可以允许我们创建跟踪文件或目录变化的监听句柄，当文件目录等发生任何变化，都可以用“观察者”的身份进行观察， 
@@ -34,9 +38,10 @@ public final class FileMonitorExample {
       
     private static final String NEW_FILE =  
             "C:\\Users\\Lilykos\\workspace\\ApacheCommonsExample\\ExampleFolder\\newFile.txt";  
-  
+
+    private static Logger logger=LoggerFactory.getLogger(MDC.get("LOGGER"));
     public static void runExample() {  
-        System.out.println("File Monitor example...");  
+        logger.info("File Monitor example...");  
           
           
         // FileEntry  
@@ -45,9 +50,9 @@ public final class FileMonitorExample {
         // using the methods of this class.  
         FileEntry entry = new FileEntry(FileUtils.getFile(EXAMPLE_PATH));  
           
-        System.out.println("File monitored: " + entry.getFile());  
-        System.out.println("File name: " + entry.getName());  
-        System.out.println("Is the file a directory?: " + entry.isDirectory());  
+        logger.info("File monitored: " + entry.getFile());  
+        logger.info("File name: " + entry.getName());  
+        logger.info("Is the file a directory?: " + entry.isDirectory());  
           
           
         // File Monitoring  
@@ -61,22 +66,22 @@ public final class FileMonitorExample {
               
                 @Override  
                 public void onFileCreate(File file) {  
-                    System.out.println("File created: " + file.getName());  
+                    logger.info("File created: " + file.getName());  
                 }  
                   
                 @Override  
                 public void onFileDelete(File file) {  
-                    System.out.println("File deleted: " + file.getName());  
+                    logger.info("File deleted: " + file.getName());  
                 }  
                   
                 @Override  
                 public void onDirectoryCreate(File dir) {  
-                    System.out.println("Directory created: " + dir.getName());  
+                    logger.info("Directory created: " + dir.getName());  
                 }  
                   
                 @Override  
                 public void onDirectoryDelete(File dir) {  
-                    System.out.println("Directory deleted: " + dir.getName());  
+                    logger.info("Directory deleted: " + dir.getName());  
                 }  
         });  
           
