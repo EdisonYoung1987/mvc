@@ -7,13 +7,14 @@ import org.apache.commons.io.FileUtils;
 
 /**主要是为了转换以前用gbk写的旧代码/*/
 public class ConvertEncoding {
-	private final static String PROJECTDIR="C:\\Users\\Edison\\git\\mvc\\";//项目的根目录
-	private final static String OUT_PROJECTDIR="D:\\Users\\Edison\\git\\mvc\\";//转换后存放路径
+	private final static String PROJECTDIR="C:\\Users\\Administrator\\git\\mvc\\";//项目的根目录
+	private final static String OUT_PROJECTDIR="D:\\Users\\Administrator\\git\\mvc\\";//转换后存放路径
 	
 	private final static String[] excludeDirs={
-		    "C:\\Users\\Edison\\git\\mvc\\src\\test\\java\\com\\edison\\testJunit\\oth\\apache_commons_io",
-		    "C:\\Users\\Edison\\git\\mvc\\target",
-		    "C:\\Users\\Edison\\git\\mvc\\src\\main\\webapp"};//不用转换的路径
+		    "C:\\Users\\Administrator\\git\\mvc\\src\\test\\java\\com\\edison\\testJunit\\oth\\apache_commons_io",
+		    "C:\\Users\\Administrator\\git\\mvc\\target",
+		    "C:\\Users\\Administrator\\git\\mvc\\src\\main\\webapp",
+		    "C:\\Users\\Administrator\\git\\mvc\\.settings"};//不用转换的路径
 	private final static String[] excludeFiles={
 		"testspringContext.xml","springContext.xml","logback.xml","amortized.xml","pom.xml"
 	}; //这些不用转换的文件都是独一无二的，所以没有按完整路径来
@@ -40,8 +41,17 @@ public class ConvertEncoding {
 			System.out.println(path+"\\"+fileName);
 			
 			//拼接转换后文件的路径
-			String outFile=OUT_PROJECTDIR+path.substring(PROJECTDIR.length())+"\\"+fileName;
-			System.out.println(outFile);
+			String outFileName=OUT_PROJECTDIR+path.substring(PROJECTDIR.length())+"\\"+fileName;
+			System.out.println(outFileName);
+			File outFile=FileUtils.getFile(outFileName);
+			
+			try{
+				String strData=FileUtils.readFileToString(inFile, "GBK");
+				FileUtils.write(outFile, strData, "UTF-8");
+			}catch(Exception e){
+				e.printStackTrace();
+				continue;
+			}
 		}
 	}
 
