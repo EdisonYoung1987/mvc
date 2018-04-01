@@ -27,38 +27,29 @@ import org.slf4j.MDC;
  * */  
 public final class FileMonitorExample {  
       
-    private static final String EXAMPLE_PATH =  
-            "C:\\Users\\Lilykos\\workspace\\ApacheCommonsExample\\ExampleFolder\\exampleFileEntry.txt";  
-    private static final String PARENT_DIR =  
-            "C:\\Users\\Lilykos\\workspace\\ApacheCommonsExample\\ExampleFolder";  
-    private static final String NEW_DIR =  
-            "C:\\Users\\Lilykos\\workspace\\ApacheCommonsExample\\ExampleFolder\\newDir";  
-    private static final String NEW_FILE =  
-            "C:\\Users\\Lilykos\\workspace\\ApacheCommonsExample\\ExampleFolder\\newFile.txt";  
+    private static final String EXAMPLE_PATH =  "D:\\Youxun\\Install\\exampleFileEntry.txt";  
+    private static final String MONITOR_DIR =  "D:\\Youxun\\Install";   //监视的目录
+    private static final String NEW_DIR =  "D:\\Youxun\\Install\\newDir";  
+    private static final String NEW_DIR_FILE =  "D:\\Youxun\\Install\\newDir\\newFile.txt";  
+    private static final String NEW_FILE =  "D:\\Youxun\\Install\\newFile.txt";  
 
     private static Logger logger=LoggerFactory.getLogger(MDC.get("LOGGER"));
     public static void runExample() {  
         logger.info("File Monitor example...");  
           
         // FileEntry  
-        // We can monitor changes and get information about files  
-        // using the methods of this class.  
         FileEntry entry = new FileEntry(FileUtils.getFile(EXAMPLE_PATH));  
-          
         logger.info("File monitored: " + entry.getFile());  
         logger.info("File name: " + entry.getName());  
         logger.info("Is the file a directory?: " + entry.isDirectory());  
-          
-          
-        // File Monitoring  
-          
-        // Create a new observer for the folder and add a listener  
-        // that will handle the events in a specific directory and take action.  
-        File parentDir = FileUtils.getFile(PARENT_DIR);  
+        logger.info("Does the file exist?: " + entry.isExists());  
+
+
+        // File Monitoring  监控该目录是否新建子目录，文件，删除等
+        File parentDir = FileUtils.getFile(MONITOR_DIR);  
           
         FileAlterationObserver observer = new FileAlterationObserver(parentDir);  
-        observer.addListener(new FileAlterationListenerAdaptor() {  
-              
+        observer.addListener(new FileAlterationListenerAdaptor() {//一个监视器  
                 @Override  
                 public void onFileCreate(File file) {  
                     logger.info("File created: " + file.getName());  
@@ -80,9 +71,7 @@ public final class FileMonitorExample {
                 }  
         });  
           
-        // Add a monior that will check for events every x ms,  
-        // and attach all the different observers that we want.  
-        FileAlterationMonitor monitor = new FileAlterationMonitor(500, observer);  
+        FileAlterationMonitor monitor = new FileAlterationMonitor(500, observer);  //启动监视器
         try {  
             monitor.start();  
           
@@ -90,13 +79,16 @@ public final class FileMonitorExample {
             // and see what happens!  
             File newDir = new File(NEW_DIR);  
             File newFile = new File(NEW_FILE);  
-              
+            File newDirFile=new File(NEW_DIR_FILE); //在子目录下建立新文件也会被监控到
+            
             newDir.mkdirs();  
+            newDirFile.createNewFile();
             newFile.createNewFile();  
                   
-            Thread.sleep(1000);  
-              
-            FileDeleteStrategy.NORMAL.delete(newDir);  
+            Thread.sleep(5000);  
+            
+            FileDeleteStrategy.NORMAL.delete(newDirFile);  //删除操作
+            FileDeleteStrategy.NORMAL.delete(newDir);  //删除操作
             FileDeleteStrategy.NORMAL.delete(newFile);  
               
             Thread.sleep(1000);  

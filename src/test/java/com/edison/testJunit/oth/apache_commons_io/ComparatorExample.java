@@ -1,8 +1,12 @@
 package com.edison.testJunit.oth.apache_commons_io;
 
 import java.io.File;  
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;  
   
+
+
 
 import org.apache.commons.io.FileUtils;  
 import org.apache.commons.io.IOCase;  
@@ -20,14 +24,9 @@ SizeFileComparator: 按照文件大小比较 <br>
 LastModifiedFileComparator: 根据最新修改日期比较 */
 public final class ComparatorExample {  
       
-    private static final String PARENT_DIR =  
-            "C:\\Users\\Lilykos\\workspace\\ApacheCommonsExample\\ExampleFolder";  
-      
-    private static final String FILE_1 =  
-            "C:\\Users\\Lilykos\\workspace\\ApacheCommonsExample\\ExampleFolder\\example";  
-      
-    private static final String FILE_2 =  
-            "C:\\Users\\Lilykos\\workspace\\ApacheCommonsExample\\ExampleFolder\\exampleTxt.txt";  
+    private static final String PARENT_DIR = "D:\\Youxun\\Install";  
+    private static final String FILE_1 =  "D:\\Youxun\\Install\\example";  
+    private static final String FILE_2 =   "D:\\Youxun\\Install\\exampleTxt.txt";  
       
     public static void runExample() {  
         Logger logger=LoggerFactory.getLogger(MDC.get("LOGGER"));
@@ -44,7 +43,7 @@ public final class ComparatorExample {
           
         logger.info("Sorted by name files in parent directory: ");  
         for (File file: sortedFiles) {  
-            logger.info("\t"+ file.getAbsolutePath());  
+            System.out.println("\t"+ file.getAbsolutePath());  
         }  
           
           
@@ -59,7 +58,7 @@ public final class ComparatorExample {
           
         logger.info("Sorted by size files in parent directory: ");  
         for (File file: sizeFiles) {  
-            logger.info("\t"+ file.getName() + " with size (kb): " + file.length());  
+            System.out.println("\t"+ file.getName() + " with size (kb): " + file.length());  
         }  
           
           
@@ -81,11 +80,15 @@ public final class ComparatorExample {
         //      returns  0)  
         /*    logger.info("File " + file1.getName() + " was modified last because...");  
         else  
-            logger.info("File " + file2.getName() + "was modified last because...");  
-          
-        logger.info("\t"+ file1.getName() + " last modified on: " +  
-                new Date(file1.lastModified()));  
-        logger.info("\t"+ file2.getName() + " last modified on: " +  
-                new Date(file2.lastModified()));  */
+            logger.info("File " + file2.getName() + "was modified last because...");  */
+       File file1=new File(FILE_1);
+       File file2=new File(FILE_2);
+       DateFormat dFormat=new SimpleDateFormat();
+      /* try{
+	       logger.info("\t"+ file1.getName() + " last modified on: " +   dFormat.parse(""+file1.lastModified()));  
+	       logger.info("\t"+ file2.getName() + " last modified on: " +  dFormat.parse(""+file2.lastModified()));  
+       }catch(Exception e){
+    	   e.printStackTrace();
+       }*/
     }  
 }  

@@ -20,15 +20,15 @@ public class ApacheCommonsExampleMain {
 		 MDC.put("LOGGER", ApacheCommonsExampleMain.class.getName());
 		 logger.info("开始测试");
 		 try{
-	        UtilityExample.runExample();  
+//	        UtilityExample.runExample();  
+//	          
+//	        FileMonitorExample.runExample();  
 	          
-	        FileMonitorExample.runExample();  
+//	        FiltersExample.runExample();  
 	          
-	        FiltersExample.runExample();  
-	          
-	        InputExample.runExample();  
-	          
-	        OutputExample.runExample();  
+//	        InputExample.runExample();  这两个感觉用处不大哟
+//	          
+//	        OutputExample.runExample();  
 	          
 	        ComparatorExample.runExample();
 		 }catch(Exception e){
