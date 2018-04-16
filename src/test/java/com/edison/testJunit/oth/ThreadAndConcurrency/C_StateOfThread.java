@@ -16,6 +16,7 @@ public class C_StateOfThread {
 			}catch(Exception e){
 				e.printStackTrace();
 			}
+			
 		}
 	}
 	public static void main(String[] args){
@@ -32,6 +33,15 @@ public class C_StateOfThread {
 			e.printStackTrace();
 		}
 		System.out.println("检测到子线程状态:"+thread.getState());
+		try{
+			thread.join();
+			thread.setPriority(5);
+			thread.setDaemon(true);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		System.out.println("检测到子线程状态:"+thread.getState());
+
 		try{
 			Thread.sleep(20);
 		}catch(Exception e){
