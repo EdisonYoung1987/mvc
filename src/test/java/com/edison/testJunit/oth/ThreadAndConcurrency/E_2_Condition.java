@@ -23,14 +23,14 @@ class MyRunnable implements Runnable{
 			Random rand=new Random(System.currentTimeMillis());
 			int t=0;
 			while(i<100){
-				t=rand.nextInt(3);
-				if(t==2){
+				while((t=rand.nextInt(3))==2){ //把if改成while，这样await()方法返回后，还需要再次生成t并判断，
+											   //否则await()返回后还是会把2加到i上面
 					System.out.println("线程："+Thread.currentThread().getId()+"进入await()");
 					condition.await(20, TimeUnit.NANOSECONDS); //如果不加await()时间参数，有可能所有线程都进入await状态
 //					condition.await();
 					System.out.println("线程："+Thread.currentThread().getId()+"醒来");
 				}
-				i+=t;
+				i=(i==100)?i:i+t;
 				System.out.println("i="+i);
 				condition.signalAll();
 			}
