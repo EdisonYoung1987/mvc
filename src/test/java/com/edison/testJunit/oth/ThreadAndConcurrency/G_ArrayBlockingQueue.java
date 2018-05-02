@@ -2,12 +2,19 @@ package com.edison.testJunit.oth.ThreadAndConcurrency;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
-import java.util.TreeSet;
+import java.util.TreeMap;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+
+
 
 /**
  * 根据文件内容检索文件的工具.<p>
@@ -19,9 +26,10 @@ public class G_ArrayBlockingQueue {
 	//空文件，用来作为线程查找blockingQueue终点
 	public static final File ENDFILE=new File("");
 	public static Lock lock=new ReentrantLock();
-	public static TreeSet<String> resSet=new TreeSet<String>();
+	public static HashSet<String> resSet=new HashSet<String>();
+	public static Map<String, MyFile> map=new TreeMap<String, MyFile>();
 	
-	public static void addSet(TreeSet<String> set){
+	public static void addSet(HashSet<String> set){
 		if(set==null){
 			return;
 		}
@@ -67,19 +75,38 @@ public class G_ArrayBlockingQueue {
 			}
 		}
 		
-		//检索结束后打印查找结果
+		//检索结束后处理汇总结果
+		int totle=0;//总数
 		for(String res:resSet){
-			System.out.println(res);
+			String[] str=res.split("	");
+			int num=Integer.parseInt(str[0]);//次数
+			totle+=num;//汇总总次数
+			String filename=str[1];
+			String lineAndCont="";
+			for(int i=2;i<str.length;i++){
+				lineAndCont=lineAndCont+((i==3)?(":  "+str[i]):str[i]);
+			}
+			if(map.containsKey(filename)){
+				map.put(filename, map.get(filename).addMyfile(num, lineAndCont));
+			}else{
+				map.put(filename, new MyFile(num,lineAndCont));
+			}
+		}
+		
+		System.out.println("总计找到【"+totle+"】个:");
+		for(String key:map.keySet()){
+			System.out.print(key);
+			map.get(key).PrintResolution();
 		}
 	}
 	
 }
 
 class EnumerateFile implements Runnable{//分配一个线程用于递归方式读取路径下面所有的文件
-	BlockingQueue queue;
+	BlockingQueue<File> queue;
 	File startPath;
 	
-	public EnumerateFile(BlockingQueue queue,File startPath){
+	public EnumerateFile(BlockingQueue<File> queue,File startPath){
 		this.queue=queue;
 		this.startPath=startPath;
 	}
@@ -93,7 +120,7 @@ class EnumerateFile implements Runnable{//分配一个线程用于递归方式�
 		}
 	}
 	
-	public void enumerateFile(BlockingQueue queue,File startFile) throws InterruptedException{
+	public void enumerateFile(BlockingQueue<File> queue,File startFile) throws InterruptedException{
 		if(startFile.isFile()){
 				queue.put(startFile);
 		}else{
@@ -106,11 +133,11 @@ class EnumerateFile implements Runnable{//分配一个线程用于递归方式�
 }
 
 class SearchContent implements Runnable{
-	private BlockingQueue queue;
+	private BlockingQueue<File> queue;
 	private String keyWord;
-	ThreadLocal<TreeSet<String>> localSet=new ThreadLocal<TreeSet<String>>();
+	ThreadLocal<HashSet<String>> localSet=new ThreadLocal<HashSet<String>>();
 	
-	public  SearchContent(BlockingQueue queue,String keyWord){
+	public  SearchContent(BlockingQueue<File> queue,String keyWord){
 		this.queue=queue;
 		this.keyWord=keyWord;
 	}
@@ -140,7 +167,7 @@ class SearchContent implements Runnable{
 						num++;
 					}
 					if(num>0){
-						this.putToSet(num+" 次"+file.getPath()+":"+lineNum+"行:"+line);
+						this.putToSet(num+"	"+file.getPath()+"	"+String.format("%03d", lineNum)+"行	"+lineBak);
 					}
 				}
 				sc.close();
@@ -153,15 +180,15 @@ class SearchContent implements Runnable{
 	}
 	
 	public void  putToSet(String result){//将检索到的结果放到set中
-		TreeSet<String> set =localSet.get();
+		HashSet<String> set =localSet.get();
 		if(set==null){
-			set=new TreeSet();
+			set=new HashSet<String>();
 		}
 		set.add(result);
 		localSet.set(set);
 	}
 	public void  printSet(){//将检索到的结果放到set中
-		TreeSet<String> set =localSet.get();
+		HashSet<String> set =localSet.get();
 		if(set==null){
 			return;
 		}else{
@@ -170,5 +197,29 @@ class SearchContent implements Runnable{
 			}
 		}
 		
+	}
+}
+
+class MyFile {
+	int nums=0;//当前文件找到的次数统计
+	List<String> lines=new ArrayList<String>();
+	
+	public MyFile(int num,String content){
+		this.nums=num;
+		this.lines.add(content);
+	}
+	
+	public MyFile addMyfile(int num,String content){
+		this.nums+=num;
+		this.lines.add(content);
+		return this;
+	}
+	
+	public void PrintResolution(){
+		System.out.println("("+this.nums+"次)");
+		Collections.sort(lines);
+		for(String line:lines){
+			System.out.println("    "+line);
+		}
 	}
 }
