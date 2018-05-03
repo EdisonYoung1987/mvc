@@ -22,7 +22,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class G_ArrayBlockingQueue {
 	//检索路径和关键字
 	private static String path,keyWord;
-	private static ArrayBlockingQueue<File> queue=new ArrayBlockingQueue<File>(1024);
+	private static ArrayBlockingQueue<File> queue=new ArrayBlockingQueue<File>(64);
 	//空文件，用来作为线程查找blockingQueue终点
 	public static final File ENDFILE=new File("");
 	public static Lock lock=new ReentrantLock();
@@ -46,11 +46,13 @@ public class G_ArrayBlockingQueue {
 		Scanner scan=new Scanner(System.in);
 		
 		//获取检索路径和关键字
-		System.out.println("输入检索绝对路径名(如/user/edison/):");
+		/*System.out.println("输入检索绝对路径名(如/user/edison/):");
 		G_ArrayBlockingQueue.path=scan.nextLine();
 		System.out.println("输入检索关键字");
 		G_ArrayBlockingQueue.keyWord=scan.nextLine();
-		scan.close();
+		scan.close();*/
+		path="C:\\Users\\Edison\\git\\mvc";
+		keyWord="class";
 		
 		File searchFile=new File(path);
 		if(!searchFile.exists()){
@@ -65,7 +67,7 @@ public class G_ArrayBlockingQueue {
 		
 		//不需等待，边放边取
 		SearchContent searchContent=new SearchContent(queue,keyWord);
-		for(int i=0;i<1024;i++){
+		for(int i=0;i<130;i++){
 			Thread thread=new Thread(searchContent);
 			thread.start();
 			try{
@@ -77,6 +79,7 @@ public class G_ArrayBlockingQueue {
 		
 		//检索结束后处理汇总结果
 		int totle=0;//总数
+		int fileTotle=0;
 		for(String res:resSet){
 			String[] str=res.split("	");
 			int num=Integer.parseInt(str[0]);//次数
@@ -90,12 +93,13 @@ public class G_ArrayBlockingQueue {
 				map.put(filename, map.get(filename).addMyfile(num, lineAndCont));
 			}else{
 				map.put(filename, new MyFile(num,lineAndCont));
+				fileTotle++;
 			}
 		}
 		
-		System.out.println("总计找到【"+totle+"】个:");
+		System.out.println("匹配文件共计"+fileTotle+"个，总计找到匹配项【"+totle+"】个:");
 		for(String key:map.keySet()){
-			System.out.print(key);
+			System.out.println(key);
 			map.get(key).PrintResolution();
 		}
 	}
