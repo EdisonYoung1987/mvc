@@ -1,9 +1,13 @@
 package com.edison.testJunit.oth.ii_2_XML;
 
 import java.net.URL;
+import java.util.Iterator;
+import java.util.List;
 
+import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.Element;
+import org.dom4j.Node;
 import org.dom4j.io.SAXReader;
 
 /**
@@ -28,7 +32,7 @@ public class A_DOM4J_DOM {
 			SAXReader reader=new SAXReader();
 			Document doc=reader.read(url);
 			Element root=doc.getRootElement();
-			parseAndPrint(root, 1);
+			parseAndPrint(root, 0);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -38,11 +42,42 @@ public class A_DOM4J_DOM {
 	 * @param element 标签
 	 * @param level  递归层数，用于打印时的退格控制*/
 	public static void parseAndPrint(Element element,int level){
+		//打印退格
+		System.out.print(getBlank(level));
 		
+		//节点名字
+		String nameString=element.getName();
+		System.out.print(nameString);
+		
+		//属性
+		Iterator<Attribute> it=element.attributeIterator();
+		while(it.hasNext()){
+			Attribute attribute=it.next();
+			System.out.print(" "+attribute.getName()+":"+attribute.getValue().trim());
+		}
+		System.out.println();
+		
+		//打印子标签
+		List<Element> subList=element.elements();
+		for(Element element2:subList){
+			if(element2.getNodeType()==Node.ELEMENT_NODE ){
+				parseAndPrint(element2, level+1);
+			}
+		}
+		
+		//如果没有子标签，就打印值
+		String text=element.getText();
+		if(text!=null && !"".equals(text.trim())){
+			System.out.println(getBlank(level+1)+element.getText().trim());
+		}
 	}
 	
 	/**根据递归层级打印起始退格*/
 	public static String getBlank(int level){
-		StringBuilder 
+		StringBuilder sbBuilder=new StringBuilder();
+		for(int i=0;i<level;i++){
+			sbBuilder.append(BLANK);
+		}
+		return sbBuilder.toString();
 	}
 }
