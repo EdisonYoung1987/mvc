@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Bp0307a">
+  <resultMap id="BaseResultMap" type="Bp0307a">
+    <constructor>
+      <arg column="ORG_NO" javaType="java.lang.String" jdbcType="OTHER" />
+      <arg column="DEAL_WITH_DATE" javaType="java.lang.String" jdbcType="OTHER" />
+      <arg column="ACCT_NO" javaType="java.lang.String" jdbcType="OTHER" />
+      <arg column="ACCOUNT_BALNC" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="TOTAL_AMONT" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="TOTAL_NUM" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="ERROR_CD" javaType="java.lang.String" jdbcType="OTHER" />
+      <arg column="NOTES_STATUS_FLAG" javaType="java.lang.String" jdbcType="OTHER" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    ORG_NO, DEAL_WITH_DATE, ACCT_NO, ACCOUNT_BALNC, TOTAL_AMONT, TOTAL_NUM, ERROR_CD, 
+    NOTES_STATUS_FLAG
+  </sql>
+  <insert id="insert" parameterType="Bp0307a">
+    insert into BP0307A (ORG_NO, DEAL_WITH_DATE, ACCT_NO, ACCOUNT_BALNC, TOTAL_AMONT, TOTAL_NUM, 
+      ERROR_CD, NOTES_STATUS_FLAG)
+    values (#{orgNo}, #{dealWithDate}, #{acctNo}, #{accountBalnc}, #{totalAmont}, #{totalNum}, 
+      #{errorCd}, #{notesStatusFlag})
+  </insert>
+  <insert id="insertSelective" parameterType="Bp0307a">
+    insert into BP0307A
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="orgNo != null">        ORG_NO,      </if>
+      <if test="dealWithDate != null">        DEAL_WITH_DATE,      </if>
+      <if test="acctNo != null">        ACCT_NO,      </if>
+      <if test="accountBalnc != null">        ACCOUNT_BALNC,      </if>
+      <if test="totalAmont != null">        TOTAL_AMONT,      </if>
+      <if test="totalNum != null">        TOTAL_NUM,      </if>
+      <if test="errorCd != null">        ERROR_CD,      </if>
+      <if test="notesStatusFlag != null">        NOTES_STATUS_FLAG,      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="orgNo != null">        #{orgNo},      </if>
+      <if test="dealWithDate != null">        #{dealWithDate},      </if>
+      <if test="acctNo != null">        #{acctNo},      </if>
+      <if test="accountBalnc != null">        #{accountBalnc},      </if>
+      <if test="totalAmont != null">        #{totalAmont},      </if>
+      <if test="totalNum != null">        #{totalNum},      </if>
+      <if test="errorCd != null">        #{errorCd},      </if>
+      <if test="notesStatusFlag != null">        #{notesStatusFlag},      </if>
+    </trim>
+  </insert>
+</mapper>
