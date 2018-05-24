@@ -2,7 +2,6 @@ package com.edison.testJunit.oth.ii_2_XML;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.net.URL;
 import java.util.Scanner;
 
 import org.dom4j.Document;
