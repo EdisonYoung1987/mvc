@@ -31,6 +31,10 @@ public class A_DOM4J_DOM {
 		try{
 			SAXReader reader=new SAXReader();
 			Document doc=reader.read(url);
+			//doctype读取 
+			System.out.println("DocType="+doc.getDocType().getElementName()+" "+doc.getDocType().getPublicID()
+					+" "+doc.getDocType().getSystemID());
+			System.out.println("Encoding="+doc.getXMLEncoding());
 			Element root=doc.getRootElement();
 			parseAndPrint(root, 0);
 		}catch(Exception e){
@@ -68,7 +72,7 @@ public class A_DOM4J_DOM {
 		//如果没有子标签，就打印值
 		String text=element.getText();
 		if(text!=null && !"".equals(text.trim())){
-			System.out.println(getBlank(level+1)+element.getText().trim());
+			System.out.println(getBlank(level+1)+element.getText().trim());  //trim()不止去空格，还会把ascii中排在空格前的前导后导字符都去掉
 		}
 	}
 	
