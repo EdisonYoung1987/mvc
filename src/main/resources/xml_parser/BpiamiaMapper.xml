@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Bpiamia">
+  <resultMap id="BaseResultMap" type="Bpiamia">
+    <constructor>
+      <idArg column="ACCT_NO" javaType="java.lang.String" jdbcType="OTHER" />
+      <arg column="ORG_CD" javaType="java.lang.String" jdbcType="OTHER" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    ACCT_NO, ORG_CD, CURRNCY_CD, BUSI_CD, ACCT_NO_SERL, CHECK_A_FLAG, ACC_BEL_TO_ORG_NO, 
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="Bpiamia" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from BPIAMIA
+    where ACCT_NO = #{acctNo}
+    <if test="forUpdate == true">for update</if>
+  </select>
+  <insert id="insert" parameterType="Bpiamia">
+    insert into BPIAMIA 
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="Bpiamia">
+    update BPIAMIA
+    set ORG_CD =
+  </update>
+  <insert id="insertSelective" parameterType="Bpiamia">
+    insert into BPIAMIA selective
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="acctNo != null">        ACCT_NO,      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="acctNo != null">        #{acctNo},      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="Bpiamia">
+    update BPIAMIA
+    <set>
+      <if test="orgCd != null">        ORG_CD = #{orgCd},      </if>
+    </set>
+    where ACCT_NO = #{acctNo}
+  </update>
+</mapper>
