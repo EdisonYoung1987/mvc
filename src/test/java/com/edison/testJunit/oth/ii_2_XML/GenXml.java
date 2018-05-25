@@ -14,7 +14,7 @@ public class GenXml {
 		 if(file.exists()){
 			 file.delete();
 		 }
-		 int len =40000;
+		 int len =4;
 		 file.createNewFile();
 		 BufferedWriter bw = null;  
 		 FileWriter fw = new FileWriter(file);  
