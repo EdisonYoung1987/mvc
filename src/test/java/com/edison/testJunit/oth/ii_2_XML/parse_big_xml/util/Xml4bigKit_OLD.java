@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.dom4j.Document;
-import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
@@ -20,12 +18,11 @@ import org.dom4j.io.SAXReader;
 import com.edison.testJunit.oth.ii_2_XML.parse_big_xml.annotation.Root;
 import com.edison.testJunit.oth.ii_2_XML.parse_big_xml.base.Range;
 import com.edison.testJunit.oth.ii_2_XML.parse_big_xml.base.XmlBase;
-import com.edison.testJunit.oth.ii_2_XML.parse_big_xml.filter.XmlFilter;
 import com.edison.testJunit.oth.ii_2_XML.parse_big_xml.handler.XmlHandler;
 
-public class Xml4bigKit {
+public class Xml4bigKit_OLD {
 	
-	public final static int MAX=0;
+	public final static int MAX=30;
 	public final static int READ_LEN=20000;//String
 	private static BufferedReader in;
 	
@@ -36,12 +33,10 @@ public class Xml4bigKit {
 	 * @param cls
 	 * @param handle
 	 * @param readLen
-	 * @throws Exception 
 	 */
 	
 	@SuppressWarnings("unchecked")
-	public static void parseXml(String xpath,String dataStartTag,List<Class<? extends XmlBase>> cls,
-			 XmlHandler handle,long readLen,XmlFilter xmlfilter) throws Exception{
+	public static void parseXml(String xpath,String dataStartTag,List<Class<? extends XmlBase>> cls,XmlHandler handle,long readLen){
 		
 		 Map<String,List<Object>> reMap =new  HashMap<String,List<Object>>();
 		  File file = new File(xpath);
@@ -49,7 +44,8 @@ public class Xml4bigKit {
 		  len=file.length()/1024*1024;
 		  
 	    try {
-	    	if(len<MAX){// small file
+				
+		  if(len<MAX){// small file
 			 
 					FileInputStream in = new FileInputStream(file);
 					Reader reader=new InputStreamReader(in,"utf-8");
@@ -98,7 +94,6 @@ public class Xml4bigKit {
 			  StringBuffer sbcache = new StringBuffer();
 			  List<String> tagsList = new ArrayList<String>();
 			  
-			  int tagMaxLen=0; //用于保存标签最大长度
 			  for(Class<? extends XmlBase> cl:cls){//获取Class列表中类对应的标签，要么是注解名，要么是类简写
 				  Root rt=cl.getAnnotation(Root.class);
 		    	  String rtTag="";
@@ -107,8 +102,6 @@ public class Xml4bigKit {
 		    	  }else{
 		    		  rtTag=cl.getSimpleName();
 		    	  }
-		    	  if(rtTag.length()>tagMaxLen)
-		    		  tagMaxLen=rtTag.length();
 		    	  tagsList.add(rtTag);
 			  }
 			  
@@ -117,9 +110,6 @@ public class Xml4bigKit {
 			  int count =0;
 			  int rlen=0;
 			  while ((rlen=in.read(cbuf))!=-1){
-				  /**需考虑几种情况：
-				   * 1.这个标签内容多，READ_LEN的内容装不下
-				   * 2.这个标签内容少，READ_LEN里面有多个*/
 				   if(rlen!=READ_LEN){
 					   char[] tcbuf =new char[rlen];
 					   System.arraycopy(cbuf, 0, tcbuf, 0, rlen);
@@ -128,30 +118,85 @@ public class Xml4bigKit {
 					   sbcache.append(cbuf);
 				   }
 				   
-				   parseXmlByStr(sbcache, tagsList, reMap, cls, handle, tagMaxLen,xmlfilter);
-				   
+				   Range range =Strkit.getRange(sbcache, tagsList);
+				  if(range.getFrom()>0){
+					  String elementText="";
+					  try{
+						  
+						elementText=sbcache.substring(range.getFrom(), range.getTo());
+						Document doc;
+						try{
+							doc = DocumentHelper.parseText("<Root>"+elementText+"</Root>");  
+						}catch(Exception e){
+							e.printStackTrace();
+							System.out.println(elementText);
+							return;
+						}
+				        Element elem = doc.getRootElement(); 
+				        reMap.clear();
+				        
+				        for(Class<? extends XmlBase> cl:cls){
+					    	
+					    	  Root rt=cl.getAnnotation(Root.class);
+					    	  String rtTag="";
+					    	  if(rt!=null){
+					    		  rtTag=rt.name();
+					    	  }else{
+					    		  rtTag=cl.getSimpleName();
+					    		  
+					    	  }
+					    	  List<Element> listElement = elem.elements(rtTag);
+					    	  if(listElement!=null){
+					    		  List<Object> list =  reMap.get(rtTag);
+					    		  if(list == null){
+					    			  list = new ArrayList<Object>();
+					    			  
+					    		  }  
+					    		  for(Element element:listElement){
+					    			  Object obj =Class.forName(cl.getName()).newInstance();
+							    	  String proccessMethodName = "parseXml";
+							    	  Method  proccessMethod = obj.getClass().getMethod(proccessMethodName, Element.class);
+							    	  proccessMethod.invoke(obj, element);
+							    	  list.add(obj);
+					    		  }
+					    		  reMap.put(rtTag, list);
+					    	  }
+					    	 
+					    }
+				        handle.hande(reMap);
+					  }catch(Exception e){
+						  e.printStackTrace();
+						 
+						  System.out.println(elementText);
+					  }
+					  
+				  
+					  sbcache= sbcache.delete(0,  range.getTo());
+				  }else{
+					  sbcache= sbcache.delete(0, sbcache.length());
+				  }
+				
 				  count++;
 				  if(count%1000==0){
 					  System.out.println("handle count:"+count);
 				  }
 			  }
 			  
+			 
+			 
+			  
+			  
 		  }
 	    } catch (Exception e) {
-	    	throw e;
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 		
 	}
 	
-	public static void parseXml(String xpath,String dataStartTag,List<Class<? extends XmlBase>> cls,
-			XmlHandler handle,XmlFilter xmlfilter) throws Exception{
-		if(cls.size()==0){
-			throw new Exception("需要传入解析内容保存对象");
-		}else if(cls.size()>1){
-			throw new Exception("暂不支持多标签解析");
-		}
-		parseXml(xpath,dataStartTag,cls,handle,READ_LEN,xmlfilter);
+	public static void parseXml(String xpath,String dataStartTag,List<Class<? extends XmlBase>> cls,XmlHandler handle){
+		 parseXml(xpath,dataStartTag,cls,handle,READ_LEN);
 	}
 	
 	
@@ -176,72 +221,5 @@ public class Xml4bigKit {
 		return tmp;
 	}
 	
-	/**
-	 * 针对读出的文件内容进行xml解析
-	 * @throws ClassNotFoundException 
-	 * @throws IllegalAccessException 
-	 * @throws InstantiationException 
-	 * @throws DocumentException 
-	 * @throws SecurityException 
-	 * @throws NoSuchMethodException 
-	 * @throws InvocationTargetException 
-	 * @throws IllegalArgumentException */
-	public static void parseXmlByStr(StringBuffer sbcache, List<String> tagsList,
-			  Map<String,List<Object>> reMap,List<Class<? extends XmlBase>> cls,XmlHandler handle,int tagMaxLen,
-			  XmlFilter xmlfilter) 
-					  throws InstantiationException, IllegalAccessException, ClassNotFoundException, DocumentException, NoSuchMethodException, SecurityException, IllegalArgumentException, InvocationTargetException{
-		  Range range =Strkit.getRange(sbcache, tagsList);
-		  if(range.getFrom()>=0){
-			   String elementText="";
-			   if(range.getTo()>0){//说明找到了一组对应标签
-				   elementText=sbcache.substring(range.getFrom(), range.getTo()+1);
-				   Document doc;
-				   doc = DocumentHelper.parseText("<Root>"+elementText+"</Root>");  
-					
-			       Element elem = doc.getRootElement(); 
-			       reMap.clear();
-			        
-			       for(Class<? extends XmlBase> cl:cls){
-				    	
-				    	  Root rt=cl.getAnnotation(Root.class);
-				    	  String rtTag="";
-				    	  if(rt!=null){
-				    		  rtTag=rt.name();
-				    	  }else{
-				    		  rtTag=cl.getSimpleName();
-				    		  
-				    	  }
-				    	  List<Element> listElement = elem.elements(rtTag);
-				    	  if(listElement!=null){
-				    		  List<Object> list =  reMap.get(rtTag);
-				    		  if(list == null){
-				    			  list = new ArrayList<Object>();
-				    			  
-				    		  }  
-				    		  for(Element element:listElement){
-				    			  if(xmlfilter!=null && !xmlfilter.accept(element)){ //只是过滤掉普通车辆:没有id属性
-				    				  continue;
-				    			  }
-				    			  Object obj =Class.forName(cl.getName()).newInstance();
-						    	  String proccessMethodName = "parseXml";
-						    	  Method  proccessMethod = obj.getClass().getMethod(proccessMethodName, Element.class);
-						    	  proccessMethod.invoke(obj, element);
-						    	  list.add(obj);
-				    		  }
-				    		  reMap.put(rtTag, list);
-				    	  }
-				    	 
-			        }
-			        handle.hande(reMap);
-				  
-			        //已经解析出来了一组，则将这一段从内存中删除 
-			        sbcache= sbcache.delete(0,  range.getTo());
-			   }
-		  }else{//没找到起始标签，那这些内容都没有用(考虑到读取了起始标签一部分的情况<Ca、<Car等不能完整判断)
-			  if(sbcache.length()>(tagMaxLen+1)){
-				  sbcache= sbcache.delete(0, sbcache.length()-(tagMaxLen+1)); //还需保留"<"
-			  }
-		   }
-		  return;
-	}
+
 }

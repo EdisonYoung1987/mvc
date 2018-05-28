@@ -1,6 +1,8 @@
 package com.edison.testJunit.oth.ii_2_XML;
 
-public class CarEngine {
+import com.edison.testJunit.oth.ii_2_XML.parse_big_xml.base.XmlBase;
+
+public class CarEngine extends XmlBase {
 	private String core;
 	private String type;
 	public String getCore() {

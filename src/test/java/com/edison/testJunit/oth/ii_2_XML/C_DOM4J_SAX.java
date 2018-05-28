@@ -102,7 +102,7 @@ class CarHandler implements ElementHandler{
 			carEngine.setType(((Element)node).element("type").getText());
 			engineList.add(carEngine);
 		}
-		car.setEngineList(engineList);
+		car.setCarEngine(engineList);
 		
 		//添加到list
 		carlist.add(car);

@@ -2,8 +2,12 @@ package com.edison.testJunit.oth.ii_2_XML;
 
 import java.util.List;
 
+import com.edison.testJunit.oth.ii_2_XML.parse_big_xml.annotation.Column;
+import com.edison.testJunit.oth.ii_2_XML.parse_big_xml.base.XmlBase;
+
+
 /**解析xml后存储实体类<p>*/
-public class Car {
+public class Car extends XmlBase {
 	/*<Car id="x">
 		<type>奔驰01</type>
 		<product>德国</product>
@@ -21,6 +25,7 @@ public class Car {
 	private String type;
 	private String product;
 	double  price;
+	@Column(name="carEngine")
 	List<CarEngine> engineList;
 	public int getId() {
 		return id;
@@ -57,5 +62,6 @@ public class Car {
 		return "Car [id=" + id + ", type=" + type + ", product=" + product
 				+ ", price=" + price + ", engineList=" + engineList + "]";
 	}
+	
 	
 }

@@ -6,8 +6,11 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import oracle.sql.CHAR;
+
 import org.dom4j.Element;
 
+import com.edison.testJunit.oth.ii_2_XML.parse_big_xml.annotation.Attribute;
 import com.edison.testJunit.oth.ii_2_XML.parse_big_xml.annotation.Column;
 public  class XmlBase {
 	
@@ -19,259 +22,245 @@ public  class XmlBase {
 		if (fields == null)
 			return;
 		try {
-		for (Field field : fields) {
-
-			Column an4field = field.getAnnotation(Column.class);
-			String xmlNodeName = null;
-			if(an4field!=null){
-				xmlNodeName = an4field.name();
-			}else{
-				xmlNodeName = field.getName();
-				 
-			}
-			
-			Class<?> fieldType = field.getType();
-			
-			
-			
-			
-			if (XmlBase.class.isAssignableFrom(fieldType)) {// if it is XmlBase subclass
-												// then go recursive
-				
-				Element targer_elm = getNodeElement(elm,xmlNodeName);
-			   if(targer_elm!=null){
-				    String className=field.getType().getCanonicalName();
-				    Object obj = Class.forName(className).newInstance();
-				    
-					Method  proccessMethod = obj.getClass().getMethod("parseXml",Element.class);	
-					proccessMethod.invoke(obj, targer_elm);
-					
-					String firstLetter=field.getName().substring(0, 1).toUpperCase();
-					String setMethodName = "set" + firstLetter + field.getName().substring(1); 		
-					Method setMethod = this.getClass().getMethod(setMethodName, new Class[] {obj.getClass()});
-					setMethod.invoke(this, new Object[] {obj});
-			   }	
-			   
-
-			} else if (fieldType == List.class) {
-				
-				Type fc = field.getGenericType(); 
-				ParameterizedType pt = (ParameterizedType) fc;  
-			    Class<?> genericClazz = (Class<?>)pt.getActualTypeArguments()[0];
-			    if(genericClazz == String.class || genericClazz == Integer.class || genericClazz == Long.class
-					|| genericClazz == Float.class || genericClazz == Double.class){
-			
-					String firstLetter=field.getName().substring(0, 1).toUpperCase();
-					List<Element> ls_elm=getNodeElements(elm,xmlNodeName);
-					
-					if(ls_elm==null||ls_elm.size()==0){
-						continue;
+			for (Field field : fields) {
+	
+				Column an4field = field.getAnnotation(Column.class);//获取子标签注解
+				Attribute attr=field.getAnnotation(Attribute.class);//获取属性注解
+				String xmlNodeName = null; //属性名或者节点名
+				if(an4field!=null){
+					xmlNodeName = an4field.name();
+				}else{
+					if(attr!=null){
+						xmlNodeName=attr.name();
 					}
-					
-					
-					String setMethodName = "set" + firstLetter + field.getName().substring(1); 
-					
-					if(genericClazz == String.class ){
-						List<String> list =new ArrayList<String>();
-
-						for(Element item:ls_elm){
-							String vl=item.getText();
-							if(vl!=null){
-								vl=vl.trim();
-							}
-							vl=parseFilter(vl);
-							list.add(vl);
-							
-						}
-						
-						
-						
-						Method setMethod = this.getClass().getMethod(setMethodName,List.class);
-						setMethod.invoke(this, list);
-						
-					  
-						
-					}else if(fieldType == Integer.class){
-						List<Integer> list =new ArrayList<Integer>();
-
-						for(Element item:ls_elm){
-							String vl=item.getText();
-							if(vl!=null){
-								vl=vl.trim();
-							}
-							vl=parseFilter(vl);
-							list.add(Integer.valueOf(vl));
-							
-						}
-						
-						
-						
-						Method setMethod = this.getClass().getMethod(setMethodName,List.class);
-						setMethod.invoke(this, list);
-						
-					  
-						
-					}else if(fieldType == Long.class){
-
-						List<Long> list =new ArrayList<Long>();
-
-						for(Element item:ls_elm){
-							String vl=item.getText();
-							if(vl!=null){
-								vl=vl.trim();
-							}
-							vl=parseFilter(vl);
-							list.add(Long.valueOf(vl));
-							
-						}
-						
-						
-						
-						Method setMethod = this.getClass().getMethod(setMethodName,List.class);
-						setMethod.invoke(this, list);
-						
-					  
-						
-					
-					}else if(fieldType == Float.class){
-
-						List<Float> list =new ArrayList<Float>();
-
-						for(Element item:ls_elm){
-							String vl=item.getText();
-							if(vl!=null){
-								vl=vl.trim();
-							}
-							vl=parseFilter(vl);
-							list.add(Float.valueOf(vl));
-							
-						}
-						
-						
-						
-						Method setMethod = this.getClass().getMethod(setMethodName,List.class);
-						setMethod.invoke(this, list);
-						
-					  
-						
-					}else if(fieldType == Double.class){
-						List<Double> list =new ArrayList<Double>();
-
-						for(Element item:ls_elm){
-							String vl=item.getText();
-							if(vl!=null){
-								vl=vl.trim();
-							}
-							vl=parseFilter(vl);
-							list.add(Double.valueOf(vl));
-							
-						}
-						
-						
-						
-						Method setMethod = this.getClass().getMethod(setMethodName,List.class);
-						setMethod.invoke(this, list);
-						
-					  
-						
-					}else{
-						List<String> list =new ArrayList<String>();
-
-						for(Element item:ls_elm){
-							String vl=item.getText();
-							if(vl!=null){
-								vl=vl.trim();
-							}
-							vl=parseFilter(vl);
-							list.add(vl);
-							
-						}
-						
-						
-						
-						Method setMethod = this.getClass().getMethod(setMethodName,List.class);
-						setMethod.invoke(this, list);
-						
-					  
-						
-					}
-					
-					
-					
-				
-					
-				
-			    	
-			    }else{// list<Object>
-			    	
-					String firstLetter=field.getName().substring(0, 1).toUpperCase();
-					List<Element> ls_elm=getNodeElements(elm,xmlNodeName);
-					
-					if(ls_elm==null||ls_elm.size()==0){
-						continue;
-					}
-					List<Object> list = new ArrayList<Object>();
-					for(Element e:ls_elm){
-						Object obj =Class.forName(genericClazz.getName()).newInstance();
-						Method  proccessMethod = obj.getClass().getMethod("parseXml", Element.class);	
-						proccessMethod.invoke(obj, e);
-						list.add(obj);
-					}
-					String setMethodName = "set" + firstLetter + field.getName().substring(1); 		
-					Method setMethod = this.getClass().getMethod(setMethodName,List.class);
-					setMethod.invoke(this, list);
-					
-
-				  
-			    	
-			    	
-			    	
-			    }
-				
-				
-
-			} else if (fieldType == String.class || fieldType == Integer.class || fieldType == Long.class
-					|| fieldType == Float.class || fieldType == Double.class) {
-				
-				Element targer_elm = getNodeElement(elm,xmlNodeName);
-				if (targer_elm != null) {
-					String textvalue = targer_elm.getText();
-					if (textvalue != null) {
-						textvalue = textvalue.trim();
-					}
-					textvalue = parseFilter(textvalue);
-					Object value=textvalue;
-					String firstLetter = field.getName().substring(0, 1).toUpperCase();
-					String setMethodName = "set" + firstLetter + field.getName().substring(1);
-					
-					if(fieldType == Integer.class){
-						value=Integer.valueOf(textvalue);
-						this.getClass().getMethod(setMethodName, Integer.class).invoke(this, value);
-					}else if(fieldType == Long.class){
-						value=Long.valueOf(textvalue);
-						this.getClass().getMethod(setMethodName, Long.class).invoke(this, value);
-					}else if(fieldType == Float.class){
-						value=Float.valueOf(textvalue);
-						this.getClass().getMethod(setMethodName, Float.class).invoke(this, value);
-					}else if(fieldType == Double.class){
-						value=Double.valueOf(textvalue);
-						this.getClass().getMethod(setMethodName, Double.class).invoke(this, value);
-					}else{
-						this.getClass().getMethod(setMethodName, String.class).invoke(this, value);
-					}
-					
-					
-					
+					xmlNodeName = field.getName();
+					 
 				}
-
-			} else {
-				// not implements
+				
+				Class<?> fieldType = field.getType();
+				
+				if (XmlBase.class.isAssignableFrom(fieldType)) {// if it is XmlBase subclass
+													// then go recursive
+					
+					Element targer_elm = getNodeElement(elm,xmlNodeName);
+					if(targer_elm!=null){
+					    String className=field.getType().getCanonicalName();
+					    Object obj = Class.forName(className).newInstance();
+					    
+						Method  proccessMethod = obj.getClass().getMethod("parseXml",Element.class);	
+						proccessMethod.invoke(obj, targer_elm);
+						
+						String firstLetter=field.getName().substring(0, 1).toUpperCase();
+						String setMethodName = "set" + firstLetter + field.getName().substring(1); 		
+						Method setMethod = this.getClass().getMethod(setMethodName, new Class[] {obj.getClass()});
+						setMethod.invoke(this, new Object[] {obj});
+					}	
+				   
+	
+				} else if (fieldType == List.class) {
+					Type fc = field.getGenericType(); 
+					ParameterizedType pt = (ParameterizedType) fc;  
+				    Class<?> genericClazz = (Class<?>)pt.getActualTypeArguments()[0];
+					System.out.println("List对象"+genericClazz);
+	
+				    if(genericClazz == String.class || genericClazz == Integer.class || genericClazz == Long.class
+						|| genericClazz == Float.class || genericClazz == Double.class){
+				
+						String firstLetter=field.getName().substring(0, 1).toUpperCase();
+						List<Element> ls_elm=getNodeElements(elm,xmlNodeName);
+						
+						if(ls_elm==null||ls_elm.size()==0){
+							continue;
+						}
+						
+						
+						String setMethodName = "set" + firstLetter + field.getName().substring(1); 
+						
+						if(genericClazz == String.class ){
+							List<String> list =new ArrayList<String>();
+	
+							for(Element item:ls_elm){
+								String vl=item.getText();
+								if(vl!=null){
+									vl=vl.trim();
+								}
+								vl=parseFilter(vl);
+								list.add(vl);
+								
+							}
+							
+							
+							
+							Method setMethod = this.getClass().getMethod(setMethodName,List.class);
+							setMethod.invoke(this, list);
+							
+						  
+							
+						}else if(fieldType == Integer.class){
+							List<Integer> list =new ArrayList<Integer>();
+	
+							for(Element item:ls_elm){
+								String vl=item.getText();
+								if(vl!=null){
+									vl=vl.trim();
+								}
+								vl=parseFilter(vl);
+								list.add(Integer.valueOf(vl));
+								
+							}
+							
+							
+							
+							Method setMethod = this.getClass().getMethod(setMethodName,List.class);
+							setMethod.invoke(this, list);
+							
+						  
+							
+						}else if(fieldType == Long.class){
+	
+							List<Long> list =new ArrayList<Long>();
+	
+							for(Element item:ls_elm){
+								String vl=item.getText();
+								if(vl!=null){
+									vl=vl.trim();
+								}
+								vl=parseFilter(vl);
+								list.add(Long.valueOf(vl));
+								
+							}
+							
+							
+							
+							Method setMethod = this.getClass().getMethod(setMethodName,List.class);
+							setMethod.invoke(this, list);
+							
+						  
+							
+						
+						}else if(fieldType == Float.class){
+	
+							List<Float> list =new ArrayList<Float>();
+	
+							for(Element item:ls_elm){
+								String vl=item.getText();
+								if(vl!=null){
+									vl=vl.trim();
+								}
+								vl=parseFilter(vl);
+								list.add(Float.valueOf(vl));
+								
+							}
+							
+							
+							
+							Method setMethod = this.getClass().getMethod(setMethodName,List.class);
+							setMethod.invoke(this, list);
+							
+						  
+							
+						}else if(fieldType == Double.class){
+							List<Double> list =new ArrayList<Double>();
+	
+							for(Element item:ls_elm){
+								String vl=item.getText();
+								if(vl!=null){
+									vl=vl.trim();
+								}
+								vl=parseFilter(vl);
+								list.add(Double.valueOf(vl));
+								
+							}
+							
+							
+							
+							Method setMethod = this.getClass().getMethod(setMethodName,List.class);
+							setMethod.invoke(this, list);
+							
+						  
+							
+						}else{
+							List<String> list =new ArrayList<String>();
+	
+							for(Element item:ls_elm){
+								String vl=item.getText();
+								if(vl!=null){
+									vl=vl.trim();
+								}
+								vl=parseFilter(vl);
+								list.add(vl);
+								
+							}
+							
+							Method setMethod = this.getClass().getMethod(setMethodName,List.class);
+							setMethod.invoke(this, list);
+						}
+						
+				    }else{// list<Object>
+						String firstLetter=field.getName().substring(0, 1).toUpperCase();
+						List<Element> ls_elm=getNodeElements(elm,xmlNodeName);
+						
+						if(ls_elm==null||ls_elm.size()==0){
+							continue;
+						}
+						List<Object> list = new ArrayList<Object>();
+						for(Element e:ls_elm){
+							Object obj =Class.forName(genericClazz.getName()).newInstance();
+							Method  proccessMethod = obj.getClass().getMethod("parseXml", Element.class);	
+							proccessMethod.invoke(obj, e);
+							list.add(obj);
+						}
+						String setMethodName = "set" + firstLetter + field.getName().substring(1); 		
+						Method setMethod = this.getClass().getMethod(setMethodName,List.class);
+						setMethod.invoke(this, list);
+				    }
+				} else if (fieldType == String.class || fieldType == Integer.class || fieldType == Long.class||fieldType==Boolean.class
+					|| fieldType == Float.class || fieldType == Double.class ||fieldType == CHAR.class||fieldType == Long.class
+					||fieldType==int.class||fieldType==byte.class||fieldType==char.class||fieldType==short.class
+					||fieldType==boolean.class||fieldType==double.class||fieldType==float.class||fieldType==long.class) {
+					
+					if(attr!=null){//说明是属性
+						
+					}else{//说明是子节点
+						Element targer_elm = getNodeElement(elm,xmlNodeName);
+						if (targer_elm != null) {
+							String textvalue = targer_elm.getText();
+							if (textvalue != null) {
+								textvalue = textvalue.trim();
+							}
+							textvalue = parseFilter(textvalue);
+							Object value=textvalue;
+							String firstLetter = field.getName().substring(0, 1).toUpperCase();
+							String setMethodName = "set" + firstLetter + field.getName().substring(1);
+							
+							if(fieldType == Integer.class||fieldType == int.class){
+								value=Integer.valueOf(textvalue);
+								this.getClass().getMethod(setMethodName, fieldType).invoke(this, value);
+							}else if(fieldType == Long.class||fieldType == long.class){
+								value=Long.valueOf(textvalue);
+								this.getClass().getMethod(setMethodName, fieldType).invoke(this, value);
+							}else if(fieldType == Short.class||fieldType == short.class){
+								value=Short.valueOf(textvalue);
+								this.getClass().getMethod(setMethodName, fieldType).invoke(this, value);
+							}else if(fieldType == Float.class||fieldType == float.class){
+								value=Float.valueOf(textvalue);
+								this.getClass().getMethod(setMethodName, fieldType).invoke(this, value);
+							}else if(fieldType == Double.class||fieldType == double.class){
+								value=Double.valueOf(textvalue);
+								this.getClass().getMethod(setMethodName, fieldType).invoke(this, value);
+							}else{
+								this.getClass().getMethod(setMethodName, fieldType).invoke(this, value);
+							}
+						}
+					}
+				} else {
+					System.out.println("当前类型不支持<未继承XmlBase类>:"+fieldType);
+					// not implements
+				}
+				
+				
+	
 			}
-			
-			
-
-		    }
-		
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -279,9 +268,11 @@ public  class XmlBase {
 
 	}
 	
-	
+	/**通过第二个参数"ss/sss"获取子标签
+	 * */
 	private static Element getNodeElement(Element element,String tags){
-		if(element==null)return element;
+		if(element==null)
+			return element;
 		
 		Element tmp = element;
 
