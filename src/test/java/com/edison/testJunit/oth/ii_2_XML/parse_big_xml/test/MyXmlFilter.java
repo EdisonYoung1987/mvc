@@ -16,7 +16,7 @@ public class MyXmlFilter implements XmlFilter{
 				if("法拉利".equals(element.element("type").getText())){//当前<Car>的子标签<type>的内容
 					return true;
 				}
-				if(!attr.getText().endsWith("001")){//只处理id以001结尾的标签
+				if(!attr.getText().endsWith("0001")){//只处理id以001结尾的标签
 					return false;
 				}
 			}

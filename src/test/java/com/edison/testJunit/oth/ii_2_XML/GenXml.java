@@ -14,8 +14,10 @@ public class GenXml {
 		 if(file.exists()){
 			 file.delete();
 		 }
-		 int len =40000; //生成750M左右的XML文件
+//		 int len =40000; //生成750M左右的XML文件
 //		 int len =4;     
+		 int len =120000; //生成2.1G左右的XML文件
+
 		 file.createNewFile();
 		 BufferedWriter bw = null;  
 		 FileWriter fw = new FileWriter(file);  
