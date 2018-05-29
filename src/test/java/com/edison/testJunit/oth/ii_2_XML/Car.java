@@ -3,6 +3,7 @@ package com.edison.testJunit.oth.ii_2_XML;
 import java.util.List;
 
 import com.edison.testJunit.oth.ii_2_XML.parse_big_xml.annotation.Column;
+import com.edison.testJunit.oth.ii_2_XML.parse_big_xml.annotation.IsAttr;
 import com.edison.testJunit.oth.ii_2_XML.parse_big_xml.base.XmlBase;
 
 
@@ -21,6 +22,7 @@ public class Car extends XmlBase {
 			<type>Intel</type>
 		</carEngine>
 	</Car>*/
+	@IsAttr(name="id")
 	private int id;
 	private String type;
 	private String product;

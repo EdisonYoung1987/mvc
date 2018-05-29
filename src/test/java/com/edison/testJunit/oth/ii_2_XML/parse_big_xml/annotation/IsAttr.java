@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
  * 如<Car id="1"> Car对象的属性id就需要注解Attribute(name="id")，否则不会被解析到*/
 @Retention(RetentionPolicy.RUNTIME) 
 @Target(ElementType.FIELD) 
-public @ interface Attribute {
+public @ interface IsAttr {
   public String name();
   public String required() default "1";//1:required which will generate the node of xml whatever the element value is null,0:not required which will generate the node of xml if  the element value is not null
 }

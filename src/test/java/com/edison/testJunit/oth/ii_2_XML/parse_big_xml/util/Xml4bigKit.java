@@ -144,14 +144,23 @@ public class Xml4bigKit {
 		
 	}
 	
-	public static void parseXml(String xpath,String dataStartTag,List<Class<? extends XmlBase>> cls,
+	
+	/**
+	 * @param filepath 待解析xml文件路径
+	 * @param dataStartTag 起始标签: null-从根标签开始解析 "/root/abc"-从 &lt;root&gt;&lt;abc&gt;标签开始解析
+	 * @param cls  待保存解析对象的类的list，暂时不支持同时解析多个标签内容到对象
+	 * @param handle 传递解析好的List&lt;Object&gt;到外部调用对象
+	 * @param xmlfilter 通过xml的Element进行过滤
+	 * @throws Exception
+	 */
+	public static void parseXml(String filepath,String dataStartTag,List<Class<? extends XmlBase>> cls,
 			XmlHandler handle,XmlFilter xmlfilter) throws Exception{
 		if(cls.size()==0){
 			throw new Exception("需要传入解析内容保存对象");
 		}else if(cls.size()>1){
 			throw new Exception("暂不支持多标签解析");
 		}
-		parseXml(xpath,dataStartTag,cls,handle,READ_LEN,xmlfilter);
+		parseXml(filepath,dataStartTag,cls,handle,READ_LEN,xmlfilter);
 	}
 	
 	

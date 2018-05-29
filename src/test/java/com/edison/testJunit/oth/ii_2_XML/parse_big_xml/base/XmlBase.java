@@ -8,9 +8,10 @@ import java.util.List;
 
 import oracle.sql.CHAR;
 
+import org.dom4j.Attribute;
 import org.dom4j.Element;
 
-import com.edison.testJunit.oth.ii_2_XML.parse_big_xml.annotation.Attribute;
+import com.edison.testJunit.oth.ii_2_XML.parse_big_xml.annotation.IsAttr;
 import com.edison.testJunit.oth.ii_2_XML.parse_big_xml.annotation.Column;
 public  class XmlBase {
 	
@@ -25,13 +26,13 @@ public  class XmlBase {
 			for (Field field : fields) {
 	
 				Column an4field = field.getAnnotation(Column.class);//获取子标签注解
-				Attribute attr=field.getAnnotation(Attribute.class);//获取属性注解
+				IsAttr isAttr=field.getAnnotation(IsAttr.class);//获取属性注解
 				String xmlNodeName = null; //属性名或者节点名
 				if(an4field!=null){
 					xmlNodeName = an4field.name();
 				}else{
-					if(attr!=null){
-						xmlNodeName=attr.name();
+					if(isAttr!=null){
+						xmlNodeName=isAttr.name();
 					}
 					xmlNodeName = field.getName();
 					 
@@ -57,11 +58,10 @@ public  class XmlBase {
 					}	
 				   
 	
-				} else if (fieldType == List.class) {
+				} else if (fieldType == List.class) {//获取list的泛型实际类型
 					Type fc = field.getGenericType(); 
 					ParameterizedType pt = (ParameterizedType) fc;  
 				    Class<?> genericClazz = (Class<?>)pt.getActualTypeArguments()[0];
-					System.out.println("List对象"+genericClazz);
 	
 				    if(genericClazz == String.class || genericClazz == Integer.class || genericClazz == Long.class
 						|| genericClazz == Float.class || genericClazz == Double.class){
@@ -72,7 +72,6 @@ public  class XmlBase {
 						if(ls_elm==null||ls_elm.size()==0){
 							continue;
 						}
-						
 						
 						String setMethodName = "set" + firstLetter + field.getName().substring(1); 
 						
@@ -89,12 +88,8 @@ public  class XmlBase {
 								
 							}
 							
-							
-							
 							Method setMethod = this.getClass().getMethod(setMethodName,List.class);
 							setMethod.invoke(this, list);
-							
-						  
 							
 						}else if(fieldType == Integer.class){
 							List<Integer> list =new ArrayList<Integer>();
@@ -218,39 +213,43 @@ public  class XmlBase {
 					|| fieldType == Float.class || fieldType == Double.class ||fieldType == CHAR.class||fieldType == Long.class
 					||fieldType==int.class||fieldType==byte.class||fieldType==char.class||fieldType==short.class
 					||fieldType==boolean.class||fieldType==double.class||fieldType==float.class||fieldType==long.class) {
-					
-					if(attr!=null){//说明是属性
-						
+					//TODO 基本类型及其包装类型的判断以及赋值最好提取出来
+					String textvalue=null;
+					Object value=null;
+					if(isAttr!=null){//说明是属性
+						Attribute att=elm.attribute(xmlNodeName);
+						if(att!=null){
+							textvalue=att.getValue();
+						}
 					}else{//说明是子节点
 						Element targer_elm = getNodeElement(elm,xmlNodeName);
 						if (targer_elm != null) {
-							String textvalue = targer_elm.getText();
-							if (textvalue != null) {
-								textvalue = textvalue.trim();
-							}
-							textvalue = parseFilter(textvalue);
-							Object value=textvalue;
-							String firstLetter = field.getName().substring(0, 1).toUpperCase();
-							String setMethodName = "set" + firstLetter + field.getName().substring(1);
-							
-							if(fieldType == Integer.class||fieldType == int.class){
-								value=Integer.valueOf(textvalue);
-								this.getClass().getMethod(setMethodName, fieldType).invoke(this, value);
-							}else if(fieldType == Long.class||fieldType == long.class){
-								value=Long.valueOf(textvalue);
-								this.getClass().getMethod(setMethodName, fieldType).invoke(this, value);
-							}else if(fieldType == Short.class||fieldType == short.class){
-								value=Short.valueOf(textvalue);
-								this.getClass().getMethod(setMethodName, fieldType).invoke(this, value);
-							}else if(fieldType == Float.class||fieldType == float.class){
-								value=Float.valueOf(textvalue);
-								this.getClass().getMethod(setMethodName, fieldType).invoke(this, value);
-							}else if(fieldType == Double.class||fieldType == double.class){
-								value=Double.valueOf(textvalue);
-								this.getClass().getMethod(setMethodName, fieldType).invoke(this, value);
-							}else{
-								this.getClass().getMethod(setMethodName, fieldType).invoke(this, value);
-							}
+							textvalue = targer_elm.getText();
+						}
+					}
+					value=textvalue;
+
+					if(textvalue!=null){		
+						String firstLetter = field.getName().substring(0, 1).toUpperCase();
+						String setMethodName = "set" + firstLetter + field.getName().substring(1);
+						
+						if(fieldType == Integer.class||fieldType == int.class){
+							value=Integer.valueOf(textvalue);
+							this.getClass().getMethod(setMethodName, fieldType).invoke(this, value);
+						}else if(fieldType == Long.class||fieldType == long.class){
+							value=Long.valueOf(textvalue);
+							this.getClass().getMethod(setMethodName, fieldType).invoke(this, value);
+						}else if(fieldType == Short.class||fieldType == short.class){
+							value=Short.valueOf(textvalue);
+							this.getClass().getMethod(setMethodName, fieldType).invoke(this, value);
+						}else if(fieldType == Float.class||fieldType == float.class){
+							value=Float.valueOf(textvalue);
+							this.getClass().getMethod(setMethodName, fieldType).invoke(this, value);
+						}else if(fieldType == Double.class||fieldType == double.class){
+							value=Double.valueOf(textvalue);
+							this.getClass().getMethod(setMethodName, fieldType).invoke(this, value);
+						}else{
+							this.getClass().getMethod(setMethodName, fieldType).invoke(this, value);
 						}
 					}
 				} else {

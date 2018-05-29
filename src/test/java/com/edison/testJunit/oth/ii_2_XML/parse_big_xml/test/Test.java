@@ -19,13 +19,18 @@ public class Test {
 		String dataStartTag =null;
 		List<Class<? extends XmlBase>> clslist = new ArrayList<Class<? extends XmlBase>>();
 		clslist.add(Car.class);
+		List<Object> list=new ArrayList<Object>();//只能定义为List<Object> ,因为List<Object> 无法转换为List<Car>
 		try{
-			Xml4bigKit.parseXml(xpath, dataStartTag,clslist,new XmlHandler1(),new MyXmlFilter());
+			Xml4bigKit.parseXml(xpath, dataStartTag,clslist,new XmlHandler1(list),new MyXmlFilter());
 		}catch(Exception e){
 			e.printStackTrace();
 		}
 		long end=System.currentTimeMillis();
 		System.out.println("共计耗时(秒)："+(end-start)/1000);
+		for(Object obj:list){
+			Car car=(Car)obj;
+			System.out.println(car);
+		}
 	}
 
 }
