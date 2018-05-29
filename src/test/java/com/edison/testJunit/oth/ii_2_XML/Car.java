@@ -22,7 +22,7 @@ public class Car extends XmlBase {
 			<type>Intel</type>
 		</carEngine>
 	</Car>*/
-	@IsAttr(name="id")
+	@IsAttr(name = "id")
 	private int id;
 	private String type;
 	private String product;
