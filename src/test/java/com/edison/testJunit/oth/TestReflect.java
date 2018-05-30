@@ -1,21 +1,20 @@
 package com.edison.testJunit.oth;
 
-import java.awt.List;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.LinkedList;
-
-import oracle.sql.CHAR;
+import java.util.List;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.junit.Test;
 
-import com.edison.db.entity.User;
 import com.edison.testJunit.oth.ii_2_XML.parse_big_xml.annotation.Column;
 import com.edison.testJunit.oth.ii_2_XML.parse_big_xml.annotation.IsAttr;
 
@@ -27,19 +26,7 @@ public class TestReflect {
 	public void testReflect() {
 		try{
 			ClassLoader cloader=Thread.currentThread().getContextClassLoader(); //1.获取当前线程的类加载器
-			Class clazz=cloader.loadClass("com.edison.db.entity.User");         //2.加载指定路径的类
-			
-			Constructor cons=clazz.getDeclaredConstructor((Class[])null);
-			Object object=cons.newInstance();                                 //newInstance生成实例
-
-			Field field=clazz.getDeclaredField("userName") ;                    //3.获取对象属性
-			field.setAccessible(true);                                          //4.private属性需要赋予set权限
-			field.set(object, "张三");                                           	//5.设置值，第一个参数为属性所属对象
-
-			Method method=clazz.getDeclaredMethod("toString", (Class[])null);
-
-			String res=(String) method.invoke(object,(Object[])null);             //第一个参数为属性所属对象
-			System.out.println(res);
+			Class<?> clazz=cloader.loadClass("com.edison.db.entity.User");         //2.加载指定路径的类
 			
 			//解析一段xml内容并放入Car对象中
 		    String content="<Car id=\"123\"><type>奔驰MMM</type><product>德国</product><price>55.2</price><carEngine><core>16</core><type>Intel</type></carEngine><carEngine><core>16</core><type>Intel</type></carEngine></Car>";
@@ -55,6 +42,7 @@ public class TestReflect {
 		    
 		    //调用解析方法 将该Element解析到对应的对象中
 		    parseXml(obj, carEle);
+		    System.out.println(obj);
 		   
 		}catch(Exception e){
 			e.printStackTrace();
@@ -63,6 +51,7 @@ public class TestReflect {
 	
 	/**将currElement中的xml内容解析到obj对象中*/
 	public static void parseXml(Object obj,Element currElement){
+		System.out.println("当前解析对象:"+obj.getClass().getSimpleName()+" 当前element="+currElement.getName());
 		Class<?> clazz=obj.getClass();
 		Field[] fields = clazz.getDeclaredFields();
 		for (Field fieldtmp : fields) {// 给每个域赋值
@@ -83,11 +72,10 @@ public class TestReflect {
 			if ("".equals(xmlNodeName.trim())) {
 				xmlNodeName = fieldtmp.getName(); // 标签名和属性名相同
 			}
-			System.out.println("xmlNodeName=" + xmlNodeName);
+			System.out.println("当前待解析属性:"+fieldtmp.getName()+" xmlNodeName=" + xmlNodeName);
 
 			// 获取值
 			Class<?> fieldType = fieldtmp.getType();
-			System.out.println("fieldType=" + fieldType);
 
 			if (isAttr != null) {// 从标签属性取值，这种只考虑常用类型:基本类型及其包装类 还有String
 									// 以及Bigdecimal
@@ -95,11 +83,11 @@ public class TestReflect {
 				if (textValue == null || "".equals(textValue)) {
 					continue;
 				}
-				if (isBaseType(fieldType)) {// 是常用类型 属性这块暂时只支持这些类型
+				if (isCommonType(fieldType)) {// 是常用类型 属性这块暂时只支持这些类型
 					setBaseValue(obj, fieldtmp, textValue); // 针对常用类型赋值
 				}
 			} else {// 从子标签解析值
-				if(isBaseType(fieldType)) {
+				if(isCommonType(fieldType)) {
 					Element ele = currElement.element(xmlNodeName);
 					if (ele == null) {
 						continue;
@@ -110,25 +98,39 @@ public class TestReflect {
 					System.out.println("是list类型");
 					setListValue(obj, fieldtmp, currElement);
 				}else {
-					System.out.println("是普通对象类型");
+					System.out.println("是普通对象类型:"+fieldtmp.getName());
 					Class<?> subclazz=fieldtmp.getClass();//属性值的类型
+					Object subObj;
 					try{
-						Object subObj=subclazz.newInstance();
+						subObj=subclazz.newInstance();
 					}catch(Exception e){
 						System.out.println("创建该类型对象失败"+subclazz.getName());
 						continue;
 					}
-					parseXml(subobj, currElement);
+					
+					String fieldName=fieldtmp.getName();
+					String firstCh=fieldName.substring(0, 1);
+					String methodName="set"+firstCh.toUpperCase()+fieldName.substring(1);
+					Class<?> fieldType2=fieldtmp.getType();
+					Method method;
+					try{
+						method=obj.getClass().getDeclaredMethod(methodName,fieldType );
+						parseXml(subObj, currElement.element(xmlNodeName));
+						method.invoke(obj, subObj);
+					}catch(Exception e){
+						e.printStackTrace();
+						continue;
+					}
 				}
 			}
 		}
 	}
 	
 	/**判断是否是常用类型: 基本类型或其包装类 或者String类 或者Bigdecimal*/
-	public static boolean isBaseType(Class<?> fieldType){
+	public static boolean isCommonType(Class<?> fieldType){
 		if(fieldType==String.class || fieldType==BigDecimal.class||
 			fieldType == Integer.class || fieldType == Byte.class||fieldType==Boolean.class||fieldType == Boolean.class
-			||fieldType == Float.class || fieldType == Double.class ||fieldType == CHAR.class||fieldType == Long.class
+			||fieldType == Float.class || fieldType == Double.class ||fieldType == Character.class||fieldType == Long.class
 			||fieldType==int.class||fieldType==byte.class||fieldType==char.class||fieldType==short.class
 			||fieldType==boolean.class||fieldType==double.class||fieldType==float.class||fieldType==long.class){
 			return true;
@@ -141,7 +143,6 @@ public class TestReflect {
 	 * @param field 待赋值对象的属性
 	 * @param valueStr 值*/
 	public static void setBaseValue(Object obj, Field field,String valueStr){
-		System.out.println("Field="+field.getName());
 		//获取obj.setXxx(xxx)方法
 		String fieldName=field.getName();
 		String firstCh=fieldName.substring(0, 1);
@@ -180,7 +181,6 @@ public class TestReflect {
 				short value=Short.valueOf(valueStr);
 				method.invoke(obj, value);
 			}else{//其他包装类型以及String 都有String作为参数的构造函数
-				System.out.println("其他类型 valueStr="+valueStr);
 				//Constructor cons=fieldType.getConstructor(String.class);
 				method.invoke(obj,fieldType.getConstructor(String.class).newInstance(valueStr) ); //有参构造函数的调用
 			}
@@ -205,6 +205,65 @@ public class TestReflect {
 	 * @param field 待赋值对象的属性
 	 * @param rootEle 当前主节点*/
 	public static void setListValue(Object obj, Field field,Element rootEle){
-		System.out.println("对List赋值了");
+		//获取List的参数类型
+		Type type=field.getGenericType();//返回的是java.util.List<com.edison.testJunit.oth.ii_2_XML.CarEngine>
+		ParameterizedType pt = (ParameterizedType) type;  
+	    Class<?> genericClazz = (Class<?>)pt.getActualTypeArguments()[0];//获得CarEngine，即List<?> 中？的类型
+	    
+	    //针对list对象进行解析
+	    Column column =field.getAnnotation(Column.class);
+	    String xmlNodeName="";
+	    if(column!=null){
+	    	xmlNodeName=column.name();
+	    }
+	    if("".equals(xmlNodeName.trim())){
+	    	xmlNodeName=field.getName();
+	    }
+	    List<Element> elements=rootEle.selectNodes(xmlNodeName);
+	    
+	    //开始解析List对象
+    	List<Object> list;
+    	if(field.getType()==ArrayList.class || field.getType()==List.class){
+    		list=new ArrayList<Object>();
+    	}else{
+    		list=new LinkedList<Object>();
+    	}
+	    if(isCommonType(genericClazz)){//基本类型的包装类或者String BigDecimal组成的List
+	    	for(Element element:elements){
+	    		String valueStr=element.getText();
+	    		Object subobj;
+	    		try{
+	    			subobj=genericClazz.getConstructor(String.class).newInstance(valueStr);
+	    		}catch(Exception e){
+	    			e.printStackTrace();
+	    			continue;
+	    		}
+	    		list.add(subobj);
+	    	}
+	    }else{
+		    for(Element element:elements){
+		    	Object subobj=null;
+		    	try{
+		    		subobj=genericClazz.newInstance();
+		    		parseXml(subobj, element);
+		    	}catch(Exception e){
+		    		e.printStackTrace();
+		    		continue;
+		    	}
+		    	list.add(subobj);
+		    }
+	    }
+	    String fieldName=field.getName();
+		String firstCh=fieldName.substring(0, 1);
+		String methodName="set"+firstCh.toUpperCase()+fieldName.substring(1);
+		Class<?> fieldType=field.getType();
+		Method method;
+		try{
+			method=obj.getClass().getDeclaredMethod(methodName,fieldType );
+			method.invoke(obj, list);
+		}catch(Exception e){
+			e.printStackTrace();
+			return;
+		}
 	}
 }
