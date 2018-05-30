@@ -1,6 +1,5 @@
 package com.edison.testJunit.oth;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
@@ -104,7 +103,7 @@ public class TestReflect {
 					try{
 						subObj=subclazz.newInstance();
 					}catch(Exception e){
-						System.out.println("创建该类型对象失败"+subclazz.getName());
+						System.err.println("创建该类型对象失败"+fieldtmp.getName());
 						continue;
 					}
 					
