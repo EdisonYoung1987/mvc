@@ -71,7 +71,9 @@ class MyService implements Runnable{
 			
 			bw.close();
 			br.close();
-			socket.close();		
+			socket.shutdownOutput();//关闭输出流 -半关闭，加上后面的关闭输入流就是全关闭了。
+			socket.shutdownInput();
+			socket.close();	
 		}catch(Exception e){
 			e.printStackTrace();
 		}
