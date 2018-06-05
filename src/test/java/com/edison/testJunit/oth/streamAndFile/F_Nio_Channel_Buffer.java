@@ -17,11 +17,14 @@ import java.util.zip.CRC32;
  * 这里实现了一个计算一个62M的文件rt.jar的校验码的测试类，对比了InputStream和BufferedInputStream以及RandomAccessFile的效率*/
 public class F_Nio_Channel_Buffer {
 	private static final String FILE="D:\\工作\\其他\\rt.jar";
+	private static final String BIGFILE="C:\\Users\\Edison\\git\\mvc\\src\\main\\resources\\xml_parser\\big.xml";//2.1g大文件
+
 	public static void main(String[] args) {
 		try{
+//			Path path=Paths.get(BIGFILE); //这个在调用channel.map时，因为无法将文件大小一次性传入，只能将文件分段计算
 			Path path=Paths.get(FILE);
 			/*打开选项APPEND           
-			TRUNCATE_EXISTING 存在则情况 
+			TRUNCATE_EXISTING 存在则清空 
 			CREATE_NEW        不存在则创建,存在则失败
 			CREATE            不存在则创建
 			DELETE_ON_CLOSE   退出时关闭
@@ -76,20 +79,20 @@ public class F_Nio_Channel_Buffer {
 			//输出： 
 			fin2.close();
 			
-			//使用BufferedInputStream
+			//使用RandomAccessFile
 			start=System.currentTimeMillis();
 			RandomAccessFile fin3=new RandomAccessFile(new File(FILE),"r");
 			crc32=new CRC32();
 			/*while((data=fin3.read())!=-1){
 				crc32.update(data);
-			}太耗时，先注释掉*/
-			checkSum=crc32.getValue();
+			}//太耗时，先注释掉
+*/			checkSum=crc32.getValue();
 			end=System.currentTimeMillis();
 			System.out.println("使用IO的RandomAccessFile计算校验值="+checkSum+" 耗时："+(end-start));
 			//输出： 
 			fin3.close();
 		}catch(Exception e){
-			
+			e.printStackTrace();
 		}
 	}
 
