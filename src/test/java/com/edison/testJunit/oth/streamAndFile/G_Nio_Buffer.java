@@ -33,7 +33,6 @@ public class G_Nio_Buffer {
 			
 			System.out.println("分配空间之后read()之前，buff的指针位置="+bf.position()+" 界限 "+bf.limit()+"\r\n");
 			while(channel.read(bf)!=-1){
-				
 				System.out.println("read()之后，buff[4]的指针位置="+bf.position()+" 界限 "+bf.limit());
 				//flip是翻转读写模式，且将指针指向0,否则下一步write什么都写不了
 				bf.flip(); //如果最后一次读取内容长度len小于容量capacity,写入的内容是buf[len]->buf[capacity]的内容
