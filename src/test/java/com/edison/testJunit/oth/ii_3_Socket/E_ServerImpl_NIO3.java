@@ -80,7 +80,7 @@ public class E_ServerImpl_NIO3 {
 					}else{
 						sb=map.get(key);
 					}
-					ByteBuffer bflen=ByteBuffer.allocate(4啊); //获取4位长度
+					ByteBuffer bflen=ByteBuffer.allocate(4); //获取4位长度
 					ByteBuffer bf=ByteBuffer.allocate(1024); //获取内容
 					int totle=0;
 					while(true){
