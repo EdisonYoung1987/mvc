@@ -67,7 +67,7 @@ public class E_ServerImpl_NIO3 {
 					sChannel.configureBlocking(false);//这个也要设置非阻塞
 					sChannel.register(selector, SelectionKey.OP_READ|SelectionKey.OP_WRITE);//再次注册
 					System.out.println("刚注册，数量="+selector.keys().size());
-
+    
 					it.remove();//如果我们没有删除处理过的键，那么它仍然会在主集合中以一个激活的键出现，这会导致我们尝试再次处理它。 
 				}else if(selectionKey.isReadable()){
 					System.out.println(((SocketChannel)selectionKey.channel()).getRemoteAddress()+"is ready for read");
