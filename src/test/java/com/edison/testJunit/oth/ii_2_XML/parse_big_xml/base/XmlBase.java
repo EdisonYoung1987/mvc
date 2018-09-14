@@ -6,13 +6,11 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import oracle.sql.CHAR;
-
 import org.dom4j.Attribute;
 import org.dom4j.Element;
 
-import com.edison.testJunit.oth.ii_2_XML.parse_big_xml.annotation.IsAttr;
 import com.edison.testJunit.oth.ii_2_XML.parse_big_xml.annotation.Column;
+import com.edison.testJunit.oth.ii_2_XML.parse_big_xml.annotation.IsAttr;
 public  class XmlBase {
 	
 	public void parseXml(Element elm) {
@@ -210,7 +208,7 @@ public  class XmlBase {
 						setMethod.invoke(this, list);
 				    }
 				} else if (fieldType == String.class || fieldType == Integer.class || fieldType == Long.class||fieldType==Boolean.class
-					|| fieldType == Float.class || fieldType == Double.class ||fieldType == CHAR.class||fieldType == Byte.class
+					|| fieldType == Float.class || fieldType == Double.class ||fieldType == Character.class||fieldType == Byte.class
 					||fieldType==int.class||fieldType==byte.class||fieldType==char.class||fieldType==short.class
 					||fieldType==boolean.class||fieldType==double.class||fieldType==float.class||fieldType==long.class) {
 					//TODO 基本类型及其包装类型的判断以及赋值最好提取出来
