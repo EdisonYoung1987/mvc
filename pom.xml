@@ -141,6 +141,13 @@
 	</dependency>  
   </dependencies>
   
+   <!-- redis的jedis客户端 -->
+   <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>2.9.0</version>
+   </dependency>
+        
   <build>
     <finalName>HelloSpringMVC</finalName>
   </build>
