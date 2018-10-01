@@ -11,10 +11,13 @@ import org.dom4j.Node;
 import org.dom4j.io.SAXReader;
 
 /**
- * 使用dom原理读出整个xml文件，dom:将整个xml加载并解析，耗内存，灵活*/
+ * 使用dom原理读出整个xml文件，dom:将整个xml加载并解析，耗内存，灵活
+ * 处理一个760M的xml文件时，仅是Document doc=reader.read(url); cpu几乎被占满，运行耗时--跑了快20分钟也没跑完。。*/
 public class A_DOM4J_DOM {
 	static final String FILE="Mapper.xml";
 	static final String BLANK="    ";
+	private static final String FILEOUT="xml_parser/big.xml";
+
 	
 	public static void main(String[] args) {
 		URL url=Thread.currentThread().getContextClassLoader().getResource("xml_parser/Mapper.xml"); //不能以’/'开头，path是从ClassPath根下获取 
@@ -27,11 +30,17 @@ public class A_DOM4J_DOM {
 		System.out.println(url2.toString());
 		System.out.println(url3.toString());
 		System.out.println(url4.toString());
-		
+//		url=Thread.currentThread().getContextClassLoader().getResource(FILEOUT);//超大文件
 		try{
 			SAXReader reader=new SAXReader();
+			System.out.println(System.currentTimeMillis());
 			Document doc=reader.read(url);
+			//doctype读取 
+			/*System.out.println("DocType="+doc.getDocType().getElementName()+" "+doc.getDocType().getPublicID()
+					+" "+doc.getDocType().getSystemID());
+			System.out.println("Encoding="+doc.getXMLEncoding());*/
 			Element root=doc.getRootElement();
+			System.out.println(System.currentTimeMillis());
 			parseAndPrint(root, 0);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -68,7 +77,7 @@ public class A_DOM4J_DOM {
 		//如果没有子标签，就打印值
 		String text=element.getText();
 		if(text!=null && !"".equals(text.trim())){
-			System.out.println(getBlank(level+1)+element.getText().trim());
+			System.out.println(getBlank(level+1)+element.getText().trim());  //trim()不止去空格，还会把ascii中排在空格前的前导后导字符都去掉
 		}
 	}
 	

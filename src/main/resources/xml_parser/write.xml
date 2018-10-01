@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ContactList>
+  <Contact id="c001" region="北京">
+    <Name>小明</Name>
+  </Contact>
+</ContactList>
