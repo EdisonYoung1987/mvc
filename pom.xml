@@ -98,11 +98,11 @@
 	</dependency>
 	
 	<!-- 数据库驱动 ORACLE -->
-	 <dependency>
+	<!--  <dependency>
 		<groupId>com.oracle</groupId> 
 		<artifactId>ojdbc6</artifactId>
 		<version>11.2.0.3.0</version> 
-	</dependency> 
+	</dependency>  -->
 	
 	<!--  日志框架 SLF4J+LOGBACK 其中SLF4J是一个通用日志api框架，而logback和log4j则是日志api的具体实现，
                         而前者比后者性能更好 -->
