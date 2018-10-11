@@ -56,7 +56,9 @@ public class JedisClient {
 
 	}
 	
-	// 从RedisCluster批量删除指定pattern的数据 scanCounter--每次扫描个数
+	/** 从RedisCluster批量删除指定pattern的数据
+	 * @param scanCounter--每次扫描个数
+	*/
 	public static void delRedisClusterByPattern(JedisCluster jedisCluster,String pattern, int scanCounter) {
 		// 获取所有节点的JedisPool
 		Map<String, JedisPool> jedisPoolMap = jedisCluster.getClusterNodes();
