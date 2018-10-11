@@ -90,10 +90,11 @@ public class JedisClient {
 					pipeline.syncAndReturnAll();
 				}
 				cursor = scanResult.getStringCursor();
-				// 如果游标变为0， 说明扫描完毕
+				// 如果游标变为0， 说明扫描完毕  jedis.scan在扫描完毕时，会将cursor重置为0，否则为下次扫描的起始游标位置(偏移量)
 				if ("0".equals(cursor)) {
 					break;
 				}
+		
 			}
 		}
 	}
