@@ -31,7 +31,6 @@ public class JMSQueueListenerProducer {
 
 
             MessageListener messageListener=new MessageListener() {
-                @Override
                 public void onMessage(Message message) {
                     try {
                         System.out.println(((TextMessage)message).getText());
