@@ -164,7 +164,13 @@
             <artifactId>activemq-pool</artifactId>
             <version>5.7.0</version>
     </dependency>
-  
+    
+    <!-- zookeeper -->
+  	 <dependency>
+            <groupId>org.apache.zookeeper</groupId>
+            <artifactId>zookeeper</artifactId>
+            <version>3.4.6</version>
+    </dependency>
   </dependencies>
   
         
