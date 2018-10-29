@@ -18,13 +18,14 @@ public class ZookeeperUtil implements Watcher{
 	private  ZooKeeper  zk=null;
 	private static Properties property;
 	private static final int SESSIONTIMEOUT=3*2000;
-	private String intPath="/SERVICES";//初始化的公共目录
 	
+	/**
+	 * 初始化zookeeper连接，并创建初始目录*/
 	public  void initZk() throws IOException, KeeperException, InterruptedException{
 		//通过配置文件获取zk地址列表，实际spring项目中可以通过注解@Value("${zookeeper_addrs}")
 		property=new Properties();
 		property.load(ClassLoader.getSystemResourceAsStream("dataSource.properties"));
-		String addrs=property.getProperty("zookeeper_addrs");
+		String addrs=getProperty("zookeeper_addrs");
 		
 		String[] addrList=addrs.split(",");
 		for(String addr:addrList){
@@ -35,6 +36,7 @@ public class ZookeeperUtil implements Watcher{
 		this.zk=new ZooKeeper(addrs, SESSIONTIMEOUT, this);
 
 		//创建初始公共目录
+		String intPath=getProperty("intPath");//初始化的公共目录
 		try{
 			zk.create(intPath, "-".getBytes(), Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
 		}catch(NodeExistsException e){
@@ -47,21 +49,9 @@ public class ZookeeperUtil implements Watcher{
 		System.out.println("总的watcher");
 	}
 	
-	/**
-	 * 用于producer注册服务地址信息
-	 * @throws InterruptedException 
-	 * @throws KeeperException */
-	public void registSelf(String serviceName,String addr) throws KeeperException, InterruptedException{
-		String servicePath=intPath+"/"+serviceName;
-		try{//持久节点
-			zk.create(servicePath, "-".getBytes(), Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
-		}catch(NodeExistsException e){
-			System.out.println("节点已存在，继续后续处理:"+servicePath);
-		}
-		
-		servicePath=servicePath+"/"+"addr-";
-		//地址采用临时节点 addr-000001,addr-00002....内容为ip地址
-		zk.create(servicePath, addr.getBytes(), Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL_SEQUENTIAL);
+	/**根据key获取参数值*/
+	public String getProperty(String key){
+		return property.getProperty(key);
 	}
 	
 	public static void main(String[] args){
