@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.WatchedEvent;
@@ -14,6 +13,7 @@ import org.apache.zookeeper.Watcher.Event.KeeperState;
 import org.apache.zookeeper.ZooDefs.Ids;
 import org.apache.zookeeper.ZooKeeper;
 import org.apache.zookeeper.data.Stat;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -23,13 +23,12 @@ import org.slf4j.LoggerFactory;
  */
 public class AllZooKeeperWatcher implements Watcher{
 
-	private static final Logger LOG = (Logger) LoggerFactory.getLogger( AllZooKeeperWatcher.class );
+	private static final Logger LOG = LoggerFactory.getLogger( AllZooKeeperWatcher.class );
 	AtomicInteger seq = new AtomicInteger();
 	private static final int SESSION_TIMEOUT = 10000;
-	private static final String CONNECTION_STRING = "test.zookeeper.connection_string:2181," +
-			                                                                           "test.zookeeper.connection_string2:2181," +
-			                                                                           "test.zookeeper.connection_string3:2181";
-	private static final String ZK_PATH 				= "/nileader";
+	private static final String CONNECTION_STRING = "192.168.111.130:2181,"
+										+ "192.168.111.130:2182,192.168.111.130:2183";
+	private static final String ZK_PATH = "/nileader";
 	private static final String CHILDREN_PATH 	= "/nileader/ch";
 	private static final String LOG_PREFIX_OF_MAIN = "【Main】";
 	
@@ -55,7 +54,6 @@ public class AllZooKeeperWatcher implements Watcher{
 	 * 关闭ZK连接
 	 */
 	public void releaseConnection() {
-//		if ( !ObjectUtil.isBlank( this.zk ) ) {
 		if ( this.zk!=null ) {
 			try {
 				this.zk.close();
@@ -149,8 +147,7 @@ public class AllZooKeeperWatcher implements Watcher{
 	
 	
 	public static void main( String[] args ) throws InterruptedException {
-
-		PropertyConfigurator.configure("src/main/resources/log4j.properties");
+//		PropertyConfigurator.configure("src/main/resources/log4j.properties");
 		
 		AllZooKeeperWatcher sample = new AllZooKeeperWatcher();
 		sample.createConnection( CONNECTION_STRING, SESSION_TIMEOUT );
@@ -187,10 +184,7 @@ public class AllZooKeeperWatcher implements Watcher{
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		/*if ( ObjectUtil.isBlank( event ) ) {
-			return;
-		}*/
-		if(event==null){
+		if ( event==null ) {
 			return;
 		}
 		// 连接状态
