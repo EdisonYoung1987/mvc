@@ -44,6 +44,10 @@ public class ZookeeperUtil implements Watcher{
 		}
 		return;
 	}
+	
+	public ZookeeperUtil() throws IOException, KeeperException, InterruptedException{
+		initZk();
+	}
 
 	public void process(WatchedEvent event) {
 		System.out.println("总的watcher");
@@ -54,18 +58,9 @@ public class ZookeeperUtil implements Watcher{
 		return property.getProperty(key);
 	}
 	
-	public static void main(String[] args){
-		ZookeeperUtil zu=new ZookeeperUtil();
-		try{
-			zu.initZk();
-			System.out.println("第二次创建");
-			zu.initZk();
-			zu.registSelf("OrderService", "192.168.111.130:2345");
-			zu.registSelf("OrderService", "192.168.111.130:2345");
-			Thread.currentThread().sleep(10000);//以便客户端查看是否注册成功
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		
+	/**获取zookeeper连接*/
+	public ZooKeeper getZookeeper(){
+		return this.zk;
 	}
+	
 }
