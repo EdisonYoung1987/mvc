@@ -1,11 +1,14 @@
 package com.edison.testJunit.oth.zookeeper.base;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.log4j.PropertyConfigurator;
 import org.apache.zookeeper.CreateMode;
+import org.apache.zookeeper.KeeperException;
+import org.apache.zookeeper.KeeperException.Code;
 import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.Watcher;
 import org.apache.zookeeper.Watcher.Event.EventType;
@@ -33,23 +36,15 @@ public class AllZooKeeperWatcher implements Watcher{
 	private static final String LOG_PREFIX_OF_MAIN = "【Main】";
 	
 	private ZooKeeper zk = null;
+	private ZookeeperUtil zu=null;
 	
 	private CountDownLatch connectedSemaphore = new CountDownLatch( 1 );
 
-	/**
-	 * 创建ZK连接
-	 * @param connectString	 ZK服务器地址列表
-	 * @param sessionTimeout   Session超时时间
-	 */
-	public void createConnection( String connectString, int sessionTimeout ) {
-		this.releaseConnection();
-		try {
-			zk = new ZooKeeper( connectString, sessionTimeout,this );
-			LOG.info( LOG_PREFIX_OF_MAIN + "开始连接ZK服务器" );
-			connectedSemaphore.await();
-		} catch ( Exception e ) {}
+	public AllZooKeeperWatcher(ZookeeperUtil zu){
+		this.zu=zu;
 	}
-
+	
+	
 	/**
 	 * 关闭ZK连接
 	 */
@@ -65,61 +60,21 @@ public class AllZooKeeperWatcher implements Watcher{
 	 *  创建节点
 	 * @param path 节点path
 	 * @param data 初始数据内容
+	 * @param createMode :CreateMode.PERSISTENT/PERSISTENT_SEQUENTIAL/EPHEMERAL/EPHEMERAL_SEQUENTIAL
 	 * @return
 	 */
-	public boolean createPath( String path, String data ) {
+	public boolean createPath( String path, String data,CreateMode createMode ) {
 		try {
 			this.zk.exists( path, true );
 			LOG.info( LOG_PREFIX_OF_MAIN + "节点创建成功, Path: "
-					+ this.zk.create( path, //
-							                  data.getBytes(), //
+					+ this.zk.create( path,  data.getBytes(), //
 							                  Ids.OPEN_ACL_UNSAFE, //
-							                  CreateMode.PERSISTENT )
+							                  createMode )
 					+ ", content: " + data );
 		} catch ( Exception e ) {}
 		return true;
 	}
 
-	/**
-	 * 读取指定节点数据内容
-	 * @param path 节点path
-	 * @return
-	 */
-	public String readData( String path, boolean needWatch ) {
-		try {
-			return new String( this.zk.getData( path, needWatch, null ) );
-		} catch ( Exception e ) {
-			return "";
-		}
-	}
-
-	/**
-	 * 更新指定节点数据内容
-	 * @param path 节点path
-	 * @param data  数据内容
-	 * @return
-	 */
-	public boolean writeData( String path, String data ) {
-		try {
-			LOG.info( LOG_PREFIX_OF_MAIN + "更新数据成功，path：" + path + ", stat: " +
-		                                                this.zk.setData( path, data.getBytes(), -1 ) );
-		} catch ( Exception e ) {}
-		return false;
-	}
-
-	/**
-	 * 删除指定节点
-	 * @param path 节点path
-	 */
-	public void deleteNode( String path ) {
-		try {
-			this.zk.delete( path, -1 );
-			LOG.info( LOG_PREFIX_OF_MAIN + "删除节点成功，path：" + path );
-		} catch ( Exception e ) {
-			//TODO
-		}
-	}
-	
 	/**
 	 * 删除指定节点
 	 * @param path 节点path
@@ -130,50 +85,7 @@ public class AllZooKeeperWatcher implements Watcher{
 		} catch ( Exception e ) {return null;}
 	}
 	
-	/**
-	 * 获取子节点
-	 * @param path 节点path
-	 */
-	private List<String> getChildren( String path, boolean needWatch ) {
-		try {
-			return this.zk.getChildren( path, needWatch );
-		} catch ( Exception e ) {return null;}
-	}
 	
-	public void deleteAllTestPath(){
-		this.deleteNode( CHILDREN_PATH );
-		this.deleteNode( ZK_PATH );
-	}
-	
-	
-	public static void main( String[] args ) throws InterruptedException {
-//		PropertyConfigurator.configure("src/main/resources/log4j.properties");
-		
-		AllZooKeeperWatcher sample = new AllZooKeeperWatcher();
-		sample.createConnection( CONNECTION_STRING, SESSION_TIMEOUT );
-		//清理节点
-		sample.deleteAllTestPath();
-		if ( sample.createPath( ZK_PATH, System.currentTimeMillis()+"" ) ) {
-			Thread.currentThread().sleep( 3000 );
-			//读取数据
-			sample.readData( ZK_PATH, true );
-			//读取子节点
-			sample.getChildren( ZK_PATH, true );
-			
-			//更新数据
-			sample.writeData( ZK_PATH, System.currentTimeMillis()+"" );
-			Thread.currentThread().sleep( 3000 );
-			//创建子节点
-			sample.createPath( CHILDREN_PATH, System.currentTimeMillis()+"" );
-		}
-		Thread.currentThread().sleep( 3000 );
-		//清理节点
-		sample.deleteAllTestPath();
-		Thread.currentThread().sleep( 3000 );
-		sample.releaseConnection();
-	}
-
-
 	/**
 	 * 收到来自Server的Watcher通知后的处理。
 	 */
@@ -209,10 +121,10 @@ public class AllZooKeeperWatcher implements Watcher{
 				this.exists( path, true );
 			} else if ( EventType.NodeDataChanged == eventType ) {
 				LOG.info( logPrefix + "节点数据更新" );
-				LOG.info( logPrefix + "数据内容: " + this.readData( ZK_PATH, true ) );
+				LOG.info( logPrefix + "数据内容: " + zu.readData( ZK_PATH ) );
 			} else if ( EventType.NodeChildrenChanged == eventType ) {
 				LOG.info( logPrefix + "子节点变更" );
-				LOG.info( logPrefix + "子节点列表：" + this.getChildren( ZK_PATH, true ) );
+				LOG.info( logPrefix + "子节点列表：" + zu.getChildren( ZK_PATH ) );
 			} else if ( EventType.NodeDeleted == eventType ) {
 				LOG.info( logPrefix + "节点 " + path + " 被删除" );
 			}
@@ -228,5 +140,38 @@ public class AllZooKeeperWatcher implements Watcher{
 		LOG.info( "--------------------------------------------" );
 
 	}
+	
+	public static void main( String[] args ) throws InterruptedException, IOException, KeeperException {
+//		PropertyConfigurator.configure("src/main/resources/log4j.properties");
+		ZookeeperUtil zu=new ZookeeperUtil();
+
+		AllZooKeeperWatcher sample = new AllZooKeeperWatcher(zu);
+//		sample.createConnection( CONNECTION_STRING, SESSION_TIMEOUT );
+		//使用默认的连接以及watcher
+		sample.zk=zu.getZookeeper();
+		
+		//清理节点
+		zu.deleteNode( ZK_PATH );
+		if ( sample.createPath( ZK_PATH, System.currentTimeMillis()+"",CreateMode.PERSISTENT ) ) {
+			Thread.currentThread().sleep( 3000 );
+			//读取数据
+			LOG.error("ZK_PATH:",zu.readData( ZK_PATH ));
+			//读取子节点
+			LOG.error("zu.getChildren( ZK_PATH )={}",zu.getChildren( ZK_PATH ));
+			
+			//更新数据
+			LOG.error("更新数据：{}",ZK_PATH);
+			LOG.error("{}",zu.writeData( ZK_PATH, System.currentTimeMillis()+"" ));
+
+			//创建子节点
+			sample.createPath( CHILDREN_PATH, System.currentTimeMillis()+"",CreateMode.PERSISTENT );
+		}
+		Thread.currentThread().sleep( 3000 );
+		//清理节点
+		zu.deleteNode( ZK_PATH );
+		Thread.currentThread().sleep( 3000 );
+		sample.releaseConnection();
+	}
+
 
 }

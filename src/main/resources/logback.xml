@@ -60,7 +60,7 @@
 		  <fileNamePattern>${LOG_HOME}/warn.log.%d{yyyy-MM-dd}</fileNamePattern>
 		  <maxHistory>${MAX_DAY}</maxHistory>
 		</rollingPolicy>
-		<filter class="com.cqrcb.ncbs.dispatch.platform.log.WarnFilter" />
+		<filter class="com.edison.util.log.StackFilter" />
 	</appender>
 	<appender name="FILE-EXTRTIOR" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<file>${LOG_HOME}/exterior.log</file>
