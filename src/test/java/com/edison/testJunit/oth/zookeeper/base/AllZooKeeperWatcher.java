@@ -150,6 +150,8 @@ public class AllZooKeeperWatcher implements Watcher{
 		//使用默认的连接以及watcher
 		sample.zk=zu.getZookeeper();
 		
+		//先把自己这个watcher注册到/上
+		--
 		//清理节点
 		zu.deleteNode( ZK_PATH );
 		if ( sample.createPath( ZK_PATH, System.currentTimeMillis()+"",CreateMode.PERSISTENT ) ) {

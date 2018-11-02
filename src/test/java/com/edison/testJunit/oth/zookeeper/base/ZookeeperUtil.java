@@ -40,8 +40,8 @@ public class ZookeeperUtil implements Watcher{
 		//通过配置文件获取zk地址列表，实际spring项目中可以通过注解@Value("${zookeeper_addrs}")
 		property=new Properties();
 		property.load(ClassLoader.getSystemResourceAsStream("dataSource.properties"));
-		String addrs=getProperty("zookeeper_addrs");
-		
+		//String addrs=getProperty("zookeeper_addrs");
+		String addrs="127.0.0.1:2181";//暂时用不上集群，懒得开虚拟机，先测试本地
 		LOG.error("地址:{}",addrs);
 		
 		//多个地址端口用,隔开192.168.111.130:2181,192.168.111.130:2182,192.168.111.130:2183
@@ -73,10 +73,11 @@ public class ZookeeperUtil implements Watcher{
 		// 事件类型
 		EventType eventType = event.getType();
 		if(keeperState==KeeperState.SyncConnected){
-			LOG.error("连接等待期间获得事件通知:keeperState==KeeperState.SyncConnected");
 			if(eventType==EventType.None){
 				connectedSemaphore.countDown();//相当于计数减一？
-				LOG.error("计数器减一");
+				LOG.error("keeperState={},eventType={},计数器减一",keeperState.toString(),eventType.toString());
+			}else{
+//				LOG.error("eventType={}",eventType.toString()); //每个node的变动，这个keeperState都会被探测，日志没必要
 			}
 		}
 	}
