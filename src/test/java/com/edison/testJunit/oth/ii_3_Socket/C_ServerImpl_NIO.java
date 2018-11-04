@@ -34,7 +34,7 @@ public class C_ServerImpl_NIO{
     {
 		System.out.println("Inside initialization");
 		server = ServerSocketChannel.open();//ServerSocketChannel server 获取通道  
-		server.configureBlocking(false);    //设置非阻塞
+		server.configureBlocking(false);    //设置非阻塞  server.accept()就不阻塞了
 		InetAddress ia = InetAddress.getLocalHost();
 		InetSocketAddress isa = new InetSocketAddress(ia,port);
 		System.out.println("监听地址："+isa);
@@ -49,7 +49,9 @@ public class C_ServerImpl_NIO{
 
 		//某个client成功连接到另一个服务器称为”连接就绪“。一个server socket channel准备号接收新进入的连接称为”接收就绪“。
 		//一个有数据可读的通道可以说是”读就绪“。等代写数据的通道可以说是”写就绪“。
-		SelectionKey acceptKey = server.register(sel, SelectionKey.OP_ACCEPT );	//将通道注册到选择器上, 并且指定“监听接收事件”  
+		server.register(sel, SelectionKey.OP_ACCEPT );	//将通道注册到选择器上, 并且指定“监听接收事件”  
+				//假设selector有三个集合：读集合、写集合、连接集合，每个socket在注册时，被加到对应的集合中，然后select采用
+				//轮询的方式查看是否有socket满足注册时指定的读写条件，只要有一个就返回交给应用处理。
 
 		while (sel.select() > 0 )
 		{	
@@ -67,7 +69,7 @@ public class C_ServerImpl_NIO{
 					System.out.println("Key is Acceptable");
 					ServerSocketChannel ssc = (ServerSocketChannel) key.channel();
 					socket = (SocketChannel) ssc.accept();
-					socket.configureBlocking(false);//11. 切换非阻塞模式 
+					socket.configureBlocking(false);//11. 切换非阻塞模式  send() recv()读写就不再阻塞
 					SelectionKey another = socket.register(sel,SelectionKey.OP_READ|SelectionKey.OP_WRITE);
 				}
 				if (key.isReadable()) {

@@ -60,9 +60,10 @@ class MyService implements Runnable{
 			BufferedWriter bw=new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 			bw.write("HELLO: "+socket.getInetAddress() + "\n This is "+Thread.currentThread().getId()+"\n"); 
 			bw.flush();//必须要有个操作，不然一直到连接关闭或者写buffer满了才会写到socket
+			//用PrintWriter.println()倒是方便的很。。。
 			
 			BufferedReader br=new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			String recv=br.readLine();
+			String recv=br.readLine(); //这里要注意客户端也要输入回车，不然readline会一直等待。
 			while(!"bye".equals((recv=br.readLine()))){
 				bw.write("recv:"+recv.trim()+"\n");
 				bw.flush();
