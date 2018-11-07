@@ -30,16 +30,13 @@ public class ZookeeperUtil implements Watcher{
 	private static final int SESSIONTIMEOUT=30*2000;
 	
 	/** 信号量，阻塞程序执行，用于等待zookeeper连接成功，发送成功信号 */
-    public  CountDownLatch connectedSemaphore = new CountDownLatch(1);
+    private  CountDownLatch connectedSemaphore = new CountDownLatch(1);
 	
     private static final int RETRY=3;//删除等操作的重试次数
 
 	/**
 	 * 初始化zookeeper连接，并创建初始目录*/
 	public  void initZk() throws IOException, KeeperException, InterruptedException{
-		AllZooKeeperWatcher watcher=new AllZooKeeperWatcher();
-		watcher.setZookeeperUtil(this, connectedSemaphore);
-		
 		//通过配置文件获取zk地址列表，实际spring项目中可以通过注解@Value("${zookeeper_addrs}")
 		property=new Properties();
 		property.load(ClassLoader.getSystemResourceAsStream("dataSource.properties"));
@@ -49,19 +46,16 @@ public class ZookeeperUtil implements Watcher{
 		
 		//多个地址端口用,隔开192.168.111.130:2181,192.168.111.130:2182,192.168.111.130:2183
 		logger.error("zu开始建立连接");
-		this.zk=new ZooKeeper(addrs, SESSIONTIMEOUT, watcher);//zk客户端连接是个异步过程 这里的watcher创建的是永久有效的watcher
+		this.zk=new ZooKeeper(addrs, SESSIONTIMEOUT, this);//zk客户端连接是个异步过程 这里的watcher创建的是永久有效的watcher
 		logger.error("zu开始进入连接等待");
 		connectedSemaphore.await();//直到连接线程返回。
 		logger.error("zu的await返回");
 
-//		//创建初始公共目录
-//		String intPath=getProperty("intPath");//初始化的公共目录
-//		logger.error("初始化目录：[{}]",intPath);
-//		try{
-//			zk.create(intPath, "-".getBytes(), Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
-//		}catch(NodeExistsException e){
-//			logger.error("节点{}已存在，继续后续处理",intPath);
-//		}
+		//创建初始公共目录
+		String intPath=getProperty("intPath");//初始化的公共目录
+		logger.error("初始化目录：[{}]",intPath);
+		this.createPath(intPath, "-",  CreateMode.PERSISTENT);
+		
 		return;
 	}
 	
@@ -70,7 +64,11 @@ public class ZookeeperUtil implements Watcher{
 	}
 
 	/**zu只处理建立连接时的watcher事件*/
-	public void process(WatchedEvent event) {
+	/*作为连接时注册的默认watcher，实际上只是针对这个连接所增删改涉及到的节点事件有效(比如其他客户端
+	 * 创建或删除或修改非本连接创建的
+	 * 节点的内容时，是收不到通知的)，所以，一般这个watcher只是用来作为连接完成通知事件的。
+	*/
+	public void process(WatchedEvent event) {	
 		// 连接状态
 		KeeperState keeperState = event.getState();
 		// 事件类型
@@ -79,16 +77,7 @@ public class ZookeeperUtil implements Watcher{
 			if(eventType==EventType.None){
 				connectedSemaphore.countDown();//相当于计数减一？
 				logger.error("keeperState={},eventType={},计数器减一",keeperState.toString(),eventType.toString());
-			}/* else if ( EventType.NodeDataChanged == eventType ) {
-				logger.info( "总监控:" + "节点数据更新" );
-				logger.info( "总监控:" + "数据内容: " + this.readData( event.getPath() ) );
-			} else if ( EventType.NodeChildrenChanged == eventType ) {
-				logger.info( "总监控:" + "子节点变更" );
-				logger.info( "总监控:" + "子节点列表：" + this.getChildren( event.getPath() ) );
-			} else if ( EventType.NodeDeleted == eventType ) {
-				logger.info( "总监控:" + "节点 " + event.getPath() + " 被删除" );
-			}*/
-			else{
+			}else{
 //				logger.error("eventType={}",eventType.toString()); //每个node的变动，这个keeperState都会被探测，日志没必要
 			}
 		}else if ( KeeperState.Disconnected == keeperState ) {
