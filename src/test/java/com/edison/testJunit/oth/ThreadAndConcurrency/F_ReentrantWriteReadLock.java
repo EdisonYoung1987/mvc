@@ -7,8 +7,8 @@ import java.util.Map;
 public class F_ReentrantWriteReadLock {
 	private Map<Thread, Integer> readingThreads =new HashMap<Thread, Integer>();
 	private Thread writingThread = null; 
-	private int writeAccesses    = 0; //写请求，如果有该请求，则屏蔽读请求
-	private int writeRequests    = 0; //写线程数，写的时候锁+1，写完-1
+	private int writeAccesses    = 0; //写线程数，写的时候锁+1，写完-1
+	private int writeRequests    = 0; //写请求，如果有该请求，则屏蔽读请求
 
 	public synchronized void lockRead() throws InterruptedException{
 		Thread callingThread = Thread.currentThread();
