@@ -7,14 +7,14 @@ import org.apache.commons.io.FileUtils;
 
 /**主要是为了转换以前用gbk写的旧代码/*/
 public class ConvertEncoding {
-	private final static String PROJECTDIR="C:\\Users\\Administrator\\git\\mvc\\";//项目的根目录
-	private final static String OUT_PROJECTDIR="D:\\Users\\Administrator\\git\\mvc\\";//转换后存放路径
+	private final static String PROJECTDIR="C:\\Users\\Edison\\git\\mvc2\\";//项目的根目录
+	private final static String OUT_PROJECTDIR="D:\\Users\\Edison\\git\\mvc2\\";//转换后存放路径
 	
 	private final static String[] excludeDirs={
-		    "C:\\Users\\Administrator\\git\\mvc\\src\\test\\java\\com\\edison\\testJunit\\oth\\apache_commons_io",
-		    "C:\\Users\\Administrator\\git\\mvc\\target",
-		    "C:\\Users\\Administrator\\git\\mvc\\src\\main\\webapp",
-		    "C:\\Users\\Administrator\\git\\mvc\\.settings"};//不用转换的路径
+		    "C:\\Users\\Edison\\git\\mvc2\\src\\test\\java\\com\\edison\\testJunit\\oth\\apache_commons_io",
+		    "C:\\Users\\Edison\\git\\mvc2\\target",
+		    "C:\\Users\\Edison\\git\\mvc2\\src\\main\\webapp",
+		    "C:\\Users\\Edison\\git\\mvc2\\.settings"};//不用转换的路径
 	private final static String[] excludeFiles={
 		"testspringContext.xml","springContext.xml","logback.xml","amortized.xml","pom.xml"
 	}; //这些不用转换的文件都是独一无二的，所以没有按完整路径来

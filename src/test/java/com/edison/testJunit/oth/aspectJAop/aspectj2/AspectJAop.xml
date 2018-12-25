@@ -11,9 +11,7 @@
 		http://www.springframework.org/schema/context/spring-context-3.0.xsd
 		http://www.springframework.org/schema/aop 
 		http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
-	<!-- 鎵弿Waiter銆丼eller浠ュ強鍒囬潰 -->
     <context:component-scan base-package="com.edison.testJunit.oth.aspectJAop.aspectj2" />
     
-    <!-- aop鍛藉悕绌洪棿閰嶇疆鑷姩鎵弿aop锛屼笉闇�瑕佸啀鍗曠嫭閰嶇疆鑷姩浠ｇ悊绫� -->
     <aop:aspectj-autoproxy/>
 </beans>
