@@ -23,34 +23,36 @@ public class C_StateOfThread {
 		C_StateOfThread.MyRunnable my=new C_StateOfThread().new MyRunnable();
 		my.setName("我是线程黄");
 		System.out.println("--线程id："+my.getId()+" 名称:"+my.getName()+" 所属线程组:"+my.getThreadGroup()+
-				" 是否守护线程:"+my.isDaemon()+" 状态: "+my.getState()+" 是否active:"+my.isAlive());
+				" 优先级："+my.getPriority()+" 是否守护线程:"+my.isDaemon()+" 状态: "+my.getState()+" 是否active:"+my.isAlive());
 		System.out.println("--线程进入新建状态：new Thread(my)");
-		Thread thread=new Thread(my);//此时进入新建状态
+		my.start();;//此时进入新建状态
 		System.out.println("--线程进入可运行状态：thread.start()");//能不能运行还要看cpu能不能给分配时间片段
-		thread.start();
 
-		System.out.println("检测到子线程状态:"+thread.getState());
+		System.out.println("检测到子线程状态:"+my.getState());
 		try{
 			Thread.sleep(2);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		System.out.println("检测到子线程状态:"+thread.getState());
+		System.out.println("检测到子线程状态:"+my.getState());
 		try{
-			thread.join();
-			thread.setPriority(5);
-			thread.setDaemon(true);
+			my.join();
+			my.setPriority(5);
+			my.setDaemon(true);
+			System.out.println("--线程id："+my.getId()+" 名称:"+my.getName()+" 所属线程组:"+my.getThreadGroup()+
+					" 优先级："+my.getPriority()+" 是否守护线程:"+my.isDaemon()+" 状态: "+my.getState()+" 是否active:"+my.isAlive());
+
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		System.out.println("检测到子线程状态:"+thread.getState());
+		System.out.println("检测到子线程状态:"+my.getState());
 
 		try{
 			Thread.sleep(20);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		System.out.println("检测到子线程状态:"+thread.getState());
+		System.out.println("检测到子线程状态:"+my.getState());
 
 	}
 }
