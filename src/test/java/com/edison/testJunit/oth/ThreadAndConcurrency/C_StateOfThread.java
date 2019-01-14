@@ -21,6 +21,9 @@ public class C_StateOfThread {
 	}
 	public static void main(String[] args){
 		C_StateOfThread.MyRunnable my=new C_StateOfThread().new MyRunnable();
+		my.setName("我是线程黄");
+		System.out.println("--线程id："+my.getId()+" 名称:"+my.getName()+" 所属线程组:"+my.getThreadGroup()+
+				" 是否守护线程:"+my.isDaemon()+" 状态: "+my.getState()+" 是否active:"+my.isAlive());
 		System.out.println("--线程进入新建状态：new Thread(my)");
 		Thread thread=new Thread(my);//此时进入新建状态
 		System.out.println("--线程进入可运行状态：thread.start()");//能不能运行还要看cpu能不能给分配时间片段
