@@ -10,7 +10,7 @@ package com.edison.testJunit.oth.ThreadAndConcurrency;
 public class C_StateOfThread {
 	class MyRunnable extends Thread{
 		public void run(){
-			System.out.println("--线程进入运行状态：thread.run()获取到cpu时间片段啦");
+			System.out.println("--子线程打印日志中 线程进入状态："+Thread.currentThread().getState());
 			try{
 				Thread.sleep(12);
 			}catch(Exception e){
@@ -20,28 +20,30 @@ public class C_StateOfThread {
 		}
 	}
 	public static void main(String[] args){
+		//线程组： System->main
+		System.out.println("主线程main的所属线程组:"+Thread.currentThread().getThreadGroup().getName()+
+				"    \n  父线程组:"+Thread.currentThread().getThreadGroup().getParent().getName()+
+				"    \n  父父线程组:"+Thread.currentThread().getThreadGroup().getParent().getParent());
+		
 		C_StateOfThread.MyRunnable my=new C_StateOfThread().new MyRunnable();
-		my.setName("我是线程黄");
-		System.out.println("--线程id："+my.getId()+" 名称:"+my.getName()+" 所属线程组:"+my.getThreadGroup()+
-				" 优先级："+my.getPriority()+" 是否守护线程:"+my.isDaemon()+" 状态: "+my.getState()+" 是否active:"+my.isAlive());
-		System.out.println("--线程进入新建状态：new Thread(my)");
+		System.out.println("--线程id："+my.getId()+" 名称:"+my.getName()+" 所属线程组:"+my.getThreadGroup().getName()+
+				" \n   是否active:"+my.isAlive());
+		System.out.println("--new Thread(my) 线程进入状态："+my.getState());
+		
 		my.start();;//此时进入新建状态
-		System.out.println("--线程进入可运行状态：thread.start()");//能不能运行还要看cpu能不能给分配时间片段
-
-		System.out.println("检测到子线程状态:"+my.getState());
+		System.out.println("--thread.start() 线程进入状态："+my.getState());
+		
 		try{
 			Thread.sleep(2);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		System.out.println("检测到子线程状态:"+my.getState());
+		System.out.println("--Thread.sleep(12) 线程进入状态:"+my.getState());
 		try{
 			my.join();
 			my.setPriority(5);
-			my.setDaemon(true);
-			System.out.println("--线程id："+my.getId()+" 名称:"+my.getName()+" 所属线程组:"+my.getThreadGroup()+
-					" 优先级："+my.getPriority()+" 是否守护线程:"+my.isDaemon()+" 状态: "+my.getState()+" 是否active:"+my.isAlive());
-
+			my.setDaemon(true); //守护线程的所属线程组变成null
+			
 		}catch(Exception e){
 			e.printStackTrace();
 		}
