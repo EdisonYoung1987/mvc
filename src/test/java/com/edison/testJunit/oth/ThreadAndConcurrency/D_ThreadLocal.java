@@ -36,6 +36,9 @@ public class D_ThreadLocal extends Thread{
 		}
 		//注意main方法里面的错误示例，这里就是获取的本身线程的最终计算结果
 		System.out.println(Thread.currentThread().getName()+"预期结果是="+num+" 最终的seqnum="+getSeqNum());
+		
+		//为避免内存泄漏，一定要执行remove清理key和value
+		SeqNum.remove();
 	}
 	
 	
@@ -52,7 +55,7 @@ public class D_ThreadLocal extends Thread{
 		Thread.sleep(2000); //等待子线程结束
 		
 		//这个是错误的，不管是哪个对象去执行getSeqNum()，最终都是根据当前的线程去获取对应的SeqNum
-		//所以这里取到的实际上是main线程的SeqNum
+		//所以这里取到的实际上是main线程的SeqNum,跟子线程是否调用remove清理无关
 		System.out.println("错误示例： "+t1.getName()+" 最终的seqnum="+t1.getSeqNum()); 
 
 	}
