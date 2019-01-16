@@ -16,8 +16,17 @@ class Mythread extends Thread{
 public class E_1_Concurrency {
 	private static int i=0;
 	private static ReentrantLock relock=new ReentrantLock();
-	public synchronized static void addI(){
-		i+=1;
+	private static byte[] lock=new byte[0];
+	
+//	public synchronized static void addI(){  //synchronized修饰静态方法的话，那么这个类的所有对象之间都存在竞争，不好
+											 //就是不是静态方法，synchronized修饰普通方法时，如果有其他方法也是synchronized的，
+											 //他们之间也会产生竞争
+//		i+=1;
+//	}
+	public static void addI(){ //这样更好一些，锁对象也是特别小byte[0]
+		synchronized(lock) {
+			i+=1;
+		}
 	}
 	public static void addI2(){
 		relock.lock();
