@@ -168,15 +168,15 @@ class SearchContent implements Callable<Integer>{
 		localSet.set(set);
 	}
 	public void  printSet(){//将检索到的结果放到set中
-		TreeSet<String> set =localSet.get();
-		if(set==null){
-			return;
-		}else{
-			for(String str:set){
-				System.out.println(str);
+		synchronized(this) {TreeSet<String> set =localSet.get(); //这里可能会降低效率
+			if(set==null){
+				return;
+			}else{
+				for(String str:set){
+					System.out.println(str);
+				}
 			}
 		}
-		
 	}
 }
 
