@@ -1,18 +1,15 @@
 package com.edison.testJunit.oth.ThreadAndConcurrency;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.Iterator;
 import java.util.Scanner;
-import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
 
 
 
@@ -22,28 +19,17 @@ import java.util.concurrent.locks.ReentrantLock;
 public class G_ArrayBlockingQueue {
 	//检索路径和关键字
 	private static String path,keyWord;
-	private static ArrayBlockingQueue<File> queue=new ArrayBlockingQueue<File>(64);
+	private static ArrayBlockingQueue<File> queue=new ArrayBlockingQueue<File>(64,true);//线程安全的阻塞队列 公平竞争
+	
 	//空文件，用来作为线程查找blockingQueue终点
 	public static final File ENDFILE=new File("");
-	public static Lock lock=new ReentrantLock();
-	public static HashSet<String> resSet=new HashSet<String>();
-	public static Map<String, MyFile> map=new TreeMap<String, MyFile>();
 	
-	public static void addSet(HashSet<String> set){
-		if(set==null){
-			return;
-		}
-		while(true){
-			if(lock.tryLock()){
-				resSet.addAll(set);
-				lock.unlock();
-				break;
-			}
-		}
-	}
+	//用于存放所有的futureTask，用于最后获取执行结果
+	private static HashSet<FutureTask<Integer>> resset=new HashSet<FutureTask<Integer>>(16);
 	
 	public static void main(String[] args) {
-		Scanner scan=new Scanner(System.in);
+		int total=0; //总的匹配次数
+//		Scanner scan=new Scanner(System.in);
 		
 		//获取检索路径和关键字
 		/*System.out.println("输入检索绝对路径名(如/user/edison/):");
@@ -51,7 +37,8 @@ public class G_ArrayBlockingQueue {
 		System.out.println("输入检索关键字");
 		G_ArrayBlockingQueue.keyWord=scan.nextLine();
 		scan.close();*/
-		path="C:\\Users\\Edison\\git\\mvc";
+//		path="C:\\Users\\Edison\\git\\mvc2\\src\\main\\java\\com\\edison";
+		path="C:\\Users\\Edison\\git\\mvc2";
 		keyWord="class";
 		
 		File searchFile=new File(path);
@@ -65,43 +52,32 @@ public class G_ArrayBlockingQueue {
 		new Thread(enumerateFile).start();//这里不需要等待该线程将所有File列表加入到queue中，因为是阻塞
 										  //队列，可以边放边取直到取到空File
 		
-		//不需等待，边放边取
-		SearchContent searchContent=new SearchContent(queue,keyWord);
-		for(int i=0;i<130;i++){
-			Thread thread=new Thread(searchContent);
+		//多个子线程去遍历刚刚查出来的文件的内容，不需等待，边放边取
+		SearchContent searchContentCallable=new SearchContent(queue,keyWord);
+		for(int i=0;i<16;i++){
+			FutureTask<Integer> futureTask=new FutureTask<Integer>(searchContentCallable); //不要放循环外面
+			Thread thread=new Thread(futureTask);
 			thread.start();
-			try{
-				thread.join();
-			}catch(Exception e){
-				System.out.println("等待线程"+thread.getId()+"失败！");
+			
+			//total+=futureTask.get();//放在这里执行的话，只有等待这个线程执行完了才能获取，实际上第一个线程可能会执行完所有任务
+			resset.add(futureTask);
+		}
+		
+		//当所有线程都启动起来后再去等待结果
+		Iterator<FutureTask<Integer>> it=resset.iterator();
+		while(it.hasNext()) {
+			FutureTask<Integer> futureTask=it.next();
+			try {
+				total+=futureTask.get();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				e.printStackTrace();
 			}
 		}
 		
-		//检索结束后处理汇总结果
-		int totle=0;//总数
-		int fileTotle=0;
-		for(String res:resSet){
-			String[] str=res.split("	");
-			int num=Integer.parseInt(str[0]);//次数
-			totle+=num;//汇总总次数
-			String filename=str[1];
-			String lineAndCont="";
-			for(int i=2;i<str.length;i++){
-				lineAndCont=lineAndCont+((i==3)?(":  "+str[i]):str[i]);
-			}
-			if(map.containsKey(filename)){
-				map.put(filename, map.get(filename).addMyfile(num, lineAndCont));
-			}else{
-				map.put(filename, new MyFile(num,lineAndCont));
-				fileTotle++;
-			}
-		}
+		System.out.println("总的匹配数"+total);
 		
-		System.out.println("匹配文件共计"+fileTotle+"个，总计找到匹配项【"+totle+"】个:");
-		for(String key:map.keySet()){
-			System.out.println(key);
-			map.get(key).PrintResolution();
-		}
 	}
 	
 }
@@ -136,63 +112,63 @@ class EnumerateFile implements Runnable{//分配一个线程用于递归方式�
 	}
 }
 
-class SearchContent implements Runnable{
+class SearchContent implements Callable<Integer>{
 	private BlockingQueue<File> queue;
 	private String keyWord;
-	ThreadLocal<HashSet<String>> localSet=new ThreadLocal<HashSet<String>>();
+	ThreadLocal<TreeSet<String>> localSet=new ThreadLocal<TreeSet<String>>();//treeSet是自然排序的，即插入顺序
 	
 	public  SearchContent(BlockingQueue<File> queue,String keyWord){
 		this.queue=queue;
 		this.keyWord=keyWord;
 	}
 	
-	public void run() {
+	public Integer call() throws Exception {
+		int num=0;//该文件该keyword出现次数
+		boolean hasFlag=false;//表示当前行没有keyword
+		System.out.println("当前线程启动："+Thread.currentThread().getName());
+		
 		File file=G_ArrayBlockingQueue.ENDFILE;
 		while(true){
-			try{
 				file=(File)queue.take();
-				if(file.equals(G_ArrayBlockingQueue.ENDFILE)){
+				if(file.equals(G_ArrayBlockingQueue.ENDFILE)){//说明文件已经搜索完毕
 					queue.put(file);//如果该线程取到结束标志文件，还需要放回去以供其他线程作为完成判断标志;
-					G_ArrayBlockingQueue.addSet(localSet.get());
-					return;
+//					G_ArrayBlockingQueue.addSet(localSet.get());
+					printSet();
+					return num;
 				}
 				Scanner sc=new Scanner(file);
 				int lineNum=0;//行数
 				
 				keyWord=keyWord.toUpperCase(); //忽略大小写
 				while(sc.hasNextLine()){
+					hasFlag=false;
 					lineNum++;
 					String lineBak=sc.nextLine();
 					String line=lineBak.toUpperCase();
 					int index=0;//出现下标
-					int num=0;//出现次数
 					while((index=line.indexOf(keyWord) ) != -1){
 						line=line.substring(index+1);
 						num++;
+						hasFlag=true;
 					}
-					if(num>0){
-						this.putToSet(num+"	"+file.getPath()+"	"+String.format("%03d", lineNum)+"行	"+lineBak);
+					if(hasFlag){
+						this.putToSet(Thread.currentThread().getName()+"	"+file.getPath()+"	"+String.format("%03d", lineNum)+"行	"+lineBak);
 					}
 				}
 				sc.close();
-			}catch(InterruptedException e){
-				System.out.println("检索被打断，结果不一定完整");
-			}catch(FileNotFoundException e){
-				System.out.println("File not exists:"+file.getPath());
 			}
-		}
 	}
 	
 	public void  putToSet(String result){//将检索到的结果放到set中
-		HashSet<String> set =localSet.get();
+		TreeSet<String> set =localSet.get();
 		if(set==null){
-			set=new HashSet<String>();
+			set=new TreeSet<String>();
 		}
 		set.add(result);
 		localSet.set(set);
 	}
 	public void  printSet(){//将检索到的结果放到set中
-		HashSet<String> set =localSet.get();
+		TreeSet<String> set =localSet.get();
 		if(set==null){
 			return;
 		}else{
@@ -204,26 +180,4 @@ class SearchContent implements Runnable{
 	}
 }
 
-class MyFile {
-	int nums=0;//当前文件找到的次数统计
-	List<String> lines=new ArrayList<String>();
-	
-	public MyFile(int num,String content){
-		this.nums=num;
-		this.lines.add(content);
-	}
-	
-	public MyFile addMyfile(int num,String content){
-		this.nums+=num;
-		this.lines.add(content);
-		return this;
-	}
-	
-	public void PrintResolution(){
-		System.out.println("("+this.nums+"次)");
-		Collections.sort(lines);
-		for(String line:lines){
-			System.out.println("    "+line);
-		}
-	}
-}
+

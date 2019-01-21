@@ -5,7 +5,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
 /**
- * 启动一个新的线程:三种方式*/
+ * 启动一个新的线程:三种方式
+ * new Thread(new FuterTask(? implements Callable<Object>)).start();*/
 public class A_StartAThread {
 	
 	class MyRunnable1 implements Runnable{//内部类-实现Runnable.run()的方式
