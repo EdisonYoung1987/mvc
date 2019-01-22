@@ -5,11 +5,11 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Scanner;
 import java.util.TreeSet;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
+import java.util.concurrent.LinkedBlockingQueue;
 
 
 
@@ -19,8 +19,11 @@ import java.util.concurrent.FutureTask;
 public class G_ArrayBlockingQueue {
 	//检索路径和关键字
 	private static String path,keyWord;
-	private static ArrayBlockingQueue<File> queue=new ArrayBlockingQueue<File>(64,true);//线程安全的阻塞队列 公平竞争
 	
+	//实际上在这个案例里面最好使用LinkedBlockingQueue，因为它是读写分离的，效率更高些
+//	private static ArrayBlockingQueue<File> queue=new ArrayBlockingQueue<File>(64,true);//线程安全的阻塞队列 公平竞争
+	private static LinkedBlockingQueue<File> queue=new LinkedBlockingQueue<File>(64);//线程安全的阻塞队列
+
 	//空文件，用来作为线程查找blockingQueue终点
 	public static final File ENDFILE=new File("");
 	
