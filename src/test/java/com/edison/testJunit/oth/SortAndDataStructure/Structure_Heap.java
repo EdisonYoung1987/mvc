@@ -11,7 +11,7 @@ import java.util.Comparator;
  *2. 下标i对应的父节点：奇数：(i-1)/2 或者 偶数： (i-2)/2,在连续奇数偶数计算/求余时，实际上结果都是(i-1)/2;<p>
  *3. 最后一个节点的下标是size-1，它的父节点下标(size-1-1)/2=(size-2)/2,
  *       所以二叉堆的最后一个非叶子节点的下标(size-2)/2  -- size>=2;<br>
- *       换成随机i节点的话，其父节点下标是(i-2)/2-- i>=2*/
+ */
 @SuppressWarnings("unchecked")  //代码中存在很多强制转换，加上这个
 public class Structure_Heap<T> {
 	private int size=0;     //当前数组中元素个数
@@ -68,7 +68,7 @@ public class Structure_Heap<T> {
 	
 	/**比较并下沉：删除时，把最末尾的节点放到堆顶，并一级级往下比较并下沉*/
 	public void compareAndDownShift() {
-		int k=0,c=(size-2)/2,length=queue.length;
+		int k=0,c=(size-2)/2,length=size-1; //c-最后一个非叶子节点的下标
 		T tail=(T)queue[size-1]; //最末尾的节点
 		queue[size-1]=null;
 		while(k<=c) {//size=0,1时，实际上直接不执行
@@ -89,6 +89,7 @@ public class Structure_Heap<T> {
 						if(childright!=null) {//左右子节点都有值
 							if(comparator.compare(min, childright)>0) {
 								min=childright;
+								？？
 							}
 						}
 					}
