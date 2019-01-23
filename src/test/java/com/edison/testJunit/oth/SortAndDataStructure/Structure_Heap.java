@@ -7,10 +7,12 @@ import java.util.Comparator;
  *它是实现堆排序和优先级队列PriorityBlockingQueue的基础.<p>
  * 它是由数组实现的,有几个前提：
  *0. 堆顶的下标就是0，它的子节点下标是1，2，而下标1对应节点的左右子节点是3，4，而下标2 对应节点的左右子节点是5，6<p>
- *1. 即下标i对应节点的左节点是((i + 1) << 1) - 1--奇数; 右节点是(i + 1) << 1--偶数;<p>
- *2. 下标i对应的父节点： (i+1)/2-1=(i-1)/2 或者 i/2-1=(i-1)/2,所以是(i-1)/2;<p>
- *3. 最后一个节点的下标是size-1，它的父节点下标(size-1-1)/2=size/2 -1 ,
- *       所有二叉堆的最后一个非叶子节点的下标是size/2-1,不过在size=1时，这个表达式为-1，所以还是改为(size-1)/2;*/
+ *1. 即下标i对应节点的左节点是(奇数(2*i+1); 右节点是偶数(2*i+2);<p>
+ *2. 下标i对应的父节点：奇数：(i-1)/2 或者 偶数： (i-2)/2,在连续奇数偶数计算/求余时，实际上结果都是(i-1)/2;<p>
+ *3. 最后一个节点的下标是size-1，它的父节点下标(size-1-1)/2=(size-2)/2,
+ *       所以二叉堆的最后一个非叶子节点的下标(size-2)/2  -- size>=2;<br>
+ *       换成随机i节点的话，其父节点下标是(i-2)/2-- i>=2*/
+@SuppressWarnings("unchecked")  //代码中存在很多强制转换，加上这个
 public class Structure_Heap<T> {
 	private int size=0;     //当前数组中元素个数
 	private Object[] queue;      //数组，存放堆数据
@@ -22,22 +24,30 @@ public class Structure_Heap<T> {
 		this.comparator=comparator;
 	}
 	
-	/**存放数据：一个个下沉*/
-	public void put(T t) {
-		compareAndDownShift(t);
+	/**存放数据：从数组数据末尾一层层往上浮*/
+	public boolean put(T t) {
+		if(size==queue.length || t==null) {
+			return false;
+		}
+		compareAndUpShift(t);
 		size++;
+		return true;
 	}
 	
-	/**取出数据: 一个个上浮*/
+	/**取出数据: 弹出堆顶，把最后一个节点放到首尾并下沉*/
 	public T take() {
+		if(size==0) {
+			return null;
+		}
 		T t=(T)queue[0];
+		compareAndDownShift();
 		size--;
 		return t; 
 	}
 	
-	/**比较并上浮：因为新加的节点是从最末尾的非叶子节点开始，一层层往上比较并交换值，是上浮的*/
+	/**比较并上浮：因为新加的节点是从最末尾的非叶子节点开始，一层层往上比较父节点并交换值，是上浮的*/
 	public void compareAndUpShift(T t) {
-		int k=size;
+		int k=size; //这其实就是要进行存放数据下标位置
 		while(k>0) {
 			//最后一个非叶子节点下标
 			int parentInd=(k-1)/2; //即 (size-1)>>1
@@ -58,6 +68,33 @@ public class Structure_Heap<T> {
 	
 	/**比较并下沉：删除时，把最末尾的节点放到堆顶，并一级级往下比较并下沉*/
 	public void compareAndDownShift() {
+		int k=0,c=(size-2)/2,length=queue.length;
+		T tail=(T)queue[size-1]; //最末尾的节点
+		queue[size-1]=null;
+		while(k<=c) {//size=0,1时，实际上直接不执行
+			int left=2*k+1;
+			int right=2*k+2;
+			T childleft=null;
+			T childright=null;
+			T min=tail;
+
+			if(left<length){
+				childleft=(T)queue[left];
+				if(childleft!=null) {
+					if(comparator.compare(min, childleft)>0) {
+						min=childleft;
+					}
+					if(right<length) {
+						childright=(T)queue[right];
+						if(childright!=null) {//左右子节点都有值
+							if(comparator.compare(min, childright)>0) {
+								min=childright;
+							}
+						}
+					}
+				}
+			}
+		}
 		
 	}
 	
