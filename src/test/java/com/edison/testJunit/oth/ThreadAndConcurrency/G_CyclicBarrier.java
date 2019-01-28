@@ -8,7 +8,7 @@ import java.util.concurrent.CyclicBarrier;
 /**几个线程各自写一个文件，最后写完的线程打印这些文件名称*/
 public class G_CyclicBarrier {
 	private static CyclicBarrier cyclicBarrier;
-	private static final String PATH="D:\\tmp";
+	private static final String PATH="D:\\tmp\\";
 	
 	public G_CyclicBarrier() {
 		MyRunnable_listFile listfile=this.new MyRunnable_listFile();
