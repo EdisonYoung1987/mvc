@@ -8,7 +8,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 /**
- * 使用执行器Executors生成线程池完成H_CallableAndFuture中统计包含关键字的文件数目*/
+ * 使用执行器Executors生成线程池完成H_CallableAndFuture中统计包含关键字的文件数目<p>
+ * 这几种方法创建的线程池都有oom的风险，不建议使用，直接使用指定长度的阻塞队列的ThreadPoolExecutor的构造方法*/
 public class I_ThreadPool_Executors {
 
 	public static void main(String[] args) {//Executors方法最好不用，使用后面的ThreadPoolExecutor方法
