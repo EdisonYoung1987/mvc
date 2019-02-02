@@ -96,6 +96,7 @@ class CalcuArray implements Callable<Integer>{//计算子数组的和
 		for(Integer i:arr){
 			totle+=i;
 		}
+		Thread.sleep(100);
 		return totle;
 	}
 	
