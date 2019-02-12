@@ -101,25 +101,21 @@ class ThreadPoolMonitor implements Runnable{
 		System.out.println("    coreSize    maxSize    queue    keepAliveTime(SECONDS)");
 		System.out.println(String.format("%10d%10d    %s  %d", coreSize,maxSize,queue.getClass().getSimpleName(),keepAlive));
 		
-		for(;pool!=null;) {
-			//线程池还在运行，其中如果线程池状态是SHUTDOWN，他还可能在处理firstTask或者队列中的任务，该状态不能作为停止判断
-			if (!pool.isTerminating() && !pool.isTerminated() ) {
-				System.out.println("------------------------------------------------------");
-				System.out.println("    当前线程池中线程数量    执行任务的线程数    队列中的数量    已完成task数量");
-				int ac=pool.getActiveCount();//执行任务的线程数
-				int pc=pool.getPoolSize();//当前线程池中线程数量
-				long count=pool.getCompletedTaskCount();//已完成task数量
-				int size=queue.size();//队列中的数量
-				System.out.println(String.format("%10d%10d%10d%10d", pc,ac,size,count));
-			}else {
-				System.out.println("线程池已经关闭");
-				break;
-			}
+		//线程池还在运行，其中如果线程池状态是SHUTDOWN，他还可能在处理firstTask或者队列中的任务，该状态不能作为停止判断
+		do{
 			try {
-				Thread.sleep(20);//10毫秒打印一次
-			} catch (InterruptedException e) {
-			}//
-		}
+				Thread.sleep(1000);//10毫秒打印一次
+			} catch (InterruptedException e) {}//
+			System.out.println("------------------------------------------------------");
+			System.out.println("    当前线程池中线程数量    执行任务的线程数    队列中的数量    已完成task数量");
+			int ac=pool.getActiveCount();//执行任务的线程数
+			int pc=pool.getPoolSize();//当前线程池中线程数量
+			long count=pool.getCompletedTaskCount();//已完成task数量
+			int size=queue.size();//队列中的数量
+			System.out.println(String.format("%10d%10d%10d%10d", pc,ac,size,count));
+		}while((pool!=null&&!pool.isTerminating() && !pool.isTerminated() ));
+		
+		System.out.println("线程池已经关闭");
 		
 	}
 	
