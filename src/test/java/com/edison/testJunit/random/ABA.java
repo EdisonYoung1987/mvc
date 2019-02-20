@@ -12,7 +12,8 @@ public class ABA {
         private static AtomicStampedReference atomicStampedRef = new AtomicStampedReference(100, 0);
 
         public static void main(String[] args) throws InterruptedException {
-                Thread intT1 = new Thread(new Runnable() {
+               	//线程1,2通过atomicInteger的compareAndSet演示ABA的问题
+        		Thread intT1 = new Thread(new Runnable() {
                         @Override
                         public void run() {
                                 atomicInt.compareAndSet(100, 101);
@@ -36,7 +37,8 @@ public class ABA {
                 intT2.start();
                 intT1.join();
                 intT2.join();
-
+                
+                //这两个线程通过AtomicStampedReference演示是如何解决ABA问题的
                 Thread refT1 = new Thread(new Runnable() {
                         @Override
                         public void run() {
