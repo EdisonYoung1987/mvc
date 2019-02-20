@@ -9,7 +9,7 @@ import java.util.concurrent.atomic.AtomicStampedReference;
  * 通过引入版本号，每次操作compareAndSet时都把版本号+1，这样，就可以避免ABA的问题*/
 public class ABA {
         private static AtomicInteger atomicInt = new AtomicInteger(100);
-        private static AtomicStampedReference atomicStampedRef = new AtomicStampedReference(100, 0);
+        private static AtomicStampedReference<Integer> atomicStampedRef = new AtomicStampedReference<Integer>(100, 0);
 
         public static void main(String[] args) throws InterruptedException {
                	//线程1,2通过atomicInteger的compareAndSet演示ABA的问题
