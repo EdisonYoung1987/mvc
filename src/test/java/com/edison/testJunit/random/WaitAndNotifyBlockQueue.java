@@ -2,7 +2,10 @@ package com.edison.testJunit.random;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
-
+/**代码中，读、写线程是不互斥的，他们操作了共同的资源head节点，你的dequeue和enqueue都有用到head节点。
+ * 而linkedBlockingQueue则是采用读写分离的方式，读写不会操作到相同资源，所以没有出现你这个问题。<p>
+ * 可以仿造LinkedBlockingQueue增加一个哑结点dummy node，这样可以在dequeue和enqueue中实现读写分离<br>
+ * 而AQS的哑结点也是一样的。*/
 public class WaitAndNotifyBlockQueue<E> {
 	 private static class Node<E>{
 	        E item;
@@ -17,7 +20,7 @@ public class WaitAndNotifyBlockQueue<E> {
 
 	    private volatile Node<E> tail;
 
-	    private AtomicInteger count = new AtomicInteger();
+	    private  AtomicInteger count = new AtomicInteger();
 
 	    private final int capacity;
 
@@ -36,7 +39,7 @@ public class WaitAndNotifyBlockQueue<E> {
 	    }
 
 	    public E take(){
-	        final AtomicInteger count = this.count;
+//	        final AtomicInteger count = this.count;
 	        E x = null;
 	        synchronized (readLock){
 	            try {
@@ -45,8 +48,9 @@ public class WaitAndNotifyBlockQueue<E> {
 	                    readLock.wait();
 	                }
 	                x = dequeue();
-	                System.out.println("出队消息"+x+"count="+count.get());
 	                count.decrementAndGet();
+	                System.out.println("出队消息"+x+"count="+count.get()+" "+head);
+
 
 	            } catch (InterruptedException e) {
 	                e.printStackTrace();
@@ -59,16 +63,17 @@ public class WaitAndNotifyBlockQueue<E> {
 	    }
 
 	    public void put(E x){
-	        final AtomicInteger count = this.count;
+//	        final AtomicInteger count = this.count;
 	        synchronized (writeLock){
 	                try{
 	                    while(count.get()==capacity){
 	                        System.out.println("开始阻塞当前线程"+ Thread.currentThread());
 	                        writeLock.wait();
 	                    }
-	                    System.out.println("入队消息："+x+"count="+count.get());
 	                    enqueue(x);
 	                    count.getAndIncrement();
+	                    System.out.println("入队消息："+x+"count="+count.get()+" "+head);
+
 	                }catch (InterruptedException e) {
 	                    e.printStackTrace();
 	                }
@@ -118,7 +123,7 @@ public class WaitAndNotifyBlockQueue<E> {
 	            }
 	        });
 	        Thread producer2 = new Thread(()->{
-	            for(int i=100;i<200000;i++){
+	            for(int i=200000;i<400000;i++){
 	                blockingQueue.put(i);
 	            }
 	        });
