@@ -5,11 +5,10 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
-
-/**使用Timer定时调度框架(单线程)执行TimerTask任务(Runnable)*/
-public class J_TimerAndTimerTask {
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+/**使用ScheduledThreadPoolExecutor完成一个定时任务的设定，且在特定情况下退出*/
+public class J_ScheduledThreadPoolExecutor {
 	static final ThreadLocal<DateFormat> df = new ThreadLocal<DateFormat>() { //SimpleDateFormat是线程不安全的
 		@Override
 		protected DateFormat initialValue() {
@@ -27,20 +26,19 @@ public class J_TimerAndTimerTask {
 		String dateNowStr = df.get().format(d);
 		System.out.println("当前时间：" + dateNowStr);
 		
-		Timer timer=new Timer();
-
-		Task_Later task1=new Task_Later();//添加第一个任务 16秒后执行
-		timer.schedule(task1, 16000); //相当于timer.schedule(task1, 16000, 0)或者schedule(task1, Date time+16000)
+		ScheduledThreadPoolExecutor pool=new ScheduledThreadPoolExecutor(10
+				//, threadFactory, handler
+				); //这两个参数就不管了
+		Task_Later1 task1=new Task_Later1();
+		pool.schedule(task1, 20, TimeUnit.SECONDS);//只执行一次且不关注结果，就不管了
 		
-		Task_Reapet task2=new Task_Reapet(timer);
-		timer.schedule(task2, 0, 1000);
-		
-		//timer调度器在task2中关闭
+		Task_Repeat1 task2=new Task_Repeat1(pool); //循环任务无法传入Callable
+		pool.schedule(task2, 1, TimeUnit.SECONDS);
 	}
-
 }
+
 /**一个main方法启动后延迟16秒执行的单次任务：创建一个文件<br>*/
-class Task_Later extends TimerTask{
+class Task_Later1 implements Runnable{
 
 	@Override
 	public void run() {
@@ -61,13 +59,12 @@ class Task_Later extends TimerTask{
 
 /**在延迟指定时间后以指定的间隔时间循环执行定时任务,并在满足一定条件后停止执行<p>
  * 每1秒检测某个文件是否存在，存在则停止自己*/
-class Task_Reapet extends TimerTask{
-	private Timer timer;//用于关闭调度器
+class Task_Repeat1 implements Runnable{
+	private ScheduledThreadPoolExecutor pool;
 	
-	public Task_Reapet(Timer timer) {
-		this.timer=timer;
+	public Task_Repeat1(ScheduledThreadPoolExecutor pool) {
+		this.pool=pool;
 	}
-	
 	@Override
 	public void run() {
 		Date d = new Date();
@@ -77,9 +74,11 @@ class Task_Reapet extends TimerTask{
 		File file=new File("D:\\tmp\\task.txt");
 		if(file.exists()) {
 			System.out.println("该文件已被创建，退出检测");
-			this.cancel();//取消任务
-			timer.cancel(); //关闭调度器
+			pool.shutdown();
+			return;
 		}
 		
+		//未检测到文件则重新加载任务
+		pool.schedule(this, 1, TimeUnit.SECONDS);
 	}
 }
