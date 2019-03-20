@@ -42,8 +42,12 @@ public class G_CyclicBarrier {
 //				这里有问题
 				while(true) {
 					try {
-						System.out.println("线程"+Thread.currentThread().getName()+"进入await()");
-						cyclicBarrier.await(); //到达屏障
+						if(!cyclicBarrier.isBroken()) {
+							System.out.println("线程"+Thread.currentThread().getName()+"进入await()");
+							cyclicBarrier.await(); //到达屏障
+						}else {
+							continue;
+						}
 						break;
 					} catch (InterruptedException e) {//这些异常都需要重置屏障，然后重新await
 //						e.printStackTrace();
