@@ -2,27 +2,28 @@ package com.edison.testJunit.oth.ThreadAndConcurrency;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 
 /**几个线程各自写一个文件，最后写完的线程打印这些文件名称*/
 public class G_CyclicBarrier {
 	private static CyclicBarrier cyclicBarrier;
-	private static final String PATH="D:\\tmp\\";
+	private static final String PATH="D:\\tmp\\tmp\\";
 	
 	public G_CyclicBarrier() {
 		MyRunnable_listFile listfile=this.new MyRunnable_listFile();
-		cyclicBarrier=new CyclicBarrier(5,listfile);//所有参与者都到底屏障时，执行listfile
+		cyclicBarrier=new CyclicBarrier(102,listfile);//所有参与者都到底屏障时，执行listfile
 	}
 	
 	public static void main(String[] args) {
 		G_CyclicBarrier gcb=new G_CyclicBarrier();
 		MyRunnable_WriteFile wf=gcb.new MyRunnable_WriteFile();
-		for(int i=0;i<5;i++) {
+		for(int i=0;i<102;i++) {
 			Thread thread=new Thread(wf);
-			thread.setName(""+i);
+			thread.setName("Write_Thread_"+i);
 			thread.start();
-			if(i==3)
+			if(i==100)
 				thread.interrupt();
 		}
 
@@ -78,8 +79,10 @@ public class G_CyclicBarrier {
 	
 	class MyRunnable_listFile implements Runnable{
 		public void run() {
+			System.out.println("已达到屏障点，开始打印文件");
 			File file=new File(PATH);
 			String[] files=file.list();
+			Arrays.sort(files);
 			for(String filetmp:files) {
 				System.out.println(filetmp);
 			}
