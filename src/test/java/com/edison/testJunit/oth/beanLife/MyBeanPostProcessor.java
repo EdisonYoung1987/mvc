@@ -16,15 +16,14 @@ public class MyBeanPostProcessor implements BeanPostProcessor {
 
     public MyBeanPostProcessor() {
         super();
-        System.out.println("这是BeanPostProcessor实现类构造器！！");
+        System.out.println("BeanPostProcessor实现类构造器！！");
     }
 
     public Object postProcessAfterInitialization(Object obj, String objName)
             throws BeansException {
        /* Person person = (Person) obj;
         person.setName("之后--赵六");*/
-        System.out.println("BeanPostProcessor接口方法" +
-                "postProcessAfterInitialization对属性进行更改！" +
+        System.out.println("BeanPostProcessor.postProcessAfterInitialization对属性进行更改！" +
                 "---"+"obj="+obj+"---objName="+objName);
         return obj;
     }
@@ -33,8 +32,7 @@ public class MyBeanPostProcessor implements BeanPostProcessor {
             throws BeansException {
        /* Person person = (Person) obj;
         person.setName("之前--李四");*/
-        System.out.println("BeanPostProcessor接口方法" +
-                "postProcessBeforeInitialization对属性进行更改！" +
+        System.out.println("BeanPostProcessor.postProcessBeforeInitialization对属性进行更改！" +
                 "---"+"obj="+obj+"---objName="+objName);
         return obj;
     }

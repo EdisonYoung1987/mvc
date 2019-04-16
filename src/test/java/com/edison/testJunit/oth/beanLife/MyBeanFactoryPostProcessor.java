@@ -17,12 +17,12 @@ public class MyBeanFactoryPostProcessor implements BeanFactoryPostProcessor{
 
     public MyBeanFactoryPostProcessor() {
         super();
-        System.out.println("这是BeanFactoryPostProcessor实现类构造器！！");
+        System.out.println("BeanFactoryPostProcessor实现类构造方法！！");
     }
 
     public void postProcessBeanFactory(ConfigurableListableBeanFactory arg0)
             throws BeansException {
-        System.out.println("BeanFactoryPostProcessor调用postProcessBeanFactory方法");
+        System.out.println("BeanFactoryPostProcessor.postProcessBeanFactory()方法");
         BeanDefinition bd = arg0.getBeanDefinition("person2");
         bd.getPropertyValues().addPropertyValue("name", "张三三");
     }
