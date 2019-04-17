@@ -106,12 +106,30 @@
 	
 	<!--  日志框架 SLF4J+LOGBACK 其中SLF4J是一个通用日志api框架，而logback和log4j则是日志api的具体实现，
                         而前者比后者性能更好 -->
-  <dependency>
-    <groupId>ch.qos.logback</groupId>
-    <artifactId>logback-classic</artifactId>
-    <version>1.1.7</version>
-  </dependency>
-  
+  	<dependency>
+		<groupId>org.slf4j</groupId>
+		<artifactId>jcl-over-slf4j</artifactId>
+		<version>1.7.7</version>
+	</dependency>
+  	<dependency>
+    	<groupId>ch.qos.logback</groupId>
+   	 	<artifactId>logback-classic</artifactId>
+    	<version>1.1.7</version>
+  	</dependency>
+  	
+  		<!-- 这两个是用来打印Spring启动日志的 -->
+	<!--   <dependency>
+		<groupId>commons-logging</groupId>
+		<artifactId>commons-logging</artifactId>
+		<version>1.1.1</version>
+	</dependency>
+		
+	<dependency>
+		<groupId>org.slf4j</groupId>
+		<artifactId>jcl-over-slf4j</artifactId>
+		<version>1.7.7</version>
+	</dependency> -->
+
   <!-- XML解析 DOM4J -->
   <dependency>
     <groupId>dom4j</groupId>
