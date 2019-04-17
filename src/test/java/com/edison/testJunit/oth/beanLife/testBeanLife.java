@@ -17,7 +17,9 @@ public class testBeanLife {
                 new ClassPathXmlApplicationContext("com/edison/testJunit/oth/beanLife/lifeContext.xml"); //可以
 //        context2=new ClassPathXmlApplicationContext("com/edison/testJunit/oth/beanLife/lifeContext.xml");
         System.out.println("IOC容器初始化成功"); 
-        Person person = (Person) context.getBean("com.edison.testJunit.oth.beanLife.Person"); //xml没有指定id，所以使用全限定名取bean
+        
+       //xml没有指定id，所以使用全限定名取bean
+        Person person = (Person) context.getBean("com.edison.testJunit.oth.beanLife.Person"); 
 		
 		/*//2.
 		  Resource res=new PathMatchingResourcePatternResolver().getResource("file:C:/Users/Edison/git/mvc/src/test/java/com/edison/testJunit/oth/beanLife/lifeContext.xml");
@@ -27,7 +29,14 @@ public class testBeanLife {
         Person person = (Person) beanFactory.getBean("person1");*/
         
 //        System.out.println("使用person对象的toString:"+person);
+        
+        //这个指定了id，可以直接用person2获取bean
         Person2 person2 = (Person2) context.getBean("person2");
+        
+        //这个是通过component-scan扫描出来的bean，看名称是什么：首字母小写的非全限定名
+        Person3 person3=(Person3) context.getBean("person3");//可以
+// 这个不行  person3=(Person3) context.getBean("com.edison.testJunit.oth.beanLife.Person3");//不行
+        person3.printMsg();
       
         System.out.println("现在开始关闭容器！");
         ((AbstractApplicationContext) context).registerShutdownHook();
