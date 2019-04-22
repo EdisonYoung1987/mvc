@@ -13,7 +13,7 @@ public class testBeanLife {
 		//这个也可以
 		//ApplicationContext context =   
 //                new FileSystemXmlApplicationContext("C:/Users/Edison/git/mvc/src/test/java/com/edison/testJunit/oth/beanLife/lifeContext.xml");
-        ApplicationContext context = 
+        ApplicationContext context =
                 new ClassPathXmlApplicationContext("com/edison/testJunit/oth/beanLife/lifeContext.xml"); //可以
 //        context2=new ClassPathXmlApplicationContext("com/edison/testJunit/oth/beanLife/lifeContext.xml");
         System.out.println("IOC容器初始化成功"); 

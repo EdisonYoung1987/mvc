@@ -15,7 +15,10 @@
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>  
       <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>  
       <!-- 编译时的编码 -->  
-      <maven.compiler.encoding>UTF-8</maven.compiler.encoding>  
+      <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+      <!--指定编译级别-->
+      <maven.compiler.target>1.8</maven.compiler.target>
+      <maven.compiler.source>1.8</maven.compiler.source>
   </properties>
   
   <dependencies>
@@ -194,6 +197,16 @@
         
   <build>
     <finalName>HelloSpringMVC</finalName>
+      <!--这里是为了将ser/test/java下面的xml，property文件都加载到resource目录中-->
+    <resources>
+      <resource>
+          <directory>src/test/java</directory>
+          <includes>
+              <include>**/*.xml</include>
+              <include>**/*.properties</include>
+          </includes>
+      </resource>
+    </resources>
   </build>
 </project>
 
