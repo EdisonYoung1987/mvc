@@ -56,7 +56,7 @@ public class D_ThreadLocal extends Thread{
 		
 		//这个是错误的，不管是哪个对象去执行getSeqNum()，最终都是根据当前的线程去获取对应的SeqNum
 		//所以这里取到的实际上是main线程的SeqNum,跟子线程是否调用remove清理无关
-		System.out.println("错误示例： "+t1.getName()+" 最终的seqnum="+t1.getSeqNum()); 
+		System.out.println("错误示例： "+t1.getName()+" 最终的seqnum="+t1.getSeqNum());
 
 	}
 
