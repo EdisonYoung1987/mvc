@@ -1,11 +1,10 @@
-package com.edison.testJunit.oth.activeMQ;
+package com.edison.testJunit.oth.activeMQ.queue;
 
 import org.apache.activemq.ActiveMQConnection;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQDestination;
 
 import javax.jms.*;
-import java.util.Random;
 
 public class JMSConsumer {
     private static final String BROKERURL="failover:(tcp://127.0.0.1:61616)";

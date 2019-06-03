@@ -1,9 +1,12 @@
-package com.edison.testJunit.oth.activeMQ;
+package com.edison.testJunit.oth.activeMQ.queue;
 
 import org.apache.activemq.ActiveMQConnection;
 import org.apache.activemq.ActiveMQConnectionFactory;
+import org.apache.activemq.ActiveMQMessageProducer;
+import org.apache.activemq.AsyncCallback;
 
 import javax.jms.*;
+import java.util.concurrent.CountDownLatch;
 
 public class JMSProducer {
     private static final String BROKERURL="failover:(tcp://127.0.0.1:61616)";
@@ -31,25 +34,44 @@ public class JMSProducer {
             Destination destination = session.createQueue(QUEUE_NAME);
 
             // 创建消息发送者并设置持久化模式
-            MessageProducer producer =session.createProducer(destination);
+            ActiveMQMessageProducer producer =(ActiveMQMessageProducer)session.createProducer(destination);
             producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);//非持久化
 
-            //开始发送消息： 创建消息对象，赋值，发送
+            //1. 异步非持久化模式：开始发送消息： 创建消息对象，赋值，发送
             for( int i=1; i <= 100; i++) {
                 String body="第【"+i+"】条消息";
                 TextMessage msg = session.createTextMessage(body);
                 msg.setIntProperty("id", i);
                 msg.setStringProperty("name","消息"+i);
                 producer.send(msg);
-
-                //
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
             }
+
+            //2. 异步持久化模式：发送消息后需要进行回调，否则可能存在丢失的可能
+            producer.setDeliveryMode(DeliveryMode.PERSISTENT);//进行持久化
+            final CountDownLatch messagesSent = new CountDownLatch(200);
+            for( int i=1000;i<1200;i++){//发送200条
+                String body="第【"+i+"】条消息";
+                TextMessage msg = session.createTextMessage(body);
+                msg.setIntProperty("id", i);
+                producer.send(session.createTextMessage("Hello"), new AsyncCallback() {
+                    @Override
+                    public void onSuccess() {
+                        messagesSent.countDown();
+                    }
+
+                    @Override
+                    public void onException(JMSException exception) {
+                        exception.printStackTrace();
+                    }
+                });
+            }
+            try {
+                messagesSent.await();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+
 
 
         } catch (JMSException e) {
