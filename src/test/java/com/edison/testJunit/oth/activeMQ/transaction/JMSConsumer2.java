@@ -44,6 +44,8 @@ public class JMSConsumer2 {
                 System.out.println("    id="+msgId);
                 System.out.println("    name="+message.getStringProperty("name"));
                 //message.acknowledge(); 这里是自动确认的
+                System.out.println("消息是否为重传的："+message.getJMSRedelivered());
+
                 if(msgId==100){
                     break;
                 }
