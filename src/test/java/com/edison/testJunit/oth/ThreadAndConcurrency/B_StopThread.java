@@ -39,6 +39,7 @@ public class B_StopThread {
 		volatile boolean  stopFlag=false; //这个volatile非常重要，jvm会要求线程每次读取时都去主内存获取最新值
 		                                  //如果不是volatile的话，如果该线程一直在忙，比如num++,则根本不会去主内存
 		                                  //获取最新值，而是从线程内存中取
+		                                  //如果该线程在运行期间执行了打印、sleep等阻塞或者挂起操作，实际上是会刷新该标志的
 		public void run() {
 			System.out.println("线程："+Thread.currentThread().getId()+"启动了");
 			int num=0;
