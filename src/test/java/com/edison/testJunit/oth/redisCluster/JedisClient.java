@@ -1,18 +1,12 @@
 package com.edison.testJunit.oth.redisCluster;
 
+import redis.clients.jedis.*;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-
-import redis.clients.jedis.HostAndPort;
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisCluster;
-import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.Pipeline;
-import redis.clients.jedis.ScanParams;
-import redis.clients.jedis.ScanResult;
 
 /**
  * 一个jedis连接redis集群的客户端，包含批量匹配删除key操作*/
@@ -110,4 +104,38 @@ public class JedisClient {
 		return false;
 	}
 
+	public static void delkeysByPattern(JedisCluster jedisCluster,String pattern, int scanCounter){
+		Map<String, JedisPool> nodeMap=jedisCluster.getClusterNodes();
+		for(String nodeKey:nodeMap.keySet()){
+			JedisPool jedisPool=nodeMap.get(nodeKey);
+			Jedis jedis=jedisPool.getResource();
+
+			String infoData=jedis.info("replication");
+			String[] datas=infoData.split("\r\n");
+			boolean isMaster=false;
+			for(String data:datas){
+				if("role:master".matches(data.trim())){
+					isMaster=true;
+				}
+			}
+			if(!isMaster){
+				continue;
+			}
+
+			String cursor="0";
+			Pipeline pipeline=jedis.pipelined();
+			while(true) {
+				ScanResult<String> scanResult = jedis.scan(cursor, new ScanParams().match(pattern).count(scanCounter));
+				cursor=scanResult.getStringCursor();
+				List<String> keys=scanResult.getResult();
+				for(String key:keys)
+					pipeline.del(key);
+				if(cursor.equalsIgnoreCase("0")){
+					break;
+				}
+			}
+
+			pipeline.syncAndReturnAll();
+		}
+	}
 }

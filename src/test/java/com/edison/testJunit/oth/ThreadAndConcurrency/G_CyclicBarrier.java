@@ -40,38 +40,39 @@ public class G_CyclicBarrier {
 			
 			try {
 				file.createNewFile();
-//				这里有问题
+			} catch (IOException e) {
+				e.printStackTrace();
+			}finally {
+				boolean isBroken=false;
 				while(true) {
 					try {
-						if(!cyclicBarrier.isBroken()) {
+						if(!cyclicBarrier.isBroken()) {//避免对broken的信号await导致直接异常
 							System.out.println("线程"+Thread.currentThread().getName()+"进入await()");
 							cyclicBarrier.await(); //到达屏障
-						}else {
+						}else {//最好不要马上continue
+							Thread.yield(); //让其他线程先执行一下
 							continue;
 						}
 						break;
 					} catch (InterruptedException e) {//这些异常都需要重置屏障，然后重新await
-//						e.printStackTrace();
-//						cyclicBarrier.reset(); //直接这样写的话就会被reset多次，不好
 						System.out.println("线程"+Thread.currentThread().getName()+"收到中断，"
 								+ "执行reset后重新await");
-						if(cyclicBarrier.isBroken()) {
+						isBroken=true;
+					} catch (BrokenBarrierException e) {//await的信号是broken的
+						System.out.println("线程"+Thread.currentThread().getName()+"收到异常Broken,"
+								+ "重新await()");
+						isBroken=true;
+					}finally {
+						if(isBroken) {
 							synchronized (cyclicBarrier) {
-								if(cyclicBarrier.isBroken()) {
+								if (cyclicBarrier.isBroken()) {
 									cyclicBarrier.reset(); //保证只被一个线程执行一次
 								}
 							}
+							isBroken=false;
 						}
-					} catch (BrokenBarrierException e) {//该异常两个可能: await时被中断、await的信号是broken的
-						System.out.println("线程"+Thread.currentThread().getName()+"收到异常Broken,"
-								+ "重新await()");
-//						e.printStackTrace();
-//						cyclicBarrier.reset();
 					}
 				}
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
 		}
 		
