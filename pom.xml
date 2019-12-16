@@ -9,7 +9,7 @@
   <url>http://maven.apache.org</url>
   
   <properties>
-      <spring.version>4.1.1.RELEASE</spring.version>
+      <spring.version>5.2.2.RELEASE</spring.version>
       <unitils.version>3.4.2</unitils.version>
       <!-- 文件拷贝时的编码,或者说是整个项目文件的编码 -->  
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>  
