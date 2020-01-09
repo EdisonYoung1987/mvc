@@ -73,38 +73,49 @@ public class Nioooo {
             ServerSocketChannel serverSocketChannel=ServerSocketChannel.open();
             serverSocketChannel.configureBlocking(false);
             serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
-            serverSocketChannel.bind(new InetSocketAddress("127.0.0.1",8888));
+            serverSocketChannel.bind(new InetSocketAddress("127.0.0.1",9999));
 
             while(true){
-                selector.select();//blocking util at least 1 connection recevied
+                System.out.println("下一次轮询");
+                int n=selector.select();//blocking util at least 1 connection recevied
+                System.out.println(n);
                 Set<SelectionKey> keys= selector.selectedKeys();
                 Iterator<SelectionKey> it=keys.iterator();
 
                 while(it.hasNext()){
+                    System.out.println("遍历所有key");
                     SelectionKey selectionKey=it.next();
                     it.remove();
 
                     if(selectionKey.isAcceptable()){
                         ServerSocketChannel ssc= (ServerSocketChannel) selectionKey.channel();
-                        ssc.configureBlocking(false);
-                        ssc.register(selector,SelectionKey.OP_READ,ByteBuffer.allocate(1024));
-                    }else if(selectionKey.isReadable()){ss
+                        SocketChannel socketChannel=ssc.accept();
+                        socketChannel.configureBlocking(false);
+                        socketChannel.register(selector,SelectionKey.OP_READ,ByteBuffer.allocate(1024));
+                        System.out.println("有连接接入："+socketChannel.getRemoteAddress());
+                    }else if(selectionKey.isReadable()){//读多少算多少
+                        System.out.println("readable");
                         SocketChannel sc= (SocketChannel) selectionKey.channel();
                         sc.configureBlocking(false);
-                        String addr=sc.getRemoteAddress().toString();
                         ByteBuffer byteBuffer= (ByteBuffer) selectionKey.attachment();
-                        if(sc.read(byteBuffer)>0){ //-1 end-of-stream 讀取到內容則註冊寫事件
-                            sc.register(selector,SelectionKey.OP_WRITE);
+                        if(sc.read(byteBuffer)!=-1){ //-1 end-of-stream 讀取到內容則註冊寫事件
+                            System.out.println("进行写："+byteBuffer.remaining());
+                            byteBuffer.flip();
+//                            System.out.println("读:"+utf8.decode(byteBuffer));
+                            sc.register(selector,SelectionKey.OP_WRITE,byteBuffer);//每次都要注册
+                        }else{//已关闭连接
+                            selectionKey.cancel(); //没有这一句的话，可能出现死循环 select()一直返回1
                         }
-                    }else if(selectionKey.isWritable()){
+                    }else if(selectionKey.isWritable()){//一次没写完就多写几次
                         SocketChannel sc= (SocketChannel) selectionKey.channel();
                         sc.configureBlocking(false);
                         ByteBuffer byteBuffer= (ByteBuffer) selectionKey.attachment();
-                        byteBuffer.flip();
                         sc.write(byteBuffer);
 
-                        if(!byteBuffer.hasRemaining()){//已經寫完
-                            sc.register(selector,SelectionKey.OP_READ);
+                        if(!byteBuffer.hasRemaining()){//写完了才进行下一次的读取
+                            byteBuffer.clear();
+                            System.out.println("写完");
+                            sc.register(selector,SelectionKey.OP_READ,byteBuffer);//每次都要注册
                         }
                     }
                 }
