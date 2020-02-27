@@ -19,7 +19,7 @@ public class B_ClassOrder {
         System.out.println("1");
     }
 
-    {//对象初始化阶段第一个
+    {//对象初始化阶段第一个new的一部分
         System.out.println("2");
     }
 
