@@ -7,9 +7,11 @@ import org.apache.commons.io.FileUtils;
 
 /**主要是为了转换以前用gbk写的旧代码/*/
 public class ConvertEncoding {
-	private final static String PROJECTDIR="C:\\Users\\Edison\\git\\mvc2\\";//项目的根目录
-	private final static String OUT_PROJECTDIR="D:\\Users\\Edison\\git\\mvc2\\";//转换后存放路径
-	
+//	private final static String PROJECTDIR="C:\\Users\\Edison\\git\\mvc2\\";//项目的根目录
+	private final static String PROJECTDIR="C:\\Users\\Administrator\\IdeaProjects\\spring-boot-demo";//项目的根目录
+//	private final static String OUT_PROJECTDIR="D:\\Users\\Edison\\git\\mvc2\\";//转换后存放路径
+	private final static String OUT_PROJECTDIR="D:\\Users\\Administrator\\IdeaProjects\\spring-boot-demo";//转换后存放路径
+
 	private final static String[] excludeDirs={
 		    "C:\\Users\\Edison\\git\\mvc2\\src\\test\\java\\com\\edison\\testJunit\\oth\\apache_commons_io",
 		    "C:\\Users\\Edison\\git\\mvc2\\target",
@@ -23,7 +25,8 @@ public class ConvertEncoding {
 		File inBaseDir=FileUtils.getFile(PROJECTDIR); //待转码文件根路径
 		File outBaseDir=FileUtils.getFile(OUT_PROJECTDIR);//输出文件根路径 
 
-		Collection<File> fileCollection=FileUtils.listFiles(inBaseDir, new String[]{"java","xml","properties"}, true); //读取xml和java及properties文件
+//		Collection<File> fileCollection=FileUtils.listFiles(inBaseDir, new String[]{"java","xml","properties"}, true); //读取xml和java及properties文件
+		Collection<File> fileCollection=FileUtils.listFiles(inBaseDir, new String[]{"properties"}, true); //读取xml和java及properties文件
 		outer: for(File inFile:fileCollection){
 			String path=inFile.getParent(); //路径
 			String fileName=inFile.getName();//文件名
