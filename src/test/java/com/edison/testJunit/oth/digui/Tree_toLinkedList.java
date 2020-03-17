@@ -48,6 +48,7 @@ public class Tree_toLinkedList {
 
         if(root.left==null) {//左节点为空
             res.left=root;
+            res.right=root;
         }else{//左节点不为空
             leftNode=convertBiNode(root.left);
             res.left=leftNode.left; //左边链的头结点作为整个返回的头结点
