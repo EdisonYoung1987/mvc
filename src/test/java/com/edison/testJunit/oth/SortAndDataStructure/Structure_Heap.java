@@ -89,7 +89,7 @@ public class Structure_Heap<T> {
 						if(childright!=null) {//左右子节点都有值
 							if(comparator.compare(min, childright)>0) {
 								min=childright;
-								？？
+//								？？
 							}
 						}
 					}
