@@ -9,7 +9,7 @@ import java.util.concurrent.locks.ReentrantLock;
 class MyRunnable implements Runnable{
 	private Lock lock;
 	private Condition condition;
-	private int i=0;
+	private volatile int i=0;
 	
 	public MyRunnable(){
 		this.lock=new ReentrantLock();
